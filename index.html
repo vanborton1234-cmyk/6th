@@ -136,7 +136,8 @@ object-fit
   input { width: 100%; margin-bottom: 10px; padding: 5px; }
   ul { padding: 0; list-style: none; }
   li { margin-bottom: 8px; }
-  a { color: #007bff; }
+  a { color: #007bff; cursor: pointer; text-decoration: underline; }
+  #videoContainer iframe { margin-top: 15px; }
 </style>
 </head>
 <body>
@@ -159,6 +160,7 @@ object-fit
     <button onclick="saveLink()">حفظ الرابط</button>
   </div>
   <ul id="savedLinks"></ul>
+  <div id="videoContainer"></div> <!-- الفيديو سيعمل هنا -->
   <button onclick="backToChapters()">العودة إلى الفصول</button>
 </div>
 
@@ -181,6 +183,7 @@ object-fit
   const subjectTitle = document.getElementById("subjectTitle");
   const chapterTitle = document.getElementById("chapterTitle");
   const savedLinks = document.getElementById("savedLinks");
+  const videoContainer = document.getElementById("videoContainer");
 
   let currentSubject = "";
   let currentChapter = "";
@@ -211,9 +214,11 @@ object-fit
   function openChapter(chap) {
     currentChapter = chap;
     chapterTitle.textContent = `${currentSubject} - ${chap}`;
-    savedLinks.innerHTML = loadLinks()
-      .map(l => `<li><a href="${l.link}" target="_blank">${l.name} (${l.topic})</a></li>`)
+    const links = loadLinks();
+    savedLinks.innerHTML = links
+      .map((l, index) => `<li><a onclick="playVideo('${l.link}')">${l.name} (${l.topic})</a></li>`)
       .join("");
+    videoContainer.innerHTML = "";
     chaptersPage.classList.add("hidden");
     linksPage.classList.remove("hidden");
   }
@@ -239,6 +244,11 @@ object-fit
     return all[`${currentSubject}-${currentChapter}`] || [];
   }
 
+  function playVideo(link) {
+    const embedLink = link.replace("watch?v=", "embed/");
+    videoContainer.innerHTML = `<iframe width="100%" height="315" src="${embedLink}" frameborder="0" allowfullscreen></iframe>`;
+  }
+
   function backToSubjects() {
     chaptersPage.classList.add("hidden");
     subjectsDiv.classList.remove("hidden");
@@ -250,6 +260,8 @@ object-fit
   }
 </script>
 
+</body>
+</html>
 </body>
 </html>
     <!-- نافذة الذكاء الاصطناعي -->
