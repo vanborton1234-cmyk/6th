@@ -88,9 +88,31 @@
   }
 
   .hidden { display: none; }
-  #videoContainer iframe { width: 100%; height: 400px; border-radius: 8px; margin-top: 15px; }
+  #videoContainer iframe, #quickContainer iframe { 
+    width: 100%; 
+    height: 400px; 
+    border-radius: 8px; 
+    margin-top: 15px; 
+    border: none;
+  }
   ul { padding: 0; list-style: none; }
   li { margin-bottom: 8px; }
+  
+  .video-quality {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .video-quality label {
+    margin-right: 10px;
+  }
+  .video-quality select {
+    background: #111;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #00ccff;
+  }
 </style>
 </head>
 <body>
@@ -108,6 +130,15 @@
   <div class="quick-player">
     <h3>تشغيل فيديو سريع</h3>
     <input id="quickLink" placeholder="ضع رابط يوتيوب هنا">
+    <div class="video-quality">
+      <label for="quickQuality">جودة الفيديو:</label>
+      <select id="quickQuality">
+        <option value="default">افتراضي</option>
+        <option value="hd720">HD (720p)</option>
+        <option value="hd1080">Full HD (1080p)</option>
+        <option value="highres">أعلى جودة</option>
+      </select>
+    </div>
     <button id="quickPlayBtn">تشغيل</button>
     <div id="quickContainer"></div>
   </div>
@@ -128,6 +159,15 @@
     <input id="lectureName" placeholder="اسم المحاضرة">
     <input id="topicName" placeholder="اسم الموضوع">
     <input id="lectureLink" placeholder="رابط اليوتيوب">
+    <div class="video-quality">
+      <label for="videoQuality">جودة الفيديو:</label>
+      <select id="videoQuality">
+        <option value="default">افتراضي</option>
+        <option value="hd720">HD (720p)</option>
+        <option value="hd1080">Full HD (1080p)</option>
+        <option value="highres">أعلى جودة</option>
+      </select>
+    </div>
     <button id="saveBtn">💾 حفظ</button>
     <button id="playNewBtn">▶ تشغيل مباشر</button>
     <ul id="savedLinks"></ul>
@@ -158,6 +198,8 @@ const quickLinkInput = document.getElementById('quickLink');
 const quickPlayBtn = document.getElementById('quickPlayBtn');
 const saveBtn = document.getElementById('saveBtn');
 const playNewBtn = document.getElementById('playNewBtn');
+const videoQualitySelect = document.getElementById('videoQuality');
+const quickQualitySelect = document.getElementById('quickQuality');
 
 let currentSubject = "", currentChapter = "";
 
@@ -202,7 +244,7 @@ function renderLinks(){
 
     const playBtn = document.createElement('button');
     playBtn.textContent="▶ تشغيل";
-    playBtn.addEventListener('click', ()=> playVideo(l.link));
+    playBtn.addEventListener('click', ()=> playVideo(l.link, videoQualitySelect.value));
 
     const delBtn = document.createElement('button');
     delBtn.textContent="🗑 حذف";
@@ -238,19 +280,41 @@ function deleteLink(index){
   renderLinks();
 }
 
-function playVideo(link){
+// دالة محسنة لاستخراج معرف فيديو يوتيوب من أي نوع من الروابط
+function getYouTubeId(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+// دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
+function playVideo(link, quality = 'default'){
   if(!link) return;
-  let embed = link;
-  if(link.includes("watch?v=")){
-    embed = link.replace("watch?v=","embed/");
+  
+  const videoId = getYouTubeId(link);
+  if (!videoId) {
+    alert('رابط اليوتيوب غير صحيح');
+    return;
   }
-  videoContainer.innerHTML=`<iframe src="${embed}" frameborder="0" allowfullscreen></iframe>`;
+  
+  let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  
+  // إضافة معامل الجودة إذا تم اختيارها
+  if (quality !== 'default') {
+    embedUrl += `&vq=${quality}`;
+  }
+  
+  // إضافة معلمات إضافية لتحسين الأداء
+  embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+  
+  videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 }
 
 function playNewLink(){
   const link=document.getElementById('lectureLink').value.trim();
+  const quality = videoQualitySelect.value;
   if(!link) return alert('أدخل رابط لتشغيله');
-  playVideo(link);
+  playVideo(link, quality);
 }
 
 function backToSubjects(){
@@ -263,16 +327,34 @@ function backToChapters(){
   chaptersPage.classList.remove('hidden');
 }
 
+// تشغيل سريع
 quickPlayBtn.addEventListener('click', ()=>{
   const link = quickLinkInput.value.trim();
+  const quality = quickQualitySelect.value;
   if(!link) return;
-  let embed = link.includes("watch?v=")?link.replace("watch?v=","embed/"):link;
-  document.getElementById('quickContainer').innerHTML=`<iframe src="${embed}" frameborder="0" allowfullscreen></iframe>`;
+  
+  const videoId = getYouTubeId(link);
+  if (!videoId) {
+    alert('رابط اليوتيوب غير صحيح');
+    return;
+  }
+  
+  let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  
+  // إضافة معامل الجودة إذا تم اختيارها
+  if (quality !== 'default') {
+    embedUrl += `&vq=${quality}`;
+  }
+  
+  // إضافة معلمات إضافية لتحسين الأداء
+  embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+  
+  document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 });
 
-saveBtn.addEventListener('click', saveLink);
+// زر تشغيل مباشر في صفحة المحاضرة
 playNewBtn.addEventListener('click', playNewLink);
+saveBtn.addEventListener('click', saveLink);
 </script>
-
 </body>
 </html>
