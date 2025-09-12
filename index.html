@@ -76,7 +76,7 @@ object-fit
 </head>
 <body>
   <header>
-    <img <img src="whale-logo.jpg" alt="شعار الحوت" style="width:100%; max-height:300px; object-fit:contain; display:block; margin:0 auto;">
+    <img <img src="whale-logo.jpg" alt=" style="width:100%; max-height:300px; object-fit:contain; display:block; margin:0 auto;">
     <h1>منصة علي</h1>
     <p> (هذا الموقع تم تصميمه لمساعدة الطلاب في الدراسة ترحمو لجدي فقط)</p>
   </header>
@@ -90,7 +90,168 @@ object-fit
       <button onclick="openVideo()">تشغيل</button>
       <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
     </div>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موقع المناهج - السادس العلمي</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    text-align: center;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+  }
+  h1,h2,h3 { color: #333; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    max-width: 700px;
+    margin: 20px auto;
+  }
+  .card {
+    background: #007bff;
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .card:hover { background: #0056b3; }
+  .hidden { display: none; }
+  .chapter, .link-form {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: right;
+  }
+  button {
+    padding: 10px 15px;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  input { width: 100%; margin-bottom: 10px; padding: 5px; }
+  ul { padding: 0; list-style: none; }
+  li { margin-bottom: 8px; }
+  a { color: #007bff; }
+</style>
+</head>
+<body>
 
+<h1>اختر المادة</h1>
+<div id="subjects" class="grid"></div>
+
+<div id="chaptersPage" class="hidden">
+  <h2 id="subjectTitle"></h2>
+  <div id="chapters"></div>
+  <button onclick="backToSubjects()">العودة إلى المواد</button>
+</div>
+
+<div id="linksPage" class="hidden">
+  <h3 id="chapterTitle"></h3>
+  <div class="link-form">
+    <input id="lectureName" placeholder="اسم المحاضرة">
+    <input id="topicName" placeholder="اسم الموضوع">
+    <input id="lectureLink" placeholder="رابط اليوتيوب">
+    <button onclick="saveLink()">حفظ الرابط</button>
+  </div>
+  <ul id="savedLinks"></ul>
+  <button onclick="backToChapters()">العودة إلى الفصول</button>
+</div>
+
+<script>
+  // بيانات المواد والفصول حسب طلبك
+  const subjectsData = {
+    "الرياضيات": ["الأعداد المركبة","القطوع المخروطية","تطبيقات التفاضل","التكامل","المعادلات التفاضلية الاعتيادية","الهندسة الفضائية"],
+    "الفيزياء": ["المتسعات","الحث الكهرومغناطيسي","التيار المتناوب","الموجات الكهرومغناطيسية","البصريات الفيزيائية","الفيزياء الحديثة","إلكترونيات الحالة الصلبة","الأطياف الذرية والليزر","الفيزياء النووية"],
+    "الكيمياء": ["الثرموداينمك","الاتزان الكيميائي","الاتزان الأيوني","تفاعلات التأكسد والاختزال والكيمياء الكهربائية","الكيمياء التناسقية","طرائق التحليل الكيميائي","الكيمياء العضوية للهيدروكربونات المعوضة","الكيمياء الحياتية"],
+    "الأحياء": ["الخلية","الأنسجة","التكاثر","التكوين الجنيني","الوراثة"],
+    "العربية": ["الوحدة الأولى","الوحدة الثانية"],
+    "الإنجليزية": ["Unit 1","Unit 2","Unit 3","Unit 4","Unit 5","Unit 6","Unit 7","Unit 8"],
+    "الإسلامية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة"]
+  };
+
+  const subjectsDiv = document.getElementById("subjects");
+  const chaptersPage = document.getElementById("chaptersPage");
+  const linksPage = document.getElementById("linksPage");
+  const chaptersDiv = document.getElementById("chapters");
+  const subjectTitle = document.getElementById("subjectTitle");
+  const chapterTitle = document.getElementById("chapterTitle");
+  const savedLinks = document.getElementById("savedLinks");
+
+  let currentSubject = "";
+  let currentChapter = "";
+
+  // إنشاء مربعات المواد
+  Object.keys(subjectsData).forEach(sub => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = sub;
+    card.onclick = () => openSubject(sub);
+    subjectsDiv.appendChild(card);
+  });
+
+  function openSubject(sub) {
+    currentSubject = sub;
+    subjectTitle.textContent = `المادة: ${sub}`;
+    chaptersDiv.innerHTML = "";
+    subjectsData[sub].forEach(chap => {
+      const btn = document.createElement("button");
+      btn.textContent = chap;
+      btn.onclick = () => openChapter(chap);
+      chaptersDiv.appendChild(btn);
+    });
+    subjectsDiv.classList.add("hidden");
+    chaptersPage.classList.remove("hidden");
+  }
+
+  function openChapter(chap) {
+    currentChapter = chap;
+    chapterTitle.textContent = `${currentSubject} - ${chap}`;
+    savedLinks.innerHTML = loadLinks()
+      .map(l => `<li><a href="${l.link}" target="_blank">${l.name} (${l.topic})</a></li>`)
+      .join("");
+    chaptersPage.classList.add("hidden");
+    linksPage.classList.remove("hidden");
+  }
+
+  function saveLink() {
+    const name = document.getElementById("lectureName").value;
+    const topic = document.getElementById("topicName").value;
+    const link = document.getElementById("lectureLink").value;
+    if (!name || !topic || !link) return alert("املأ جميع الحقول!");
+    const all = JSON.parse(localStorage.getItem("lectures") || "{}");
+    const key = `${currentSubject}-${currentChapter}`;
+    if (!all[key]) all[key] = [];
+    all[key].push({ name, topic, link });
+    localStorage.setItem("lectures", JSON.stringify(all));
+    document.getElementById("lectureName").value = "";
+    document.getElementById("topicName").value = "";
+    document.getElementById("lectureLink").value = "";
+    openChapter(currentChapter);
+  }
+
+  function loadLinks() {
+    const all = JSON.parse(localStorage.getItem("lectures") || "{}");
+    return all[`${currentSubject}-${currentChapter}`] || [];
+  }
+
+  function backToSubjects() {
+    chaptersPage.classList.add("hidden");
+    subjectsDiv.classList.remove("hidden");
+  }
+
+  function backToChapters() {
+    linksPage.classList.add("hidden");
+    chaptersPage.classList.remove("hidden");
+  }
+</script>
+
+</body>
+</html>
     <!-- نافذة الذكاء الاصطناعي -->
     <div class="section">
       <h2>ذكاء اصطناعي تجريبي لتصميم الجداول</h2>
