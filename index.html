@@ -11,107 +11,185 @@
     color: #fff;
     margin: 0;
     padding: 0;
+    line-height: 1.6;
   }
   header {
     background-color: #001f4d;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
+    margin-bottom: 25px;
   }
-  header h1 { color: #00ccff; margin-bottom: 5px; }
-  header p { font-size: 14px; color: #ccc; }
-  .container { max-width: 800px; margin: auto; padding: 20px; }
+  header h1 { 
+    color: #00ccff; 
+    margin-bottom: 10px;
+    font-size: 32px;
+  }
+  header p { 
+    font-size: 18px; 
+    color: #ccc; 
+    margin: 8px 0;
+  }
+  .container { 
+    max-width: 900px; 
+    margin: auto; 
+    padding: 25px; 
+  }
 
   .challenge-btn {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 15px 30px;
     background: linear-gradient(45deg,#00ccff,#007bff);
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: bold;
+    font-size: 18px;
+    margin: 15px 0;
     animation: pulse 1.5s infinite alternate;
   }
   @keyframes pulse {
     from { transform: scale(1); box-shadow:0 0 5px #00ccff; }
-    to   { transform: scale(1.05); box-shadow:0 0 15px #00ccff; }
+    to   { transform: scale(1.05); box-shadow:0 0 20px #00ccff; }
   }
 
   .quick-player {
     background: #111;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border-left: 5px solid #00ccff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    border-left: 6px solid #00ccff;
+  }
+  .quick-player h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #00ccff;
   }
 
   input {
     width: 100%;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 14px;
+    border-radius: 8px;
     border: 1px solid #00ccff;
     background: #111;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
   }
   button {
-    padding: 10px 14px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     background: #00ccff;
     color: #000;
     font-weight: bold;
-    margin-right: 5px;
+    margin: 8px;
     transition: 0.3s;
+    font-size: 16px;
   }
-  button:hover { background: #00ffdd; }
+  button:hover { 
+    background: #00ffdd; 
+    transform: translateY(-2px);
+  }
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 25px 0;
   }
   .card {
     background: linear-gradient(135deg, #007bff, #00ccff);
     color: #fff;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 30px 25px;
+    border-radius: 15px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
-    font-size: 18px;
+    font-size: 22px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .card:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   }
 
   .hidden { display: none; }
   #videoContainer iframe, #quickContainer iframe { 
     width: 100%; 
-    height: 400px; 
-    border-radius: 8px; 
-    margin-top: 15px; 
+    height: 450px; 
+    border-radius: 10px; 
+    margin-top: 20px; 
     border: none;
   }
-  ul { padding: 0; list-style: none; }
-  li { margin-bottom: 8px; }
+  ul { 
+    padding: 0; 
+    list-style: none; 
+    margin: 20px 0;
+  }
+  li { 
+    margin-bottom: 15px; 
+    padding: 15px;
+    background: #1a1a1a;
+    border-radius: 8px;
+  }
   
   .video-quality {
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
     align-items: center;
+    margin-bottom: 15px;
   }
   .video-quality label {
-    margin-right: 10px;
+    margin-right: 15px;
+    font-size: 16px;
   }
   .video-quality select {
     background: #111;
     color: #fff;
-    padding: 5px;
-    border-radius: 4px;
+    padding: 10px;
+    border-radius: 6px;
     border: 1px solid #00ccff;
+    font-size: 16px;
+  }
+  
+  h2 {
+    font-size: 28px;
+    color: #00ccff;
+    margin: 25px 0 15px 0;
+  }
+  
+  h3 {
+    font-size: 24px;
+    margin: 20px 0;
+  }
+  
+  .chapter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  .chapter-buttons button {
+    flex: 1;
+    min-width: 200px;
+    padding: 16px;
+  }
+  
+  .back-button {
+    background: #333;
+    color: white;
+    margin-top: 20px;
+    padding: 12px 25px;
+  }
+  
+  .back-button:hover {
+    background: #555;
   }
 </style>
 </head>
@@ -149,8 +227,8 @@
   <!-- صفحة الفصول -->
   <div id="chaptersPage" class="hidden">
     <h3 id="subjectTitle"></h3>
-    <div id="chapters"></div>
-    <button onclick="backToSubjects()">⬅ العودة للمواد</button>
+    <div id="chapters" class="chapter-buttons"></div>
+    <button class="back-button" onclick="backToSubjects()">⬅ العودة للمواد</button>
   </div>
 
   <!-- صفحة الروابط -->
@@ -168,11 +246,13 @@
         <option value="highres">أعلى جودة</option>
       </select>
     </div>
-    <button id="saveBtn">💾 حفظ</button>
-    <button id="playNewBtn">▶ تشغيل مباشر</button>
+    <div>
+      <button id="saveBtn">💾 حفظ</button>
+      <button id="playNewBtn">▶ تشغيل مباشر</button>
+    </div>
     <ul id="savedLinks"></ul>
     <div id="videoContainer"></div>
-    <button onclick="backToChapters()">⬅ العودة للفصول</button>
+    <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
   </div>
 </div>
 
@@ -240,7 +320,7 @@ function renderLinks(){
   savedLinks.innerHTML="";
   links.forEach((l,i)=>{
     const li=document.createElement('li');
-    li.textContent=`${l.name} (${l.topic}) `;
+    li.innerHTML=`<strong>${l.name}</strong> - ${l.topic}`;
 
     const playBtn = document.createElement('button');
     playBtn.textContent="▶ تشغيل";
