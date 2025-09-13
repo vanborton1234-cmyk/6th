@@ -440,6 +440,125 @@
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
   }
   
+  /* قسم البحث في يوتيوب */
+  .youtube-search {
+    background: linear-gradient(135deg, #111 0%, #222 100%);
+    padding: 35px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+    border-left: 8px solid #ff0000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  .youtube-search h3 {
+    font-size: 32px;
+    color: #ff0000;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  
+  .search-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .search-container button {
+    margin: 0;
+    padding: 15px 25px;
+  }
+  
+  .search-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .search-result {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .search-result:hover {
+    transform: translateY(-5px);
+  }
+  
+  .result-thumbnail {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+  }
+  
+  .result-info {
+    padding: 15px;
+  }
+  
+  .result-title {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .result-channel {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+  }
+  
+  .result-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .result-actions button {
+    padding: 8px 15px;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .api-key-section {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  
+  .api-key-section p {
+    margin-bottom: 10px;
+    color: #aaa;
+    font-size: 14px;
+  }
+  
+  .api-key-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .api-key-input input {
+    flex: 1;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+  
+  .api-key-input button {
+    margin: 0;
+    padding: 10px 15px;
+    font-size: 16px;
+  }
+  
   @media (max-width: 768px) {
     .container {
       padding: 15px;
@@ -491,6 +610,18 @@
       padding: 12px 20px;
       font-size: 16px;
     }
+    
+    .search-container {
+      flex-direction: column;
+    }
+    
+    .search-results {
+      grid-template-columns: 1fr;
+    }
+    
+    .api-key-input {
+      flex-direction: column;
+    }
   }
 </style>
 </head>
@@ -504,6 +635,27 @@
       <a class="challenge-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
     </div>
   </header>
+
+  <!-- قسم البحث في يوتيوب -->
+  <div class="youtube-search">
+    <h3><i class="fab fa-youtube"></i> بحث في يوتيوب</h3>
+    <div class="search-container">
+      <input id="searchInput" placeholder="ابحث عن فيديوهات أو قوائم تشغيل...">
+      <button id="searchBtn"><i class="fas fa-search"></i> بحث</button>
+    </div>
+    
+    <div class="api-key-section">
+      <p>للبحث في يوتيوب، تحتاج إلى مفتاح YouTube API. <a href="https://console.cloud.google.com/" target="_blank" style="color: #00ccff;">احصل على مفتاح من هنا</a></p>
+      <div class="api-key-input">
+        <input id="apiKeyInput" placeholder="أدخل مفتاح YouTube API هنا" type="password">
+        <button id="saveApiKeyBtn">حفظ المفتاح</button>
+      </div>
+    </div>
+    
+    <div class="search-results" id="searchResults">
+      <!-- سيتم عرض نتائج البحث هنا -->
+    </div>
+  </div>
 
   <!-- تشغيل سريع -->
   <div class="quick-player">
@@ -585,6 +737,7 @@ const subjectsData = {
   "اللغة الإنجليزية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة","الوحدة السادسة","الوحدة السابعة","الوحدة الثامنة"]
 };
 
+// العناصر في DOM
 const subjectsDiv = document.getElementById('subjects');
 const chaptersPage = document.getElementById('chaptersPage');
 const linksPage = document.getElementById('linksPage');
@@ -600,8 +753,19 @@ const playNewBtn = document.getElementById('playNewBtn');
 const videoQualitySelect = document.getElementById('videoQuality');
 const quickQualitySelect = document.getElementById('quickQuality');
 const playlistContainer = document.getElementById('playlistContainer');
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const searchResults = document.getElementById('searchResults');
+const apiKeyInput = document.getElementById('apiKeyInput');
+const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
 
 let currentSubject = "", currentChapter = "";
+let youtubeApiKey = localStorage.getItem('youtubeApiKey') || '';
+
+// تهيئة واجهة المستخدم
+if (apiKeyInput) {
+  apiKeyInput.value = youtubeApiKey;
+}
 
 // إنشاء مربعات المواد
 Object.keys(subjectsData).forEach(sub=>{
@@ -781,6 +945,91 @@ quickPlayBtn.addEventListener('click', ()=>{
 // زر تشغيل مباشر في صفحة المحاضرة
 playNewBtn.addEventListener('click', playNewLink);
 saveBtn.addEventListener('click', saveLink);
+
+// البحث في يوتيوب
+saveApiKeyBtn.addEventListener('click', () => {
+  const apiKey = apiKeyInput.value.trim();
+  if (apiKey) {
+    localStorage.setItem('youtubeApiKey', apiKey);
+    youtubeApiKey = apiKey;
+    alert('تم حفظ مفتاح YouTube API بنجاح!');
+  } else {
+    alert('يرجى إدخال مفتاح YouTube API صالح');
+  }
+});
+
+searchBtn.addEventListener('click', searchYouTube);
+searchInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    searchYouTube();
+  }
+});
+
+async function searchYouTube() {
+  const query = searchInput.value.trim();
+  if (!query) {
+    alert('يرجى إدخال كلمة بحث');
+    return;
+  }
+  
+  if (!youtubeApiKey) {
+    alert('يرجى إدخال مفتاح YouTube API أولاً');
+    return;
+  }
+  
+  try {
+    searchResults.innerHTML = '<div style="text-align: center; padding: 20px; color: #aaa;"><i class="fas fa-spinner fa-spin"></i> جاري البحث...</div>';
+    
+    const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=12&q=${encodeURIComponent(query)}&type=video&key=${youtubeApiKey}`);
+    const data = await response.json();
+    
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+    
+    displaySearchResults(data.items);
+  } catch (error) {
+    console.error('Error searching YouTube:', error);
+    searchResults.innerHTML = `<div style="text-align: center; padding: 20px; color: #ff6b6b;">خطأ في البحث: ${error.message}</div>`;
+  }
+}
+
+function displaySearchResults(videos) {
+  if (!videos || videos.length === 0) {
+    searchResults.innerHTML = '<div style="text-align: center; padding: 20px; color: #aaa;">لم يتم العثور على نتائج</div>';
+    return;
+  }
+  
+  searchResults.innerHTML = '';
+  
+  videos.forEach(video => {
+    const videoId = video.id.videoId;
+    const thumbnail = video.snippet.thumbnails.medium.url;
+    const title = video.snippet.title;
+    const channel = video.snippet.channelTitle;
+    
+    const resultElement = document.createElement('div');
+    resultElement.className = 'search-result';
+    resultElement.innerHTML = `
+      <div class="result-thumbnail" style="background-image: url('${thumbnail}')" onclick="playVideo('https://www.youtube.com/watch?v=${videoId}')"></div>
+      <div class="result-info">
+        <div class="result-title">${title}</div>
+        <div class="result-channel">${channel}</div>
+        <div class="result-actions">
+          <button onclick="playVideo('https://www.youtube.com/watch?v=${videoId}')">▶ تشغيل</button>
+          <button onclick="addToQuickPlayer('https://www.youtube.com/watch?v=${videoId}')">➕ إضافة</button>
+        </div>
+      </div>
+    `;
+    
+    searchResults.appendChild(resultElement);
+  });
+}
+
+function addToQuickPlayer(url) {
+  quickLinkInput.value = url;
+  alert('تم إضافة الفيديو إلى مشغل الفيديو السريع');
+}
 </script>
 </body>
 </html>
