@@ -739,48 +739,7 @@ saveBtn.addEventListener('click', saveLink);
   background-color: #444;
 }
 </style>
-.floating-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #6bff8d, #38ff5c);
-  color: white;
-  text-decoration: none;
-  border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(107, 255, 141, 0.4);
-  transition: all 0.3s ease;
-  animation: floating 3s ease-in-out infinite;
-  font-weight: bold;
-  gap: 8px;
-}
 
-.floating-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(107, 255, 141, 0.6);
-}
-
-@keyframes floating {
-  0%, 100% { 
-    transform: translateY(0); 
-  }
-  50% { 
-    transform: translateY(-10px); 
-  }
-}
-
-/* تصميم متجاوب للهواتف */
-@media (max-width: 768px) {
-  .floating-btn-container {
-    bottom: 20px;
-    left: 20px;
-  }
-  
-  .floating-btn {
-    padding: 10px 16px;
-    font-size: 14px;
-  }
-}
   <div>
 <a class="developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور: علي يوسف</a>
   </div>
