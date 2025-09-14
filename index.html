@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +8,28 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <style>
+        :root {
+            --primary-color: #00ccff;
+            --secondary-color: #007bff;
+            --dark-bg: #0b0b0b;
+            --card-bg: linear-gradient(135deg, #007bff, #00aaff);
+            --header-bg: linear-gradient(135deg, #001f4d 0%, #003580 100%);
+            --text-color: #fff;
+            --card-hover: linear-gradient(135deg, #00aaff, #00ccff);
+            --success-color: #38ff5c;
+            --warning-color: #ffcc00;
+        }
+        
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0b0b0b 0%, #1a1a1a 100%);
-            color: #fff;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
+            color: var(--text-color);
             line-height: 1.8;
             padding: 20px;
             min-height: 100vh;
@@ -33,13 +45,13 @@
         }
         
         header {
-            background: linear-gradient(135deg, #001f4d 0%, #003580 100%);
+            background: var(--header-bg);
             padding: 35px;
             text-align: center;
             border-radius: 18px;
             margin-bottom: 35px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid #00ccff;
+            border: 1px solid var(--primary-color);
             animation: float 6s ease-in-out infinite;
         }
         
@@ -49,7 +61,7 @@
         }
         
         header h1 {
-            color: #00ccff;
+            color: var(--primary-color);
             font-size: 42px;
             margin-bottom: 15px;
             text-shadow: 0 2px 10px rgba(0, 204, 255, 0.5);
@@ -61,11 +73,11 @@
             margin: 12px 0;
         }
         
-        .developer-btn {
+        .developer-btn, .challenge-btn {
             display: inline-block;
             padding: 15px 30px;
-            background: linear-gradient(45deg, #00ccff, #007bff);
-            color: #fff;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
             border-radius: 14px;
             text-decoration: none;
             font-weight: bold;
@@ -74,30 +86,11 @@
             animation: pulse 1.8s infinite alternate, float 4s ease-in-out infinite;
             box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
         }
         
-        .developer-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.6);
-            animation: pulse 1.8s infinite alternate, float 3s ease-in-out infinite;
-        }
-        
-        .challenge-btn {
-            display: inline-block;
-            padding: 20px 40px;
-            background: linear-gradient(45deg, #00ccff, #007bff);
-            color: #fff;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 22px;
-            margin: 25px 5px 10px 5px;
-            animation: pulse 1.8s infinite alternate, float 4s ease-in-out infinite;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-        
-        .challenge-btn:hover {
+        .developer-btn:hover, .challenge-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 123, 255, 0.6);
             animation: pulse 1.8s infinite alternate, float 3s ease-in-out infinite;
@@ -106,11 +99,11 @@
         @keyframes pulse {
             from {
                 transform: scale(1);
-                box-shadow: 0 0 10px #00ccff;
+                box-shadow: 0 0 10px var(--primary-color);
             }
             to {
                 transform: scale(1.08);
-                box-shadow: 0 0 25px #00ccff;
+                box-shadow: 0 0 25px var(--primary-color);
             }
         }
         
@@ -119,7 +112,7 @@
             padding: 35px;
             border-radius: 18px;
             margin-bottom: 40px;
-            border-left: 8px solid #00ccff;
+            border-left: 8px solid var(--primary-color);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             animation: float 5s ease-in-out infinite;
         }
@@ -127,24 +120,24 @@
         .quick-player h3 {
             margin-top: 0;
             font-size: 32px;
-            color: #00ccff;
+            color: var(--primary-color);
             margin-bottom: 25px;
             text-align: center;
         }
         
-        input {
+        input, select {
             width: 100%;
             padding: 20px;
             border-radius: 12px;
-            border: 2px solid #00ccff;
+            border: 2px solid var(--primary-color);
             background: #222;
-            color: #fff;
+            color: var(--text-color);
             margin-bottom: 20px;
             font-size: 20px;
             transition: all 0.3s ease;
         }
         
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #00ffdd;
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
@@ -160,7 +153,7 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            background: linear-gradient(45deg, #00ccff, #00aaff);
+            background: linear-gradient(45deg, var(--primary-color), #00aaff);
             color: #000;
             font-weight: bold;
             margin: 15px;
@@ -171,7 +164,7 @@
         }
         
         button:hover {
-            background: linear-gradient(45deg, #00ffdd, #00ccff);
+            background: linear-gradient(45deg, #00ffdd, var(--primary-color));
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 204, 255, 0.5);
             animation: float 3s ease-in-out infinite;
@@ -185,8 +178,8 @@
         }
         
         .card {
-            background: linear-gradient(135deg, #007bff, #00aaff);
-            color: #fff;
+            background: var(--card-bg);
+            color: var(--text-color);
             padding: 40px 30px;
             border-radius: 18px;
             font-weight: bold;
@@ -206,7 +199,7 @@
         .card:hover {
             transform: scale(1.05) translateY(-10px);
             box-shadow: 0 15px 35px rgba(0, 123, 255, 0.5);
-            background: linear-gradient(135deg, #00aaff, #00ccff);
+            background: var(--card-hover);
             animation: float 4s ease-in-out infinite;
         }
         
@@ -235,7 +228,7 @@
             padding: 25px;
             background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
             border-radius: 15px;
-            border-left: 5px solid #00ccff;
+            border-left: 5px solid var(--primary-color);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: space-between;
@@ -245,7 +238,7 @@
         
         li strong {
             font-size: 22px;
-            color: #00ccff;
+            color: var(--primary-color);
         }
         
         .video-quality {
@@ -263,22 +256,22 @@
         .video-quality label {
             margin-right: 20px;
             font-size: 22px;
-            color: #00ccff;
+            color: var(--primary-color);
         }
         
         .video-quality select {
             background: #222;
-            color: #fff;
+            color: var(--text-color);
             padding: 15px;
             border-radius: 10px;
-            border: 2px solid #00ccff;
+            border: 2px solid var(--primary-color);
             font-size: 18px;
             min-width: 200px;
         }
         
         h2 {
             font-size: 36px;
-            color: #00ccff;
+            color: var(--primary-color);
             margin: 30px 0 20px 0;
             text-align: center;
             text-shadow: 0 2px 5px rgba(0, 204, 255, 0.3);
@@ -363,7 +356,7 @@
         
         .video-title {
             font-size: 18px;
-            color: #00ccff;
+            color: var(--primary-color);
             flex: 1;
         }
         
@@ -426,8 +419,8 @@
             margin: 30px auto 10px;
             width: fit-content;
             text-align: center;
-            background: linear-gradient(45deg, #00ccff, #007bff);
-            color: #fff;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
             padding: 15px 30px;
             border-radius: 14px;
             text-decoration: none;
@@ -445,7 +438,7 @@
         .loading {
             text-align: center;
             padding: 20px;
-            color: #00ccff;
+            color: var(--primary-color);
             font-size: 20px;
         }
         
@@ -456,6 +449,61 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        /* مدة الحفظ */
+        .save-duration {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .save-duration label {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .save-duration select {
+            width: auto;
+            min-width: 150px;
+            display: inline-block;
+        }
+        
+        .time-remaining {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .time-remaining.forever {
+            background-color: var(--success-color);
+            color: #000;
+        }
+        
+        .time-remaining.normal {
+            background-color: var(--primary-color);
+            color: #000;
+        }
+        
+        .time-remaining.warning {
+            background-color: var(--warning-color);
+            color: #000;
+        }
+        
+        .time-remaining.expired {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        /* تحسينات الأداء */
+        .will-animate {
+            will-change: transform, opacity;
+        }
+        
+        .optimized-image {
+            content-visibility: auto;
         }
         
         @media (max-width: 768px) {
@@ -509,6 +557,16 @@
                 padding: 12px 20px;
                 font-size: 16px;
             }
+            
+            .save-duration {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .save-duration label {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -536,8 +594,19 @@
                 <option value="highres">أعلى جودة</option>
             </select>
         </div>
+        <div class="save-duration">
+            <label for="quickSaveDuration">مدة الحفظ:</label>
+            <select id="quickSaveDuration">
+                <option value="1">يوم واحد</option>
+                <option value="7">أسبوع واحد</option>
+                <option value="30">شهر واحد</option>
+                <option value="365">سنة واحدة</option>
+                <option value="forever">إلى الأبد</option>
+            </select>
+        </div>
         <div style="text-align: center;">
-            <button id="quickPlayBtn">تشغيل</button>
+            <button id="quickPlayBtn">▶ تشغيل</button>
+            <button id="quickSaveBtn">💾 حفظ للاحقاً</button>
         </div>
         <div id="quickContainer"></div>
     </div>
@@ -565,6 +634,16 @@
                 <option value="hd720">HD (720p)</option>
                 <option value="hd1080">Full HD (1080p)</option>
                 <option value="highres">أعلى جودة</option>
+            </select>
+        </div>
+        <div class="save-duration">
+            <label for="saveDuration">مدة الحفظ:</label>
+            <select id="saveDuration">
+                <option value="1">يوم واحد</option>
+                <option value="7">أسبوع واحد</option>
+                <option value="30">شهر واحد</option>
+                <option value="365">سنة واحدة</option>
+                <option value="forever">إلى الأبد</option>
             </select>
         </div>
         <div class="action-buttons">
@@ -600,7 +679,7 @@
 const subjectsData = {
     "الرياضيات": ["الأعداد المركبة","القطوع المخروطية","تطبيقات التفاضل","التكامل","المعادلات التفاضلية الاعتيادية","الهندسة الفضائية"],
     "الفيزياء": ["المتسعات","الحث الكهرومغناطيسي","التيار المتناوب","الموجات الكهرومغناطيسية","البصريات الفيزيائية","الفيزياء الحديثة","إلكترونيات الحالة الصلبة","الأطياف الذرية والليزر","الفيزياء النووية"],
-    "الكيمياء": ["الثرموداينمك","الاتزان الكيميائي","الاتزان الأيوني","تفاعلات التأكسد والاختزال والكيمياء الكهربائية","الكимياء التناسقية","طرائق التحليل الكيميائي","الكيمياء العضوية للهيدروكربونات المعوضة","الكيمياء الحياتية"],
+    "الكيمياء": ["الثرموداينمك","الاتزان الكيميائي","الاتزان الأيوني","تفاعلات التأكسد والاختزال والكيمياء الكهربائية","الكيمياء التناسقية","طرائق التحليل الكيميائي","الكيمياء العضوية للهيدروكربونات المعوضة","الكيمياء الحياتية"],
     "الأحياء": ["الخلية","الأنسجة","التكاثر","التكوين الجنيني","الوراثة"],
     "الإسلامية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة"],
     "العربي": ["الوحدة الأولى (مواضيع متعددة)","الوحدة الثانية (مواضيع متعددة)"],
@@ -609,12 +688,13 @@ const subjectsData = {
 
 // تهيئة Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDEXAMPLEEXAMPLEEXAMPLEEXAMPLEEXAMPLE",
-    authDomain: "tajalli-academy.firebaseapp.com",
-    projectId: "tajalli-academy",
-    storageBucket: "tajalli-academy.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcd1234example5678"
+    // إضافة معلومات التهيئة الخاصة بك هنا
+    apiKey: "YOUR_API_KEY",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "YOUR_APP_ID"
 };
 
 // تهيئة Firebase
@@ -632,51 +712,112 @@ const savedLinks = document.getElementById('savedLinks');
 const videoContainer = document.getElementById('videoContainer');
 const quickLinkInput = document.getElementById('quickLink');
 const quickPlayBtn = document.getElementById('quickPlayBtn');
+const quickSaveBtn = document.getElementById('quickSaveBtn');
 const saveBtn = document.getElementById('saveBtn');
 const playNewBtn = document.getElementById('playNewBtn');
 const videoQualitySelect = document.getElementById('videoQuality');
 const quickQualitySelect = document.getElementById('quickQuality');
+const saveDurationSelect = document.getElementById('saveDuration');
+const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
 const playlistContainer = document.getElementById('playlistContainer');
 const loadingIndicator = document.getElementById('loadingIndicator');
 
 let currentSubject = "", currentChapter = "";
 
-// إنشاء مربعات المواد
-Object.keys(subjectsData).forEach(sub=>{
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.textContent = sub;
-    card.addEventListener('click', ()=> openSubject(sub));
-    subjectsDiv.appendChild(card);
-});
+// تحسين الأداء: التخزين المحلي للبيانات
+const cache = {
+    set: (key, data, ttl = 300000) => {
+        const item = {
+            data: data,
+            expiry: Date.now() + ttl
+        };
+        localStorage.setItem(key, JSON.stringify(item));
+    },
+    get: (key) => {
+        const itemStr = localStorage.getItem(key);
+        if (!itemStr) return null;
+        
+        const item = JSON.parse(itemStr);
+        if (Date.now() > item.expiry) {
+            localStorage.removeItem(key);
+            return null;
+        }
+        return item.data;
+    }
+};
+
+// إنشاء مربعات المواد مع تحسين الأداء
+function renderSubjects() {
+    const cached = cache.get('subjects');
+    if (cached) {
+        subjectsDiv.innerHTML = cached;
+        attachSubjectEvents();
+        return;
+    }
+
+    let html = '';
+    Object.keys(subjectsData).forEach(sub => {
+        html += `<div class="card will-animate" data-subject="${sub}">${sub}</div>`;
+    });
+    
+    subjectsDiv.innerHTML = html;
+    cache.set('subjects', html);
+    attachSubjectEvents();
+}
+
+function attachSubjectEvents() {
+    document.querySelectorAll('.card[data-subject]').forEach(card => {
+        card.addEventListener('click', () => {
+            openSubject(card.dataset.subject);
+        });
+    });
+}
 
 function openSubject(sub){
-    currentSubject=sub;
-    subjectTitle.textContent=`المادة: ${sub}`;
-    chaptersDiv.innerHTML="";
-    subjectsData[sub].forEach(chap=>{
-        const btn=document.createElement('button');
-        btn.textContent=chap;
-        btn.addEventListener('click', ()=> openChapter(chap));
+    currentSubject = sub;
+    subjectTitle.textContent = `المادة: ${sub}`;
+    chaptersDiv.innerHTML = "";
+    
+    subjectsData[sub].forEach(chap => {
+        const btn = document.createElement('button');
+        btn.textContent = chap;
+        btn.className = 'will-animate';
+        btn.addEventListener('click', () => openChapter(chap));
         chaptersDiv.appendChild(btn);
     });
+    
     subjectsDiv.classList.add('hidden');
     chaptersPage.classList.remove('hidden');
+    
+    // حفظ حالة التصفح
+    saveNavigationState();
 }
 
 function openChapter(chap){
-    currentChapter=chap;
-    chapterTitle.textContent=`${currentSubject} - ${chap}`;
+    currentChapter = chap;
+    chapterTitle.textContent = `${currentSubject} - ${chap}`;
     
     // إظهار مؤشر التحميل
     loadingIndicator.style.display = 'block';
     savedLinks.innerHTML = '';
     
-    // تحميل المحاضرات من Firebase
+    // محاولة تحميل من الذاكرة المؤقتة أولاً
+    const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
+    const cached = cache.get(cacheKey);
+    
+    if (cached) {
+        renderLinksList(cached);
+        loadingIndicator.style.display = 'none';
+    }
+    
+    // ثم تحميل من Firebase
     loadLinksForAll();
     
     chaptersPage.classList.add('hidden');
     linksPage.classList.remove('hidden');
+    
+    // حفظ حالة التصفح
+    saveNavigationState();
 }
 
 // دالة محسنة لتحميل المحاضرات من Firebase للجميع
@@ -691,14 +832,47 @@ async function loadLinksForAll() {
         const links = [];
         snapshot.forEach(doc => {
             const data = doc.data();
+            // حساب الوقت المتبقي
+            let timeRemaining = "غير محدد";
+            let statusClass = "forever";
+            
+            if (data.expiry) {
+                const now = Date.now();
+                const expiryTime = data.expiry.toDate().getTime();
+                const remainingTime = expiryTime - now;
+                
+                if (remainingTime > 0) {
+                    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    
+                    if (days > 0) {
+                        timeRemaining = `متبقي ${days} يوم و${hours} ساعة`;
+                    } else {
+                        timeRemaining = `متبقي ${hours} ساعة`;
+                    }
+                    
+                    statusClass = days < 2 ? "warning" : "normal";
+                } else {
+                    timeRemaining = "انتهت المدة";
+                    statusClass = "expired";
+                }
+            }
+            
             links.push({
                 id: doc.id,
                 name: data.name,
                 topic: data.topic,
                 link: data.link,
-                timestamp: data.timestamp
+                timestamp: data.timestamp,
+                expiry: data.expiry,
+                timeRemaining: timeRemaining,
+                statusClass: statusClass
             });
         });
+        
+        // حفظ في الذاكرة المؤقتة
+        const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
+        cache.set(cacheKey, links);
         
         // إخفاء مؤشر التحميل وعرض المحاضرات
         loadingIndicator.style.display = 'none';
@@ -715,6 +889,7 @@ async function saveLinkForAll() {
     const name = document.getElementById('lectureName').value.trim();
     const topic = document.getElementById('topicName').value.trim();
     const link = document.getElementById('lectureLink').value.trim();
+    const duration = document.getElementById('saveDuration').value;
     
     if(!name || !topic || !link) {
         alert('املأ جميع الحقول!');
@@ -728,15 +903,29 @@ async function saveLinkForAll() {
         return;
     }
     
+    // حساب وقت الانتهاء
+    let expiryDate = null;
+    if (duration !== 'forever') {
+        const days = parseInt(duration);
+        expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + days);
+    }
+    
     try {
-        await db.collection('lectures').add({
+        const lectureData = {
             subject: currentSubject,
             chapter: currentChapter,
             name: name,
             topic: topic,
             link: link,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        };
+        
+        if (expiryDate) {
+            lectureData.expiry = firebase.firestore.Timestamp.fromDate(expiryDate);
+        }
+        
+        await db.collection('lectures').add(lectureData);
         
         alert('تم رفع المحاضرة للجميع بنجاح!');
         document.getElementById('lectureName').value = "";
@@ -751,11 +940,49 @@ async function saveLinkForAll() {
     }
 }
 
+// حفظ رابط سريع محلياً
+function saveQuickLink() {
+    const link = quickLinkInput.value.trim();
+    const duration = quickSaveDurationSelect.value;
+    
+    if (!link) return alert('أدخل رابط اليوتيوب أولاً');
+    
+    const videoId = getYouTubeId(link);
+    if (!videoId) return alert('رابط اليوتيوب غير صحيح');
+    
+    // حساب وقت الانتهاء
+    let expiryDate = null;
+    if (duration !== 'forever') {
+        const days = parseInt(duration);
+        expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + days);
+    }
+    
+    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
+    quickSaves.push({
+        link: link,
+        timestamp: Date.now(),
+        expiry: expiryDate ? expiryDate.getTime() : null
+    });
+    
+    localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
+    alert('تم حفظ الرابط محلياً بنجاح!');
+}
+
 // دالة حذف المحاضرة من Firebase
 async function deleteLink(id) {
     if(confirm('هل أنت متأكد من أنك تريد حذف هذه المحاضرة؟')) {
         try {
             await db.collection('lectures').doc(id).delete();
+            
+            // تحديث الذاكرة المؤقتة
+            const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
+            const cached = cache.get(cacheKey);
+            if (cached) {
+                const updated = cached.filter(item => item.id !== id);
+                cache.set(cacheKey, updated);
+            }
+            
             loadLinksForAll(); // إعادة تحميل المحاضرات
         } catch (error) {
             console.error('Error deleting video:', error);
@@ -778,14 +1005,15 @@ function renderLinksList(links) {
         const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
         
         const li = document.createElement('li');
-        li.className = 'video-item';
+        li.className = 'video-item will-animate';
         
         li.innerHTML = `
-            <div class="video-thumbnail" style="background-image: url('${thumbnailUrl}')" 
+            <div class="video-thumbnail optimized-image" style="background-image: url('${thumbnailUrl}')" 
                  onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')"></div>
             <div class="video-info">
                 <div class="video-title">
                     <strong>${l.name}</strong> - ${l.topic}
+                    ${l.timeRemaining ? `<div class="time-remaining ${l.statusClass}">${l.timeRemaining}</div>` : ''}
                 </div>
                 <div class="video-actions">
                     <button onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')">▶ تشغيل</button>
@@ -833,7 +1061,7 @@ function playVideo(link, quality = 'default'){
 }
 
 function playNewLink(){
-    const link=document.getElementById('lectureLink').value.trim();
+    const link = document.getElementById('lectureLink').value.trim();
     const quality = videoQualitySelect.value;
     if(!link) return alert('أدخل رابط لتشغيله');
     playVideo(link, quality);
@@ -842,11 +1070,40 @@ function playNewLink(){
 function backToSubjects(){
     chaptersPage.classList.add('hidden');
     subjectsDiv.classList.remove('hidden');
+    saveNavigationState();
 }
 
 function backToChapters(){
     linksPage.classList.add('hidden');
     chaptersPage.classList.remove('hidden');
+    saveNavigationState();
+}
+
+// حفظ حالة التصفح
+function saveNavigationState() {
+    const state = {
+        currentSubject: currentSubject,
+        currentChapter: currentChapter,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('navigationState', JSON.stringify(state));
+}
+
+// استعادة حالة التصفح
+function restoreNavigationState() {
+    const stateStr = localStorage.getItem('navigationState');
+    if (!stateStr) return;
+    
+    const state = JSON.parse(stateStr);
+    // إذا مر أقل من 30 دقيقة على حفظ الحالة
+    if (Date.now() - state.timestamp < 1800000) {
+        if (state.currentSubject && state.currentChapter) {
+            openSubject(state.currentSubject);
+            setTimeout(() => openChapter(state.currentChapter), 100);
+        } else if (state.currentSubject) {
+            openSubject(state.currentSubject);
+        }
+    }
 }
 
 // تشغيل سريع
@@ -877,6 +1134,36 @@ quickPlayBtn.addEventListener('click', ()=>{
 // ربط الأحداث
 playNewBtn.addEventListener('click', playNewLink);
 saveBtn.addEventListener('click', saveLinkForAll);
+quickSaveBtn.addEventListener('click', saveQuickLink);
+
+// تهيئة التطبيق عند التحميل
+document.addEventListener('DOMContentLoaded', () => {
+    renderSubjects();
+    restoreNavigationState();
+    
+    // تنظيف المحاضرات المنتهية الصلاحية كل ساعة
+    setInterval(cleanExpiredLectures, 3600000);
+});
+
+// تنظيف المحاضرات المنتهية الصلاحية
+async function cleanExpiredLectures() {
+    try {
+        const now = firebase.firestore.Timestamp.now();
+        const expiredLectures = await db.collection('lectures')
+            .where('expiry', '<=', now)
+            .get();
+        
+        const deletePromises = [];
+        expiredLectures.forEach(doc => {
+            deletePromises.push(doc.ref.delete());
+        });
+        
+        await Promise.all(deletePromises);
+        console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
+    } catch (error) {
+        console.error('Error cleaning expired lectures:', error);
+    }
+}
 </script>
 </body>
 </html>
