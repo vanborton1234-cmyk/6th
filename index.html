@@ -506,6 +506,55 @@
             content-visibility: auto;
         }
         
+        /* صفحة العروض المحفوظة محلياً */
+        #localSavesPage {
+            padding: 20px;
+        }
+        
+        .local-save-item {
+            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        .local-save-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .local-save-link {
+            color: var(--primary-color);
+            word-break: break-all;
+            font-size: 18px;
+        }
+        
+        .local-save-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .local-save-details {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+        }
+        
+        .empty-state i {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -567,6 +616,17 @@
             .save-duration label {
                 margin-bottom: 10px;
             }
+            
+            .local-save-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .local-save-actions {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
@@ -578,6 +638,7 @@
         <p>هذا الموقع تم تصميمه لمساعدة الطلاب</p>
         <div>
             <a class="challenge-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
+            <button class="developer-btn" onclick="showLocalSaves()">📁 العروض المحفوظة</button>
         </div>
     </header>
 
@@ -662,6 +723,17 @@
         <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
     </div>
     
+    <!-- صفحة العروض المحفوظة محلياً -->
+    <div id="localSavesPage" class="hidden">
+        <h2>العروض المحفوظة محلياً</h2>
+        <div id="localSavesList">
+            <div class="loading">
+                <i class="fas fa-spinner"></i> جاري تحميل العروض المحفوظة...
+            </div>
+        </div>
+        <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسية</button>
+    </div>
+    
     <!-- زر المطور في الأسفل -->
     <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور: علي يوسف</a>
 </div>
@@ -688,13 +760,12 @@ const subjectsData = {
 
 // تهيئة Firebase
 const firebaseConfig = {
-    // إضافة معلومات التهيئة الخاصة بك هنا
-    apiKey: "YOUR_API_KEY",
-    authDomain: "your-project.firebaseapp.com",
-    projectId: "your-project",
-    storageBucket: "your-project.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
+    authDomain: "project-e1da3.firebaseapp.com",
+    projectId: "project-e1da3",
+    storageBucket: "project-e1da3.firebasestorage.app",
+    messagingSenderId: "560086523718",
+    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47"
 };
 
 // تهيئة Firebase
@@ -705,6 +776,8 @@ const db = firebase.firestore();
 const subjectsDiv = document.getElementById('subjects');
 const chaptersPage = document.getElementById('chaptersPage');
 const linksPage = document.getElementById('linksPage');
+const localSavesPage = document.getElementById('localSavesPage');
+const localSavesList = document.getElementById('localSavesList');
 const chaptersDiv = document.getElementById('chapters');
 const subjectTitle = document.getElementById('subjectTitle');
 const chapterTitle = document.getElementById('chapterTitle');
@@ -962,7 +1035,8 @@ function saveQuickLink() {
     quickSaves.push({
         link: link,
         timestamp: Date.now(),
-        expiry: expiryDate ? expiryDate.getTime() : null
+        expiry: expiryDate ? expiryDate.getTime() : null,
+        duration: duration
     });
     
     localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
@@ -1079,6 +1153,11 @@ function backToChapters(){
     saveNavigationState();
 }
 
+function backToMain(){
+    localSavesPage.classList.add('hidden');
+    subjectsDiv.classList.remove('hidden');
+}
+
 // حفظ حالة التصفح
 function saveNavigationState() {
     const state = {
@@ -1130,6 +1209,86 @@ quickPlayBtn.addEventListener('click', ()=>{
     
     document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 });
+
+// عرض العروض المحفوظة محلياً
+function showLocalSaves() {
+    subjectsDiv.classList.add('hidden');
+    chaptersPage.classList.add('hidden');
+    linksPage.classList.add('hidden');
+    localSavesPage.classList.remove('hidden');
+    
+    loadLocalSaves();
+}
+
+// تحميل العروض المحفوظة محلياً
+function loadLocalSaves() {
+    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
+    
+    if (quickSaves.length === 0) {
+        localSavesList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>لا توجد عروض محفوظة</h3>
+                <p>لم تقم بحفظ أي عروض محلياً بعد</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    quickSaves.forEach((save, index) => {
+        const videoId = getYouTubeId(save.link);
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+        const saveDate = new Date(save.timestamp).toLocaleDateString('ar-SA');
+        
+        // حساب الوقت المتبقي إن وجد
+        let timeInfo = '';
+        if (save.expiry) {
+            const now = Date.now();
+            const remainingTime = save.expiry - now;
+            
+            if (remainingTime > 0) {
+                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                timeInfo = `<div class="local-save-details">تنتهي بعد: ${days} يوم و${hours} ساعة</div>`;
+            } else {
+                timeInfo = '<div class="local-save-details" style="color:#ff4757">انتهت مدة الحفظ</div>';
+            }
+        } else if (save.duration === 'forever') {
+            timeInfo = '<div class="local-save-details">محفوظ إلى الأبد</div>';
+        }
+        
+        html += `
+            <div class="local-save-item">
+                <div class="local-save-header">
+                    <div class="local-save-link">${save.link}</div>
+                    <div class="local-save-actions">
+                        <button onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')">▶ تشغيل</button>
+                        <button onclick="deleteLocalSave(${index})">🗑 حذف</button>
+                    </div>
+                </div>
+                ${thumbnailUrl ? `<div class="video-thumbnail" style="background-image: url('${thumbnailUrl}')" onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')"></div>` : ''}
+                <div class="local-save-details">
+                    تم الحفظ في: ${saveDate} 
+                    ${save.duration && save.duration !== 'forever' ? `• المدة: ${save.duration} يوم` : ''}
+                </div>
+                ${timeInfo}
+            </div>
+        `;
+    });
+    
+    localSavesList.innerHTML = html;
+}
+
+// حذف عرض محلي
+function deleteLocalSave(index) {
+    if (confirm('هل أنت متأكد من أنك تريد حذف هذا العرض المحفوظ؟')) {
+        const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
+        quickSaves.splice(index, 1);
+        localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
+        loadLocalSaves();
+    }
+}
 
 // ربط الأحداث
 playNewBtn.addEventListener('click', playNewLink);
