@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <style>
+        /* الأنماح باقية كما هي دون تغيير */
         :root {
             --primary-color: #00ccff;
             --secondary-color: #007bff;
@@ -448,7 +449,7 @@
         }
         
         @keyframes spin {
-            0% { transform: rotate(0deg); }
+           0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         
@@ -759,14 +760,15 @@ const subjectsData = {
     "اللغة الإنجليزية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة","الوحدة السادسة","الوحدة السابعة","الوحدة الثامنة"]
 };
 
-// تهيئة Firebase
+// تهيئة Firebase باستخدام التكوين الذي أرسلته
 const firebaseConfig = {
     apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
     authDomain: "project-e1da3.firebaseapp.com",
     projectId: "project-e1da3",
     storageBucket: "project-e1da3.firebasestorage.app",
     messagingSenderId: "560086523718",
-    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47"
+    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
+    measurementId: "G-ZVS3WY5NT2"
 };
 
 // تهيئة Firebase
@@ -1136,7 +1138,7 @@ function playVideo(link, quality = 'default'){
     // إضافة معلمات إضافية لتحسين الأداء
     embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
     
-    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
     
     // التمرير إلى الفيديو
     videoContainer.scrollIntoView({ behavior: 'smooth' });
