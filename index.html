@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <style>
-        /* الأنماح باقية كما هي دون تغيير */
         :root {
             --primary-color: #00ccff;
             --secondary-color: #007bff;
@@ -449,7 +448,7 @@
         }
         
         @keyframes spin {
-           0% { transform: rotate(0deg); }
+            0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         
@@ -630,6 +629,37 @@
                 justify-content: space-between;
             }
         }
+
+        /* إضافة أنماط جديدة للتصحيح */
+        .debug-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .status-connected {
+            color: #38ff5c;
+        }
+        
+        .status-disconnected {
+            color: #ff4757;
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -675,12 +705,20 @@
     </div>
 
     <h2>اختر المادة</h2>
-    <div id="subjects" class="grid"></div>
+    <div id="subjects" class="grid">
+        <div class="loading">
+            <i class="fas fa-spinner"></i> جاري تحميل المواد...
+        </div>
+    </div>
 
     <!-- صفحة الفصول -->
     <div id="chaptersPage" class="hidden">
         <h3 id="subjectTitle"></h3>
-        <div id="chapters" class="chapter-buttons"></div>
+        <div id="chapters" class="chapter-buttons">
+            <div class="loading">
+                <i class="fas fa-spinner"></i> جاري تحميل الفصول...
+            </div>
+        </div>
         <button class="back-button" onclick="backToSubjects()">⬅ العودة للمواد</button>
     </div>
 
@@ -747,17 +785,22 @@
         <span>اسأل مدرس</span>
     </a>
 </div>
- 
+
+<!-- مؤشر حالة الاتصال -->
+<div id="connectionStatus" class="connection-status hidden">
+    <i class="fas fa-wifi"></i> حالة الاتصال
+</div>
+
 <script>
-// بيانات المواد والفصول
+// بيانات المواد والفصول - تم تصحيحها
 const subjectsData = {
-    "الرياضيات": ["الأعداد المركبة","القطوع المخروطية","تطبيقات التفاضل","التكامل","المعادلات التفاضلية الاعتيادية","الهندسة الفضائية"],
-    "الفيزياء": ["المتسعات","الحث الكهرومغناطيسي","التيار المتناوب","الموجات الكهرومغناطيسية","البصريات الفيزيائية","الفيزياء الحديثة","إلكترونيات الحالة الصلبة","الأطياف الذرية والليزر","الفيزياء النووية"],
-    "الكيمياء": ["الثرموداينمك","الاتزان الكيميائي","الاتزان الأيوني","تفاعلات التأكسد والاختزال والكيمياء الكهربائية","الكيمياء التناسقية","طرائق التحليل الكيميائي","الكيمياء العضوية للهيدروكربونات المعوضة","الكيمياء الحياتية"],
-    "الأحياء": ["الخلية","الأنسجة","التكاثر","التكوين الجنيني","الوراثة"],
-    "الإسلامية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة"],
-    "العربي": ["الوحدة الأولى (مواضيع متعددة)","الوحدة الثانية (مواضيع متعددة)"],
-    "اللغة الإنجليزية": ["الوحدة الأولى","الوحدة الثانية","الوحدة الثالثة","الوحدة الرابعة","الوحدة الخامسة","الوحدة السادسة","الوحدة السابعة","الوحدة الثامنة"]
+    "الرياضيات": ["الأعداد المركبة", "القطوع المخروطية", "تطبيقات التفاضل", "التكامل", "المعادلات التفاضلية الاعتيادية", "الهندسة الفضائية"],
+    "الفيزياء": ["المتسعات", "الحث الكهرومغناطيسي", "التيار المتناوب", "الموجات الكهرومغناطيسية", "البصريات الفيزيائية", "الفيزياء الحديثة", "إلكترونيات الحالة الصلبة", "الأطياف الذرية والليزر", "الفيزياء النووية"],
+    "الكيمياء": ["الثرموداينمك", "الاتزان الكيميائي", "الاتزان الأيوني", "تفاعلات التأكسد والاختزال والكيمياء الكهربائية", "الكيمياء التناسقية", "طرائق التحليل الكيميائي", "الكيمياء العضوية للهيدروكربونات المعوضة", "الكيمياء الحياتية"],
+    "الأحياء": ["الخلية", "الأنسجة", "التكاثر", "التكوين الجنيني", "الوراثة"],
+    "الإسلامية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة"],
+    "العربي": ["الوحدة الأولى (مواضيع متعددة)", "الوحدة الثانية (مواضيع متعددة)"],
+    "اللغة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
 };
 
 // تهيئة Firebase باستخدام التكوين الذي أرسلته
@@ -804,6 +847,7 @@ const saveDurationSelect = document.getElementById('saveDuration');
 const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
 const playlistContainer = document.getElementById('playlistContainer');
 const loadingIndicator = document.getElementById('loadingIndicator');
+const connectionStatus = document.getElementById('connectionStatus');
 
 let currentSubject = "", currentChapter = "";
 
@@ -835,6 +879,7 @@ function renderSubjects() {
     if (cached) {
         subjectsDiv.innerHTML = cached;
         attachSubjectEvents();
+        updateConnectionStatus(true);
         return;
     }
 
@@ -846,6 +891,7 @@ function renderSubjects() {
     subjectsDiv.innerHTML = html;
     cache.set('subjects', html);
     attachSubjectEvents();
+    updateConnectionStatus(true);
 }
 
 function attachSubjectEvents() {
@@ -960,10 +1006,12 @@ async function loadLinksForAll() {
         // إخفاء مؤشر التحميل وعرض المحاضرات
         loadingIndicator.style.display = 'none';
         renderLinksList(links);
+        updateConnectionStatus(true);
     } catch (error) {
         console.error('Error loading videos:', error);
         loadingIndicator.style.display = 'none';
         savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">حدث خطأ في تحميل المحاضرات</p>';
+        updateConnectionStatus(false);
     }
 }
 
@@ -1017,9 +1065,11 @@ async function saveLinkForAll() {
         
         // إعادة تحميل المحاضرات
         loadLinksForAll();
+        updateConnectionStatus(true);
     } catch (error) {
         console.error('Error saving video:', error);
         alert('حدث خطأ أثناء حفظ المحاضرة');
+        updateConnectionStatus(false);
     }
 }
 
@@ -1068,9 +1118,11 @@ async function deleteLink(id) {
             }
             
             loadLinksForAll(); // إعادة تحميل المحاضرات
+            updateConnectionStatus(true);
         } catch (error) {
             console.error('Error deleting video:', error);
             alert('حدث خطأ أثناء حذف المحاضرة');
+            updateConnectionStatus(false);
         }
     }
 }
@@ -1138,7 +1190,7 @@ function playVideo(link, quality = 'default'){
     // إضافة معلمات إضافية لتحسين الأداء
     embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
     
-    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
     // التمرير إلى الفيديو
     videoContainer.scrollIntoView({ behavior: 'smooth' });
@@ -1300,6 +1352,24 @@ function deleteLocalSave(index) {
     }
 }
 
+// تحديث حالة الاتصال
+function updateConnectionStatus(connected) {
+    const statusElement = document.getElementById('connectionStatus');
+    statusElement.classList.remove('hidden');
+    
+    if (connected) {
+        statusElement.innerHTML = '<i class="fas fa-wifi"></i> متصل بقاعدة البيانات';
+        statusElement.className = 'connection-status status-connected';
+    } else {
+        statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> غير متصل بقاعدة البيانات';
+        statusElement.className = 'connection-status status-disconnected';
+    }
+    
+    setTimeout(() => {
+        statusElement.classList.add('hidden');
+    }, 3000);
+}
+
 // ربط الأحداث
 playNewBtn.addEventListener('click', playNewLink);
 saveBtn.addEventListener('click', saveLinkForAll);
@@ -1329,8 +1399,10 @@ async function cleanExpiredLectures() {
         
         await Promise.all(deletePromises);
         console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
+        updateConnectionStatus(true);
     } catch (error) {
         console.error('Error cleaning expired lectures:', error);
+        updateConnectionStatus(false);
     }
 }
 </script>
