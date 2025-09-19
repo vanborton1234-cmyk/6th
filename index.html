@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة تجلّي أكاديمي - الصف السادس العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <!-- استخدام إصدار متوافق من Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
         :root {
             --primary-color: #00ccff;
@@ -324,7 +325,6 @@
             margin: 25px 0;
         }
         
-        /* تخصيصات جديدة للفيديوهات المحفوظة */
         .video-item {
             background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
             border-radius: 15px;
@@ -375,7 +375,6 @@
             margin-top: 20px;
         }
         
-        /* زر اسأل مدرس العائم */
         .floating-btn-container {
             position: fixed;
             bottom: 30px;
@@ -414,7 +413,6 @@
             }
         }
         
-        /* زر المطور في الأسفل */
         .bottom-developer-btn {
             display: block;
             margin: 30px auto 10px;
@@ -452,7 +450,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* مدة الحفظ */
         .save-duration {
             margin: 15px 0;
             text-align: center;
@@ -498,7 +495,6 @@
             color: white;
         }
 
-        /* تحسينات الأداء */
         .will-animate {
             will-change: transform, opacity;
         }
@@ -507,7 +503,6 @@
             content-visibility: auto;
         }
         
-        /* صفحة العروض المحفوظة محلياً */
         #localSavesPage {
             padding: 20px;
         }
@@ -630,7 +625,6 @@
             }
         }
 
-        /* إضافة أنماط جديدة للتصحيح */
         .debug-info {
             background: rgba(0, 0, 0, 0.7);
             padding: 15px;
@@ -673,7 +667,6 @@
             <button class="developer-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button> 
     </header>
 
-    <!-- تشغيل سريع -->
     <div class="quick-player">
         <h3>تشغيل فيديو بسرعة</h3>
         <input id="quickLink" placeholder="ضع رابط الفيديو هنا">
@@ -710,7 +703,6 @@
         </div>
     </div>
 
-    <!-- صفحة الفصول -->
     <div id="chaptersPage" class="hidden">
         <h3 id="subjectTitle"></h3>
         <div id="chapters" class="chapter-buttons">
@@ -721,7 +713,6 @@
         <button class="back-button" onclick="backToSubjects()">⬅ العودة للمواد</button>
     </div>
 
-    <!-- صفحة الروابط -->
     <div id="linksPage" class="hidden">
         <h3 id="chapterTitle"></h3>
         <input id="lectureName" placeholder="اسم المحاضرة">
@@ -762,7 +753,6 @@
         <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
     </div>
     
-    <!-- صفحة العروض المحفوظة محلياً -->
     <div id="localSavesPage" class="hidden">
         <h2>العروض المحفوظة محلياً</h2>
         <div id="localSavesList">
@@ -773,14 +763,12 @@
         <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسية</button>
     </div>
     
-    <!-- زر المطور في الأسفل -->
- <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور : علي يوسف</a>
+    <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور : علي يوسف</a>
     <a class="bottom-developer-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
-            <a class="bottom-developer-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a><br>
-<a class="bottom-developer-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
+    <a class="bottom-developer-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a><br>
+    <a class="bottom-developer-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
 </div>
 
-<!-- زر اسأل مدرس العائم -->
 <div class="floating-btn-container">
     <a href="https://t.me/likeflame5" target="_blank" class="floating-btn">
         <i class="fas fa-chalkboard-teacher"></i>
@@ -788,13 +776,12 @@
     </a>
 </div>
 
-<!-- مؤشر حالة الاتصال -->
 <div id="connectionStatus" class="connection-status hidden">
     <i class="fas fa-wifi"></i> حالة الاتصال
 </div>
 
 <script>
-// بيانات المواد والفصول - تم تصحيحها
+// بيانات المواد والفصول
 const subjectsData = {
     "الرياضيات": ["الأعداد المركبة", "القطوع المخروطية", "تطبيقات التفاضل", "التكامل", "المعادلات التفاضلية الاعتيادية", "الهندسة الفضائية"],
     "الفيزياء": ["المتسعات", "الحث الكهرومغناطيسي", "التيار المتناوب", "الموجات الكهرومغناطيسية", "البصريات الفيزيائية", "الفيزياء الحديثة", "إلكترونيات الحالة الصلبة", "الأطياف الذرية والليزر", "الفيزياء النووية"],
@@ -805,7 +792,7 @@ const subjectsData = {
     "اللغة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
 };
 
-// تهيئة Firebase باستخدام التكوين الذي أرسلته
+// تهيئة Firebase باستخدام التكوين الصحيح
 const firebaseConfig = {
     apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
     authDomain: "project-e1da3.firebaseapp.com",
@@ -816,10 +803,14 @@ const firebaseConfig = {
     measurementId: "G-ZVS3WY5NT2"
 };
 
-// تهيئة Firebase
+// تهيئة Firebase مرة واحدة فقط
 try {
-    firebase.initializeApp(firebaseConfig);
-    console.log("Firebase initialized successfully");
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+        console.log("Firebase initialized successfully");
+    } else {
+        firebase.app();
+    }
 } catch (error) {
     console.error("Firebase initialization error:", error);
     alert("حدث خطأ في تهيئة قاعدة البيانات. يرجى التحقق من اتصال الإنترنت وإعادة تحميل الصفحة.");
@@ -1129,6 +1120,25 @@ async function deleteLink(id) {
     }
 }
 
+// دالة محسنة لاستخراج معرف فيديو يوتيوب من أي نوع من الروابط
+function getYouTubeId(url) {
+    if (!url) return null;
+    
+    // التعامل مع روابط youtube.com
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+    
+    // إذا كان الرابط يحتوي على 11 حرفاً (مثل معرف مباشر)
+    if (url.length === 11 && !url.includes('/') && !url.includes('.')) {
+        return url;
+    }
+    
+    return null;
+}
+
 // عرض قائمة المحاضرات
 function renderLinksList(links) {
     savedLinks.innerHTML = '';
@@ -1162,14 +1172,6 @@ function renderLinksList(links) {
         
         savedLinks.appendChild(li);
     });
-}
-
-// دالة محسنة لاستخراج معرف فيديو يوتيوب من أي نوع من الروابط
-function getYouTubeId(url) {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 // دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
