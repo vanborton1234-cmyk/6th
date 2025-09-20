@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة تجلّي أكاديمي - الصف السادس العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- استخدام إصدار متوافق من Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
+        /* أنماط CSS الموجودة سابقًا */
         :root {
             --primary-color: #00ccff;
             --secondary-color: #007bff;
@@ -385,6 +387,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             padding: 15px 25px;
             background: linear-gradient(135deg, #6bff8d, #38ff5c);
             color: white;
@@ -404,8 +407,12 @@
         }
         
         @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { 
+                transform: translateY(0); 
+            }
+            50% { 
+                transform: translateY(-10px); 
+            }
         }
         
         .bottom-developer-btn {
@@ -464,7 +471,7 @@
         
         .time-remaining {
             font-size: 14px;
-            padding: 极速px 10px;
+            padding: 5px 10px;
             border-radius: 15px;
             margin-top: 5px;
             display: inline-block;
@@ -507,11 +514,11 @@
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 极速 5px 15px rgba(0, 0, 0, 0.3);
-            animation: float 5极速 ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: float 5s ease-in-out infinite;
         }
         
-        .local-s极速ve-header {
+        .local-save-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -566,7 +573,7 @@
             .card {
                 padding: 30px 20px;
                 font-size: 24px;
-极速         }
+            }
             
             .chapter-buttons button {
                 min-width: 100%;
@@ -583,7 +590,7 @@
             }
             
             .video-actions {
-                margin-top: 10极速;
+                margin-top: 10px;
                 width: 100%;
                 justify-content: space-between;
             }
@@ -674,7 +681,7 @@
                 <option value="highres">أعلى جودة</option>
             </select>
         </div>
-        <div class极速save-duration">
+        <div class="save-duration">
             <label for="quickSaveDuration">مدة الحفظ:</label>
             <select id="quickSaveDuration">
                 <option value="1">يوم واحد</option>
@@ -691,7 +698,8 @@
         <div id="quickContainer"></div>
     </div>
 
-    <h2>اختر المادة</极速    <div id="subjects" class="grid">
+    <h2>اختر المادة</h2>
+    <div id="subjects" class="grid">
         <div class="loading">
             <i class="fas fa-spinner"></i> جاري تحميل المواد...
         </div>
@@ -716,8 +724,8 @@
             <label for="videoQuality">جودة الفيديو:</label>
             <select id="videoQuality">
                 <option value="default">افتراضي</option>
-                <option value="hd极速0">HD (720p)</option>
-                <option value="hd1080">Full HD (1080极速)</option>
+                <option value="hd720">HD (720p)</option>
+                <option value="hd1080">Full HD (1080p)</option>
                 <option value="highres">أعلى جودة</option>
             </select>
         </div>
@@ -737,7 +745,7 @@
         </div>
         
         <div class="playlist-container" id="playlistContainer">
-            <div class="loading"极速id="loadingIndicator">
+            <div class="loading" id="loadingIndicator">
                 <i class="fas fa-spinner"></i> جاري تحميل المحاضرات...
             </div>
             <ul id="savedLinks"></ul>
@@ -760,7 +768,7 @@
     <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور : علي يوسف</a>
     <a class="bottom-developer-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
     <a class="bottom-developer-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a><br>
-    <a class="bottom-developer-btn" href="https极速//t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
+    <a class="bottom-developer-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
 </div>
 
 <div class="floating-btn-container">
@@ -793,7 +801,7 @@ const firebaseConfig = {
     projectId: "project-e1da3",
     storageBucket: "project-e1da3.firebasestorage.app",
     messagingSenderId: "560086523718",
-    appId: "1:560086523718:web:82cbc极速c6228d6a52b4f47",
+    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
     measurementId: "G-ZVS3WY5NT2"
 };
 
@@ -862,7 +870,7 @@ const subjectsDiv = document.getElementById('subjects');
 const chaptersPage = document.getElementById('chaptersPage');
 const linksPage = document.getElementById('linksPage');
 const localSavesPage = document.getElementById('localSavesPage');
-const localSavesList = document.getElementById('local极速vesList');
+const localSavesList = document.getElementById('localSavesList');
 const chaptersDiv = document.getElementById('chapters');
 const subjectTitle = document.getElementById('subjectTitle');
 const chapterTitle = document.getElementById('chapterTitle');
@@ -893,7 +901,7 @@ const cache = {
         };
         localStorage.setItem(key, JSON.stringify(item));
     },
-    get: (key极速 => {
+    get: (key) => {
         const itemStr = localStorage.getItem(key);
         if (!itemStr) return null;
         
@@ -905,18 +913,6 @@ const cache = {
         return item.data;
     }
 };
-
-// دالة التحقق قبل الحفظ - جديدة
-function checkAuthBeforeSave() {
-  if (!auth.currentUser || auth.currentUser.isAnonymous) {
-    if (confirm('لإضافة محاضرات، يجب التسجيل بحساب دائم. هل تريد التسجيل الآن؟')) {
-      showSignUpForm();
-    }
-    return false;
-  }
-  saveLinkForAll();
-  return true;
-}
 
 // إنشاء مربعات المواد مع تحسين الأداء
 function renderSubjects() {
@@ -1071,7 +1067,6 @@ function loadLinksForAll() {
     }
 }
 
-// دالة محسنة لحفظ المحاضرة في Firebase للجميع
 async function saveLinkForAll() {
   // تحقق من أن المستخدم مسجل وليس مجهولاً - الكود الجديد
   if (!auth.currentUser || auth.currentUser.isAnonymous) {
@@ -1088,56 +1083,57 @@ async function saveLinkForAll() {
     alert('املأ جميع الحقول!');
     return;
   }
-  
-  // التحقق من صحة رابط اليوتيوب
-  const videoId = getYouTubeId(link);
-  if (!videoId) {
-    alert('رابط اليوتيوب غير صحيح! يرجى إدخال رابط يوتيوب صالح.');
-    return;
-  }
-  
-  // حساب وقت الانتهاء
-  let expiryDate = null;
-  if (duration !== 'forever') {
-    const days = parseInt(duration);
-    expiryDate = new Date();
-    expiryDate.setDate(expiryDate.get极速te() + days);
-  }
-  
-  try {
-    // التحقق من اتصال Firebase
-    if (!db) {
-      throw new Error("لا يوجد اتصال بقاعدة البيانات");
+  // ... rest of the function remains the same
+    
+    // التحقق من صحة رابط اليوتيوب
+    const videoId = getYouTubeId(link);
+    if (!videoId) {
+        alert('رابط اليوتيوب غير صحيح! يرجى إدخال رابط يوتيوب صالح.');
+        return;
     }
     
-    const lectureData = {
-      subject: currentSubject,
-      chapter: currentChapter,
-      name: name,
-      topic: topic,
-      link: link,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      createdBy: auth.currentUser ? auth.currentUser.uid : 'anonymous'
-    };
-    
-    if (expiryDate) {
-      lectureData.expiry = firebase.firestore.Timestamp.fromDate(expiryDate);
+    // حساب وقت الانتهاء
+    let expiryDate = null;
+    if (duration !== 'forever') {
+        const days = parseInt(duration);
+        expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + days);
     }
     
-    await db.collection('lectures极速.add(lectureData);
-    
-    alert('تم رفع المحاضرة للجميع بنجاح!');
-    document.getElementById('lectureName').value = "";
-    document.getElementById('topicName').value = "";
-    document.getElementById('lectureLink').value = "";
-    
-    // لا داعي لإعادة تحميل المحاضرات لأن الـ listener سيتلقى التحديث تلقائياً
-    updateConnectionStatus(true);
-  } catch (error) {
-    console.error('Error saving video:', error);
-    alert('حدث خطأ أثناء حفظ المحاضرة: ' + error.message);
-    updateConnectionStatus(false);
-  }
+    try {
+        // التحقق من اتصال Firebase
+        if (!db) {
+            throw new Error("لا يوجد اتصال بقاعدة البيانات");
+        }
+        
+        const lectureData = {
+            subject: currentSubject,
+            chapter: currentChapter,
+            name: name,
+            topic: topic,
+            link: link,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            createdBy: auth.currentUser ? auth.currentUser.uid : 'anonymous'
+        };
+        
+        if (expiryDate) {
+            lectureData.expiry = firebase.firestore.Timestamp.fromDate(expiryDate);
+        }
+        
+        await db.collection('lectures').add(lectureData);
+        
+        alert('تم رفع المحاضرة للجميع بنجاح!');
+        document.getElementById('lectureName').value = "";
+        document.getElementById('topicName').value = "";
+        document.getElementById('lectureLink').value = "";
+        
+        // لا داعي لإعادة تحميل المحاضرات لأن الـ listener سيتلقى التحديث تلقائياً
+        updateConnectionStatus(true);
+    } catch (error) {
+        console.error('Error saving video:', error);
+        alert('حدث خطأ أثناء حفظ المحاضرة: ' + error.message);
+        updateConnectionStatus(false);
+    }
 }
 
 // حفظ رابط سريع محلياً
@@ -1148,7 +1144,7 @@ function saveQuickLink() {
     if (!link) return alert('أدخل رابط اليوتيوب أولاً');
     
     const videoId = getYouTubeId(link);
-    if (!video极速) return alert('رابط اليوتيوب غير صحيح');
+    if (!videoId) return alert('رابط اليوتيوب غير صحيح');
     
     // حساب وقت الانتهاء
     let expiryDate = null;
@@ -1200,7 +1196,7 @@ function getYouTubeId(url) {
     
     // التعامل مع روابط youtube.com
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/极速watch\?v=|&v=)([^#&?]*).*/;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regExp);
         return (match && match[2].length === 11) ? match[2] : null;
     }
@@ -1351,7 +1347,7 @@ quickPlayBtn.addEventListener('click', ()=>{
         return;
     }
     
-    let embedUrl = `https://www.youtube.com/embed/${videoId}极速autoplay=1`;
+    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
     
     // إضافة معامل الجودة إذا تم اختيارها
     if (quality !== 'default') {
@@ -1381,7 +1377,7 @@ function showLocalSaves() {
 }
 
 // تحميل العروض المحفوظة محلياً
-function loadLocal极速ves() {
+function loadLocalSaves() {
     const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
     
     if (quickSaves.length === 0) {
@@ -1459,13 +1455,71 @@ function updateConnectionStatus(connected) {
         statusElement.innerHTML = '<i class="fas fa-wifi"></i> متصل بقاعدة البيانات';
         statusElement.className = 'connection-status status-connected';
     } else {
-        statusElement.innerHTML = '<极速 class="fas fa-wifi-slash"></i> غير متصل بقاعدة البيانات';
+        statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> غير متصل بقاعدة البيانات';
         statusElement.className = 'connection-status status-disconnected';
     }
     
     setTimeout(() => {
         statusElement.classList.add('hidden');
     }, 3000);
+}
+
+// ربط الأحداث - الكود المعدل
+playNewBtn.addEventListener('click', playNewLink);
+saveBtn.addEventListener('click', checkAuthBeforeSave); // تغيير هنا
+quickSaveBtn.addEventListener('click', saveQuickLink);
+  
+// تهيئة التطبيق عند التحميل
+document.addEventListener('DOMContentLoaded', () => {
+    renderSubjects();
+    restoreNavigationState();
+    
+    // تنظيف المحاضرات المنتهية الصلاحية كل ساعة
+    setInterval(cleanExpiredLectures, 3600000);
+});
+
+// تنظيف المحاضرات المنتهية الصلاحية
+async function cleanExpiredLectures() {
+    try {
+        const now = firebase.firestore.Timestamp.now();
+        const expiredLectures = await db.collection('lectures')
+            .where('expiry', '<=', now)
+            .get();
+        
+        const deletePromises = [];
+        expiredLectures.forEach(doc => {
+            deletePromises.push(doc.ref.delete());
+        });
+        
+        await Promise.all(deletePromises);
+        console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
+        updateConnectionStatus(true);
+    } catch (error) {
+        console.error('Error cleaning expired lectures:', error);
+        updateConnectionStatus(false);
+    }
+}
+
+// إضافة معالجة أخطاء الشبكة
+window.addEventListener('online', () => {
+    console.log("أصبح التطبيق متصلاً بالإنترنت");
+    updateConnectionStatus(true);
+});
+
+window.addEventListener('offline', () => {
+    console.log("فقد التطبيق الاتصال بالإنترنت");
+    updateConnectionStatus(false);
+});
+  // دالة التحقق قبل الحفظ - جديدة
+function checkAuthBeforeSave() {
+  if (!auth.currentUser || auth.currentUser.isAnonymous) {
+    if (confirm('لإضافة محاضرات، يجب التسجيل بحساب دائم. هل تريد التسجيل الآن؟')) {
+      showSignUpForm();
+    }
+    return false;
+  }
+  saveLinkForAll();
+  return true;
 }
 
 // دالة لعرض نموذج التسجيل - جديدة
@@ -1518,53 +1572,6 @@ async function signUpWithEmail() {
     alert('حدث خطأ: ' + error.message);
   }
 }
-
-// ربط الأحداث
-playNewBtn.addEventListener('click', playNewLink);
-saveBtn.addEventListener('click', checkAuthBeforeSave);
-quickSaveBtn.addEventListener('click', saveQuickLink);
-
-// تهيئة التطبيق عند التحميل
-document.addEventListener('DOMContentLoaded', () => {
-    renderSubjects();
-    restoreNavigationState();
-    
-    // تنظيف المحاضرات المنتهية الصلاحية كل ساعة
-    setInterval(cleanExpiredLectures, 3600000);
-});
-
-// تنظيف المحاضرات المنتهية الصلاحية
-async function cleanExpiredLectures() {
-    try {
-        const now = firebase.firestore.Timestamp.now();
-        const expiredLectures = await db.collection('lectures')
-            .where('expiry', '<=', now)
-            .get();
-        
-        const deletePromises = [];
-        expiredLectures.forEach(doc => {
-            deletePromises.push(doc.ref.delete());
-        });
-        
-        await Promise.all(deletePromises);
-        console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
-        updateConnectionStatus(true);
-    } catch (error) {
-        console.error('Error cleaning expired lectures:', error);
-        updateConnectionStatus(false);
-    }
-}
-
-// إضافة معالجة أخطاء الشبكة
-window.addEventListener('online', () => {
-    console.log("أصبح التطبيق متصلاً بالإنترنت");
-    updateConnectionStatus(true);
-});
-
-window.addEventListener('offline', () => {
-    console.log("فقد التطبيق الاتصال بالإنترنت");
-    updateConnectionStatus(false);
-});
 </script>
 </body>
 </html>
