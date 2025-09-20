@@ -1067,17 +1067,23 @@ function loadLinksForAll() {
     }
 }
 
-// دالة محسنة لحفظ المحاضرة في Firebase للجميع
 async function saveLinkForAll() {
-    const name = document.getElementById('lectureName').value.trim();
-    const topic = document.getElementById('topicName').value.trim();
-    const link = document.getElementById('lectureLink').value.trim();
-    const duration = document.getElementById('saveDuration').value;
-    
-    if(!name || !topic || !link) {
-        alert('املأ جميع الحقول!');
-        return;
-    }
+  // تحقق من أن المستخدم مسجل وليس مجهولاً - الكود الجديد
+  if (!auth.currentUser || auth.currentUser.isAnonymous) {
+    alert('يجب تسجيل الدخول بحساب دائم (بريد إلكتروني) لإضافة محاضرات');
+    return;
+  }
+  
+  const name = document.getElementById('lectureName').value.trim();
+  const topic = document.getElementById('topicName').value.trim();
+  const link = document.getElementById('lectureLink').value.trim();
+  const duration = document.getElementById('saveDuration').value;
+  
+  if(!name || !topic || !link) {
+    alert('املأ جميع الحقول!');
+    return;
+  }
+  // ... rest of the function remains the same
     
     // التحقق من صحة رابط اليوتيوب
     const videoId = getYouTubeId(link);
@@ -1458,11 +1464,11 @@ function updateConnectionStatus(connected) {
     }, 3000);
 }
 
-// ربط الأحداث
+// ربط الأحداث - الكود المعدل
 playNewBtn.addEventListener('click', playNewLink);
-saveBtn.addEventListener('click', saveLinkForAll);
+saveBtn.addEventListener('click', checkAuthBeforeSave); // تغيير هنا
 quickSaveBtn.addEventListener('click', saveQuickLink);
-
+  
 // تهيئة التطبيق عند التحميل
 document.addEventListener('DOMContentLoaded', () => {
     renderSubjects();
@@ -1504,6 +1510,68 @@ window.addEventListener('offline', () => {
     console.log("فقد التطبيق الاتصال بالإنترنت");
     updateConnectionStatus(false);
 });
+  // دالة التحقق قبل الحفظ - جديدة
+function checkAuthBeforeSave() {
+  if (!auth.currentUser || auth.currentUser.isAnonymous) {
+    if (confirm('لإضافة محاضرات، يجب التسجيل بحساب دائم. هل تريد التسجيل الآن؟')) {
+      showSignUpForm();
+    }
+    return false;
+  }
+  saveLinkForAll();
+  return true;
+}
+
+// دالة لعرض نموذج التسجيل - جديدة
+function showSignUpForm() {
+  const signUpHTML = `
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); display: flex; justify-content: center; 
+                align-items: center; z-index: 10000;">
+      <div style="background: #222; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;">
+        <h3 style="color: var(--primary-color); text-align: center;">التسجيل بحساب جديد</h3>
+        <input type="email" id="signupEmail" placeholder="البريد الإلكتروني" style="width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px;">
+        <input type="password" id="signupPassword" placeholder="كلمة المرور" style="width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+          <button onclick="closeSignUpForm()" style="padding: 10px 20px; background: #555;">إلغاء</button>
+          <button onclick="signUpWithEmail()" style="padding: 10px 20px; background: var(--primary-color);">تسجيل</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  const signUpDiv = document.createElement('div');
+  signUpDiv.innerHTML = signUpHTML;
+  signUpDiv.id = 'signUpForm';
+  document.body.appendChild(signUpDiv);
+}
+
+// دالة إغلاق نموذج التسجيل
+function closeSignUpForm() {
+  const signUpForm = document.getElementById('signUpForm');
+  if (signUpForm) {
+    signUpForm.remove();
+  }
+}
+
+// دالة التسجيل بالبريد الإلكتروني
+async function signUpWithEmail() {
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  
+  if (!email || !password) {
+    alert('يرجى إدخال البريد الإلكتروني وكلمة المرور');
+    return;
+  }
+  
+  try {
+    await auth.createUserWithEmailAndPassword(email, password);
+    alert('تم إنشاء الحساب بنجاح! يمكنك الآن إضافة المحاضرات.');
+    closeSignUpForm();
+  } catch (error) {
+    alert('حدث خطأ: ' + error.message);
+  }
+}
 </script>
 </body>
 </html>
