@@ -20,6 +20,18 @@
             --card-hover: linear-gradient(135deg, #00aaff, #00ccff);
             --success-color: #38ff5c;
             --warning-color: #ffcc00;
+            --accent-color: #ff6b6b;
+            --light-bg: #f0f8ff;
+            --light-text: #333;
+            --light-card: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        [data-theme="light"] {
+            --dark-bg: #f0f8ff;
+            --header-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-color: #333;
+            --card-bg: linear-gradient(135deg, #4facfe, #00f2fe);
+            --card-hover: linear-gradient(135deg, #00f2fe, #4facfe);
         }
         
         * {
@@ -35,6 +47,11 @@
             line-height: 1.8;
             padding: 20px;
             min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] body {
+            background: linear-gradient(135deg, var(--light-bg) 0%, #d4eaff 100%);
         }
         
         .container {
@@ -44,6 +61,12 @@
             background: rgba(15, 15, 15, 0.9);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .container {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
         header {
@@ -57,36 +80,50 @@
             animation: float 6s ease-in-out infinite;
             position: relative;
         }
+
+        [data-theme="light"] header {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
         
-        .logo-container {
+        .top-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .theme-toggle {
             position: absolute;
             top: 20px;
             left: 20px;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #00ccff, #007bff);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 15px rgba(0, 204, 255, 0.5);
-            animation: pulse 2s infinite alternate;
-        }
-        
-        .whale-logo {
-            font-size: 40px;
+            font-size: 24px;
             color: white;
-            transform: rotate(-15deg);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            color: #333;
+            background: rgba(0, 0, 0, 0.1);
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
         }
         
         header h1 {
@@ -95,34 +132,57 @@
             margin-bottom: 15px;
             text-shadow: 0 2px 10px rgba(0, 204, 255, 0.5);
         }
+
+        [data-theme="light"] header h1 {
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
         
         header p {
             font-size: 22px;
             color: #e0e0e0;
             margin: 12px 0;
         }
+
+        [data-theme="light"] header p {
+            color: #fff;
+        }
         
-        .developer-btn, .challenge-btn {
+        .action-btn {
             display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--accent-color), #ff8e8e);
             color: var(--text-color);
             border-radius: 14px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 20px;
-            margin: 15px 5px;
-            animation: pulse 1.8s infinite alternate, float 4s ease-in-out infinite;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            font-size: 18px;
+            margin: 8px 5px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            animation: pulse 1.8s infinite alternate;
+        }
+
+        [data-theme="light"] .action-btn {
+            color: #fff;
         }
         
-        .developer-btn:hover, .challenge-btn:hover {
+        .action-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.6);
-            animation: pulse 1.8s infinite alternate, float 3s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
+        }
+        
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 10px var(--accent-color);
+            }
+            to {
+                transform: scale(1.08);
+                box-shadow: 0 0 25px var(--accent-color);
+            }
         }
         
         .quick-player {
@@ -134,6 +194,11 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .quick-player {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
         
         .quick-player h3 {
             margin-top: 0;
@@ -141,6 +206,10 @@
             color: var(--primary-color);
             margin-bottom: 25px;
             text-align: center;
+        }
+
+        [data-theme="light"] .quick-player h3 {
+            color: #007bff;
         }
         
         input, select {
@@ -154,6 +223,13 @@
             font-size: 20px;
             transition: all 0.3s ease;
         }
+
+        [data-theme="light"] input, 
+        [data-theme="light"] select {
+            background: #fff;
+            color: #333;
+            border: 2px solid #4facfe;
+        }
         
         input:focus, select:focus {
             outline: none;
@@ -161,9 +237,20 @@
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
             background: #2a2a2a;
         }
+
+        [data-theme="light"] input:focus, 
+        [data-theme="light"] select:focus {
+            background: #fff;
+            border-color: #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+        }
         
         input::placeholder {
             color: #aaa;
+        }
+
+        [data-theme="light"] input::placeholder {
+            color: #888;
         }
         
         button {
@@ -179,6 +266,10 @@
             font-size: 20px;
             box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
             animation: float 5s ease-in-out infinite;
+        }
+
+        [data-theme="light"] button {
+            color: #fff;
         }
         
         button:hover {
@@ -213,12 +304,21 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             animation: float 6s ease-in-out infinite;
         }
+
+        [data-theme="light"] .card {
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
         
         .card:hover {
             transform: scale(1.05) translateY(-10px);
             box-shadow: 0 15px 35px rgba(0, 123, 255, 0.5);
             background: var(--card-hover);
             animation: float 4s ease-in-out infinite;
+        }
+
+        [data-theme="light"] .card:hover {
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.5);
         }
         
         .hidden {
@@ -233,6 +333,11 @@
             margin-top: 25px;
             border: none;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] #videoContainer iframe,
+        [data-theme="light"] #quickContainer iframe {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
         
         ul {
@@ -253,10 +358,19 @@
             align-items: center;
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] li {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         li strong {
             font-size: 22px;
             color: var(--primary-color);
+        }
+
+        [data-theme="light"] li strong {
+            color: #007bff;
         }
         
         .video-quality {
@@ -270,11 +384,19 @@
             border-radius: 12px;
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .video-quality {
+            background: rgba(255, 255, 255, 0.5);
+        }
         
         .video-quality label {
             margin-right: 20px;
             font-size: 22px;
             color: var(--primary-color);
+        }
+
+        [data-theme="light"] .video-quality label {
+            color: #007bff;
         }
         
         .video-quality select {
@@ -286,6 +408,11 @@
             font-size: 18px;
             min-width: 200px;
         }
+
+        [data-theme="light"] .video-quality select {
+            background: #fff;
+            color: #333;
+        }
         
         h2 {
             font-size: 36px;
@@ -295,6 +422,11 @@
             text-shadow: 0 2px 5px rgba(0, 204, 255, 0.3);
             animation: float 6s ease-in-out infinite;
         }
+
+        [data-theme="light"] h2 {
+            color: #007bff;
+            text-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+        }
         
         h3 {
             font-size: 32px;
@@ -302,6 +434,10 @@
             text-align: center;
             color: #00ffdd;
             animation: float 5s ease-in-out infinite;
+        }
+
+        [data-theme="light"] h3 {
+            color: #00b894;
         }
         
         .chapter-buttons {
@@ -349,6 +485,11 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .video-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         .video-thumbnail {
             width: 100%;
@@ -376,6 +517,10 @@
             color: var(--primary-color);
             flex: 1;
         }
+
+        [data-theme="light"] .video-title {
+            color: #007bff;
+        }
         
         .video-actions {
             display: flex;
@@ -389,6 +534,10 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             margin-top: 20px;
+        }
+
+        [data-theme="light"] .playlist-container {
+            background: rgba(255, 255, 255, 0.5);
         }
         
         .floating-btn-container {
@@ -429,27 +578,6 @@
             }
         }
         
-        .bottom-developer-btn {
-            display: block;
-            margin: 30px auto 10px;
-            width: fit-content;
-            text-align: center;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-color);
-            padding: 15px 30px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-        
-        .bottom-developer-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
-        }
-        
         .loading {
             text-align: center;
             padding: 20px;
@@ -475,6 +603,10 @@
             font-size: 20px;
             color: var(--primary-color);
             margin-right: 15px;
+        }
+
+        [data-theme="light"] .save-duration label {
+            color: #007bff;
         }
         
         .save-duration select {
@@ -531,6 +663,11 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .local-save-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         .local-save-header {
             display: flex;
@@ -544,6 +681,10 @@
             word-break: break-all;
             font-size: 18px;
         }
+
+        [data-theme="light"] .local-save-link {
+            color: #007bff;
+        }
         
         .local-save-actions {
             display: flex;
@@ -555,11 +696,19 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        [data-theme="light"] .local-save-details {
+            color: #666;
+        }
         
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #aaa;
+        }
+
+        [data-theme="light"] .empty-state {
+            color: #666;
         }
         
         .empty-state i {
@@ -580,11 +729,11 @@
                 font-size: 32px;
             }
             
-            .logo-container {
+            .theme-toggle {
                 position: relative;
                 top: 0;
                 left: 0;
-                margin: 0 auto 20px;
+                margin: 10px auto;
             }
             
             .grid {
@@ -658,6 +807,10 @@
             max-height: 200px;
             overflow-y: auto;
         }
+
+        [data-theme="light"] .debug-info {
+            background: rgba(0, 0, 0, 0.1);
+        }
         
         .status-connected {
             color: #38ff5c;
@@ -676,6 +829,12 @@
             font-weight: bold;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        [data-theme="light"] .connection-status {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
         }
     </style>
 </head>
@@ -683,14 +842,20 @@
 
 <div class="container">
     <header>
-        <div class="logo-container">
-            <div class="whale-loji">🐋</div>
-        </div>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        
         <h1>منصة تجلّي أكاديمي - للصف السادس العلمي</h1>
         <p>تم تصميم هذا الموقع لطلّاب السادس</p>
-        <div>
-            <a class="challenge-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
-            <button class="developer-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button> 
+        
+        <div class="top-buttons">
+            <a class="action-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
+            <a class="action-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
+            <a class="action-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a>
+            <a class="action-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
+            <button class="action-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button>
+        </div>
     </header>
 
     <div class="quick-player">
@@ -747,81 +912,165 @@
         <div class="video-quality">
             <label for="videoQuality">جودة الفيديو:</label>
             <select id="videoQuality">
-                <option value="default">افتراضي</option>
+                <option value="default">افتراضي                <option value="default">افتراضي</option</option>
                 <option value="hd720">HD (720p)</option>
-                <option value="hd1080">Full HD (1080p)</option>
+                <option value="hd1080">Full HD>
+                <option value="hd720">HD (720p)</option>
+                <option value="hd1080 (1080p)</option>
+                <option value="highres">أع">Full HD (1080p)</option>
                 <option value="highres">أعلى جودة</option>
             </select>
-        </div>
+       لى جودة</option>
+            </select>
+        </ </div>
         <div class="save-duration">
-            <label for="saveDuration">مدة الحفظ:</label>
+            <label for="div>
+        <div class="save-duration">
+           saveDuration">مدة الحفظ:</label>
             <select id="saveDuration">
-                <option value="1">يوم واحد</option>
+                <option value="1 <label for="saveDuration">مدة الحفظ:</label>
+            <select id="saveDuration">
+                <">يوم واحد</option>
+                <option value="7">أسبوع واحدoption value="1">يوم واحد</option>
                 <option value="7">أسبوع واحد</option>
+</option>
                 <option value="30">شهر واحد</option>
-                <option value="365">سنة واحدة</option>
+                <option value="365                <option value="30">شهر واحد</option>
+                <option value">سنة واحدة</option="365">سنة واحدة</option>
+                <option value="forever">إلى الأبد</option>
                 <option value="forever">إلى الأبد</option>
             </select>
         </div>
-        <div class="action-buttons">
+        <div class>
+            </select>
+        </div>
+        <div class="action-b="action-buttons">
             <button id="saveBtn">💾 حفظ</button>
-            <button id="playNewBtn">▶ تشغيل مباشر</button>
+            <button iduttons">
+            <button id="saveBtn">💾 حفظ</button>
+            <button="playNewBtn">▶ تشغيل مباشر</button>
+        </div id="playNewBtn">▶ تشغيل مباشر</button>
         </div>
         
+       >
+        
         <div class="playlist-container" id="playlistContainer">
+            <div class="loading <div class="playlist-container" id" id="loadingIndicator">
+                <i class="fas fa-spinner="playlistContainer">
             <div class="loading" id="loadingIndicator">
                 <i class="fas fa-spinner"></i> جاري تحميل المحاضرات...
             </div>
+            <ul id="savedLinks"></"></i> جاري تحميل المحاضرات...
+            </div>
             <ul id="savedLinks"></ul>
+ul>
         </div>
         
         <div id="videoContainer"></div>
-        <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
+        <button class="back        </div>
+        
+        <div id="videoContainer"></div>
+       -button" onclick="backToChapters()">⬅ العودة للفصول <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
+    </div>
+    
+    <div id="localS</button>
     </div>
     
     <div id="localSavesPage" class="hidden">
-        <h2>العروض المحفوظة محلياً</h2>
-        <div id="localSavesList">
+avesPage" class="hidden">
+        <h        <h2>العروض المحفوظة محلياً</h2>
+        <div id="local2>العروض المحفوظة محلياً</h2>
+       SavesList">
             <div class="loading">
-                <i class="fas fa-spinner"></i> جاري تحميل الروابط المحفوظة...
+                <div id="localSavesList">
+            <div class=" <i class="fas fa-spinner"></i> جاريloading">
+                <i class="fas fa-spinner"></i> تحميل الروابط المحفوظة...
+            </ جاري تحميل الروابط المحفوظة...
             </div>
+       div>
         </div>
-        <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسية</button>
+        <button class="back-button" onclick="back </div>
+        <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسيةToMain()">⬅ العودة للرئيسية</button>
+    </div</button>
     </div>
-    
-    <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور : علي يوسف</a>
-    <a class="bottom-developer-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
-    <a class="bottom-developer-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a><br>
-    <a class="bottom-developer-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
 </div>
 
 <div class="floating-btn-container">
-    <a href="https://t.me/likeflame5" target="_blank" class="floating-btn">
-        <i class="fas fa-chalkboard-teacher"></i>
+    <a href="https>
+</div>
+
+<div class="floating-btn-container">
+    <a href="https://t.me/l://t.me/likeflame5" target="_blank" class="floating-btn">
+       ikeflame5" target="_blank" class <i class="fas fa-chalk="floating-btn">
+        <i class="fas fa-chalkboard-teacher"></iboard-teacher"></i>
+        <span>اسأل>
         <span>اسأل مدرس</span>
+    </a>
+ مدرس</span>
     </a>
 </div>
 
+<div</div>
+
 <div id="connectionStatus" class="connection-status hidden">
+    id="connectionStatus" class="connection-status <i class="fas fa-wifi"></i> حالة hidden">
     <i class="fas fa-wifi"></i> حالة الاتصال
 </div>
 
 <script>
+// بيانات الاتصال
+</div>
+
+<script>
 // بيانات المواد والفصول
+const subjectsData = المواد والفصول
 const subjectsData = {
-    "الرياضيات": ["الأعداد المركبة", "القطوع المخروطية", "تطبيقات التفاضل", "التكامل", "المعادلات التفاضلية الاعتيادية", "الهندسة الفضائية"],
-    "الفيزياء": ["المتسعات", "الحث الكهرومغناطيسي", "التيار المتناوب", "الموجات الكهرومغناطيسية", "البصريات الفيزيائية", "الفيزياء الحديثة", "إلكترونيات الحالة الصلبة", "الأطياف الذرية والليزر", "الفيزياء النووية"],
-    "الكيمياء": ["الثرموداينمك", "الاتزان الكيميائي", "الاتزان الأيوني", "تفاعلات التأكسد والاختزال والكيمياء الكهربائية", "الكيمياء التناسقية", "طرائق التحليل الكيميائي", "الكيمياء العضوية للهيدروكربونات المعوضة", "الكيمياء الحياتية"],
+    "الرياضيات {
+    "الرياض": ["الأعداد المركبة", "القطوع المخروطية", "تيات": ["الأعداد المركبة", "القطوع المخروطية",طبيقات التفاضل", "التكامل", "تطبيقات التفاضل", "التكامل", "المعادلات "المعادلات التف التفاضلية الاعتيادية", "الهندسة الفضائية"],
+    "الفياضلية الاعتيادية", "الهندسة الفضائية"],
+    "الفيزياء": ["المتزياء": ["المتسعات", "سعات", "الحث الكهرومغناطيسي",الحث الكهرومغناطيسي", "التيار المت "التيار المتناوبناوب", "الموجات الكهرومغناطيسية", "البصريات الفيز", "الموجات الكهرومغناطيسية", "البصريات الفيزيائية", "الفيزياءيائية", "الفي الحديثة", "إلكترونيات الحالة الصزياء الحديثة", "إلكترونيات الحالة الصلبة", "الأطياف الذرية والليزر", "الفيزياء النووية"],
+   لبة", "الأطياف الذرية والليزر", "ال "الكيمياء": ["الثرموداينمك", "الاتزان الكيميائي", "الاتزان الأيوني", "فيزياء النووية"],
+    "الكيمياء": ["الثرموداينمك", "الاتزان الكيميائي", "الاتزان الأيوني", "تفاعلات التأكستفاعلات التأكسد والاختزال والكيمياء الكهد والاختزال والكيمياء الكهربائية", "الكيمياء التناسقية", "طرائق التحليل الكيميائي", "الكيمياء العضوية للهيدروكربونات المعوضة", "الكيمياء الحياتية"],
     "الأحياء": ["الخلية", "الأنسجة", "التكاثر", "التكوين الجنيني", "الوراثة"],
     "الإسلامية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة"],
     "العربي": ["الوحدة الأولى (مواضيع متعددة)", "الوحدة الثانية (مواضيع متعددة)"],
-    "اللغة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
+    "اللربائية", "الكيمياء التناسقية", "طرائق التحليل الكيميائي", "الكيمياء العضوية للهيدروكربونات المعوضة", "الكيمياء الحياتية"],
+    "الأحياء": ["الخلية", "الأنسجة", "التكاثر", "التكوين الجنيني", "الوراثة"],
+    "الإسلامية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة"],
+    "العربي": ["الوحدة الأولى (مواضيع متعددة)", "الوحدة الثانية (مواضيع متعددة)"],
+    "اللغة الإنجليزية":غة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", " ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثةالوحدة الرابعة", "الوحدة الخامسة", "الوح", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
+};
+
+ادسة", "الوحدة السابعة", "الوحدة الثامنة"]
 };
 
 // تهيئة Firebase باستخدام التكوين الصحيح
 const firebaseConfig = {
     apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
+    authDomain: "project-e1da3.fire// تهيئة Firebase باستخدام التكوين الصحيح
+const firebaseConfig = {
+    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
     authDomain: "project-e1da3.firebaseapp.com",
+    projectId: "project-e1da3",
+    storageBucket: "project-e1da3.firebasestorage.app",
+    messagingSenderId: "560086523718",
+    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
+    measurementId: "G-ZVS3WY5NT2"
+};
+
+// تهيئة Firebase بدون مصادقة
+let firebaseApp;
+let db;
+
+try {
+    if (!firebase.apps.length) {
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        console.log("Firebase initialized successfully");
+    } else {
+        firebaseApp = firebase.app();
+    }
+    
+    // تهيbaseapp.com",
     projectId: "project-e1da3",
     storageBucket: "project-e1da3.firebasestorage.app",
     messagingSenderId: "560086523718",
@@ -847,30 +1096,67 @@ try {
     // تمكين الثبات بدون اتصال
     db.enablePersistence()
         .then(() => {
-            console.log("تم تمكين الثبات بدون اتصال");
+            console.log("تم تمكين الثبات بدونئة Firestore فقط
+    db = firebase.firestore();
+    
+    // تمكين الثبات بدون اتصال
+    db.enablePersistence()
+        .then(() => {
+            console.log("تم تمكين الث اتصال");
+            updateConnectionStatus(true);
+        })
+        .catch((err)بات بدون اتصال");
             updateConnectionStatus(true);
         })
         .catch((err) => {
             console.error("خطأ في تمكين الثبات بدون اتصال:", err);
-            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
+ => {
+            console.error("خطأ في تمكين الثبات بدون اتصال:", err            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
         });
     
+);
+            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
+        });
+} catch (error) {
+    console.error("    
 } catch (error) {
     console.error("Firebase initialization error:", error);
     updateConnectionStatus(false);
 }
 
+// العنFirebase initialization error:", error);
+    updateConnectionStatus(false);
+}
+
 // العناصر في DOM
+constاصر subjectsDiv = document.getElementById('subjects');
+const chaptersPage = document.getElementById('chaptersPage');
+const links في DOM
 const subjectsDiv = document.getElementById('subjects');
 const chaptersPage = document.getElementById('chaptersPage');
 const linksPage = document.getElementById('linksPage');
-const localSavesPage = document.getElementById('localSavesPage');
-const localSavesList = document.getElementById('localSavesList');
-const chaptersDiv = document.getElementById('chapters');
+Page = document.getElementById('linksPage');
+const localSconst localSavesPage = document.getElementById('localSavesPage');
+const localSavesListavesPage = document.getElementById('localSavesPage');
+const localSavesList = = document.getElementById('localSavesList');
+const chaptersDiv = document.getElementById('ch document.getElementById('localSavesList');
+const chaptersDiv = document.getElementById('chaptersapters');
+const subjectTitle =');
 const subjectTitle = document.getElementById('subjectTitle');
+const document.getElementById('subjectTitle');
 const chapterTitle = document.getElementById('chapterTitle');
-const savedLinks = document.getElementById('savedLinks');
+const savedLinks = document.getElementById('s chapterTitle = document.getElementById('chapterTitle');
+const savedLinks = documentavedLinks');
+const videoContainer = document.getElementById('savedLinks');
 const videoContainer = document.getElementById('videoContainer');
+const quickLinkInput = document.getElementById('quickLink');
+const quickPlayBtn = document.getElementById('quickPlayBtn');
+const quickSaveBtn = document.getElementById('quickSaveBtn');
+const saveBtn = document.getElementById('saveBtn');
+const playNewBtn = document.getElementById('playNewBtn');
+const videoQualitySelect = document.getElementById('videoQuality');
+const quickQualitySelect = document.getElementById('quickQuality');
+const saveDurationSelect = document.getElementById('saveDuration.getElementById('videoContainer');
 const quickLinkInput = document.getElementById('quickLink');
 const quickPlayBtn = document.getElementById('quickPlayBtn');
 const quickSaveBtn = document.getElementById('quickSaveBtn');
@@ -883,54 +1169,168 @@ const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
 const playlistContainer = document.getElementById('playlistContainer');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const connectionStatus = document.getElementById('connectionStatus');
+const themeToggle');
+const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
+const playlistContainer = document.getElementById('playlistContainer');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const connectionStatus = document.getElementById('connectionStatus');
+const theme = document.getElementById('themeToggle');
 
 let currentSubject = "", currentChapter = "";
 let unsubscribeLectures = null; // دالة إلغاء الاشتراك في التحديثات الفورية
 
 // تحسين الأداء: التخزين المحلي للبيانات
 const cache = {
-    set: (key, data, ttl = 300000) => {
+    set: (key, data, ttl = 300000)Toggle = document.getElementById('themeToggle');
+
+let currentSubject = "", currentChapter = "";
+let unsubscribeLectures = null; // دالة إلغاء الاشتراك في التحديثات الفورية
+
+// تحسين الأداء: التخزين المحلي للبيانات
+const cache = {
+    set: (key, data, ttl = 300000 => {
+        const item = {
+            data: data,
+            expiry: Date) => {
         const item = {
             data: data,
             expiry: Date.now() + ttl
         };
+        localStorage.set.now() + ttl
+        };
         localStorage.setItem(key, JSON.stringify(item));
+Item(key, JSON.stringify(item));
     },
+    get: (key) =>    },
     get: (key) => {
+        const itemStr = localStorage.getItem(key {
         const itemStr = localStorage.getItem(key);
+        if (!itemStr) return);
         if (!itemStr) return null;
         
+        const item = JSON null;
+        
         const item = JSON.parse(itemStr);
-        if (Date.now() > item.expiry) {
+.parse(itemStr);
+        if (Date.now() > item        if (Date.now() > item.expiry) {
             localStorage.removeItem(key);
+.expiry) {
+            localStorage.removeItem(key);
+            return null;
+        }
             return null;
         }
         return item.data;
     }
 };
 
-// إنشاء مربعات المواد مع تحسين الأداء
+// إدارة الثيم
+function init        return item.data;
+    }
+};
+
+// إدارة الثيم
+Theme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('datafunction initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggle}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttributeTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+('data-theme');
+    const newTheme = currentTheme === 'dark'    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute(' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('themedata-theme', newTheme);
+    localStorage.setItem('', newTheme);
+    updateThemeIcon(newTheme);
+theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme)}
+
+function updateThemeIcon(theme) {
+    const icon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+        icon.className = 'fas fa-moon';
+    } else {
+        icon.className = 'fas fa-sun';
+    }
+}
+
+// إنشاء مربعات المواد مع تحسين الأد {
+    const icon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+        icon.className = 'fas fa-moon';
+    } else {
+        icon.className = 'fas fa-sun';
+    }
+}
+
+//اء
 function renderSubjects() {
     const cached = cache.get('subjects');
+ إنشاء مربعات المواد مع تحسين الأداء
+function renderSubjects() {
+    const cached = cache.get('sub    if (cached) {
+        subjectsDiv.innerHTML = cached;
+        attachjects');
     if (cached) {
         subjectsDiv.innerHTML = cached;
         attachSubjectEvents();
+        updateSubjectEvents();
         updateConnectionStatus(true);
         return;
     }
 
     let html = '';
-    Object.keys(subjectsData).forEach(sub => {
-        html += `<div class="card will-animate" data-subject="${sub}">${sub}</div>`;
+   ConnectionStatus(true);
+        return;
+    }
+
+    let html = '';
+    Object.keys(subjectsData).forEach(sub => Object.keys(subjectsData).forEach(sub => {
+        html {
+        html += `<div class="card will-animate" data-subject="${ += `<div class="card will-animate" data-subject="${sub}">${sub}</div>`;
+sub}">${sub}</div>`;
     });
     
+    subjectsDiv.innerHTML =    });
+    
     subjectsDiv.innerHTML = html;
+    cache.set('subjects', html);
+    attachSubject html;
     cache.set('subjects', html);
     attachSubjectEvents();
     updateConnectionStatus(true);
 }
 
-function attachSubjectEvents() {
+functionEvents();
+    updateConnectionStatus(true);
+}
+
+function attach attachSubjectEvents() {
+    document.querySelectorAll('.card[data-subject]').forEach(card => {
+        card.addEventListener('click', () => {
+            openSubject(card.dataset.subject);
+        });
+    });
+}
+
+function openSubject(sub){
+    currentSubject = sub;
+    subjectTitle.textContent =SubjectEvents() {
     document.querySelectorAll('.card[data-subject]').forEach(card => {
         card.addEventListener('click', () => {
             openSubject(card.dataset.subject);
@@ -941,20 +1341,39 @@ function attachSubjectEvents() {
 function openSubject(sub){
     currentSubject = sub;
     subjectTitle.textContent = `المادة: ${sub}`;
+ `المادة: ${sub}`;
     chaptersDiv.innerHTML = "";
     
     subjectsData[sub].forEach(chap => {
+        const    chaptersDiv.innerHTML = "";
+    
+    subjectsData[sub].forEach(chap => {
         const btn = document.createElement('button');
+ btn = document.createElement('button');
         btn.textContent = chap;
-        btn.className = 'will-animate';
+        btn.class        btn.textContent = chap;
+        btn.classNameName = 'will-animate';
+        btn.addEventListener('click', () => openChapter(chap));
+        chapters = 'will-animate';
         btn.addEventListener('click', () => openChapter(chap));
         chaptersDiv.appendChild(btn);
     });
     
+    subjectsDiv.appendChild(btn);
+    });
+    
     subjectsDiv.classList.add('hidden');
+    chaptersPage.classList.remove('hiddenDiv.classList.add('hidden');
     chaptersPage.classList.remove('hidden');
     
     // حفظ حالة التصفح
+');
+    
+    // حفظ حالة التص    saveNavigationState();
+}
+
+function openChapter(chap){
+    currentChapter = chapفح
     saveNavigationState();
 }
 
@@ -963,14 +1382,26 @@ function openChapter(chap){
     chapterTitle.textContent = `${currentSubject} - ${chap}`;
     
     // إظهار مؤشر التحميل
-    loadingIndicator.style.display = 'block';
+    loadingIndicator.style.display = ';
+    chapterTitle.textContent = `${currentSubject} - ${chap}`;
+    
+    // إظهار مؤشر التحميل
+    loadingIndicatorblock';
     savedLinks.innerHTML = '';
     
-    // محاولة تحميل من الذاكرة المؤقتة أولاً
-    const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
+   .style.display = 'block';
+    savedLinks.innerHTML = '';
+ // محاولة تحميل من    
+    // محاولة تحميل من الذاكرة المؤقتة الذاكرة المؤقتة أولاً
+    const cache أولاً
+    const cacheKey = `lectures-Key = `lectures-${currentSubject}-${currentChapter}`;
+    const cached = cache.get(cache${currentSubject}-${currentChapter}`;
     const cached = cache.get(cacheKey);
     
+    if (Key);
+    
     if (cached) {
+        rendercached) {
         renderLinksList(cached);
         loadingIndicator.style.display = 'none';
     }
@@ -978,194 +1409,389 @@ function openChapter(chap){
     // ثم تحميل من Firebase
     loadLinksForAll();
     
-    chaptersPage.classList.add('hidden');
-    linksPage.classList.remove('hidden');
+   LinksList(cached);
+        loadingIndicator.style.display = 'none';
+    }
     
-    // حفظ حالة التصفح
-    saveNavigationState();
+    // ثم تحميل من Firebase
+    loadLinksForAll();
+    
+    chaptersPage chaptersPage.classList.add('hidden.classList.add('hidden');
+   ');
+    linksPage.classList.remove linksPage.classList.remove('hidden('hidden');
+    
+    //');
+    
+    // حفظ حالة حفظ حالة التصفح
+ التصفح
+    save    saveNavigationStateNavigationState();
+();
 }
 
-// دالة محسنة لتحميل المحاضرات من Firebase للجميع
-function loadLinksForAll() {
-    // إلغاء أي اشتراك سابق
-    if (unsubscribeLectures) {
-        unsubscribeLectures();
+}
+
+// دالة مح// دالة محسنةسنة لتحميل المحاضرات من لتحميل المحاضرات من Firebase لل Firebase للجميع
+functionجميع
+function load loadLinksForAll()LinksForAll() {
+    // إ {
+    // إلغلغاء أي اشاء أي اشتراك سابقتراك سابق
+    if (
+    if (unsubscribeunsubscribeLectures) {
+        unsubscribeLectLectures) {
+        unsubscribeLecturesures();
+    }
+    
+();
     }
     
     try {
-        unsubscribeLectures = db.collection('lectures')
+        unsubscribeLectures = db.collection('    try {
+        unsubscribeLectures = db.collectionlectures')
+            .('where('subject', '==', currentlectures')
             .where('subject', '==', currentSubject)
-            .where('chapter', '==', currentChapter)
-            .orderBy('timestamp', 'desc')
+            .Subject)
+            .where('chapter', '==where('chapter', '==', currentChapter)
+', currentChapter)
+            .orderBy('timestamp', 'desc            .orderBy('timestamp', 'desc')
+            .onSnapshot')
             .onSnapshot((snapshot) => {
+                const((snapshot) => {
                 const links = [];
+ links = [];
                 
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    // حساب الوقت المتبقي
-                    let timeRemaining = "غير محدد";
-                    let statusClass = "forever";
+                snapshot.forEach                
+                snapshot.forEach(doc(doc => {
+                    const => {
+                    const data = data = doc.data();
+ doc.data();
+                    // حساب                    // حساب الوقت المتب الوقت المتبقي
+قي
+                    let timeRem                    let timeRemaining =aining = "غير محدد "غير محدد";
+                   ";
+                    let statusClass = let statusClass = "fore "forever";
                     
-                    if (data.expiry) {
+                   ver";
+                    
+                    if ( if (data.expiry)data.expiry) {
+                        const now = Date {
                         const now = Date.now();
-                        const expiryTime = data.expiry.toDate().getTime();
-                        const remainingTime = expiryTime - now;
+.now();
+                        const expiry                        const expiryTime = dataTime = data.expiry.toDate.expiry.toDate().get().getTime();
+                       Time();
+                        const remainingTime const remainingTime = expiryTime = expiryTime - - now;
                         
-                        if (remainingTime > 0) {
-                            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        if ( now;
+                        
+                        if (remainingTime >remainingTime > 0) {
+                            const days = Math.floor( 0) {
+                            const days = Math.floor(remainingTime / (remainingTime / (1001000 * 60 *0 * 60 *  60 * 24));
+60 * 24));
+                                                       const hours = Math.floor const hours = Math.floor((remainingTime % (((remainingTime % (1000 * 1000 * 6060 * 60 * 24 * 60 * 24)) / (1000)) / (1000 * 60 * * 60 * 60));
+                            
+                            if ( 60));
                             
                             if (days > 0) {
-                                timeRemaining = `متبقي ${days} يوم و${hours} ساعة`;
+days > 0) {
+                                timeRemaining = `                                timeRemaining = `متبقي ${days}متبقي ${days} يوم و${hours يوم و${hours} ساعة`;
+                            }} ساعة`;
                             } else {
-                                timeRemaining = `متبقي ${hours} ساعة`;
+                                time else {
+                                timeRemainingRemaining = `متبقي ${ = `متبقي ${hours}hours} ساعة`;
+                            ساعة`;
                             }
                             
-                            statusClass = days < 2 ? "warning" : "normal";
+                            statusClass }
+                            
+                            statusClass = = days < 2 ? "warning" : "normal";
+                        } else days < 2 ? "warning" : "normal";
                         } else {
                             timeRemaining = "انتهت المدة";
+                            statusClass = " {
+                            timeRemaining = "انتهت المدة";
                             statusClass = "expired";
+                       expired";
                         }
                     }
                     
-                    links.push({
-                        id: doc.id,
-                        name: data.name,
+ }
+                    }
+                    
+                    links                    links.push({
+.push({
+                        id                        id: doc.id: doc.id,
+                        name,
+                        name: data.name: data.name,
                         topic: data.topic,
-                        link: data.link,
-                        timestamp: data.timestamp,
-                        expiry: data.expiry,
-                        timeRemaining: timeRemaining,
+                       ,
+                        topic: data.topic,
+                        link: link: data.link,
+                        timestamp: data.link,
+                        timestamp: data data.timestamp,
+                        expiry.timestamp,
+                        expiry:: data.expiry data.expiry,
+                        timeRemaining,
+                        timeRemaining: timeRem: timeRemaining,
+                        statusClass: statusClass
+                    });
+aining,
                         statusClass: statusClass
                     });
                 });
+                });
                 
-                // حفظ في الذاكرة المؤقتة
-                const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
-                cache.set(cacheKey, links);
+                // حفظ في الذاكرة المؤقت                
+                // حفظ في الذاكرة المؤقتةة
+                const cache
+                const cacheKey =Key = `lectures-${ `lectures-${currentSubject}-${currentSubject}-${currentChaptercurrentChapter}`;
+                cache.set}`;
+                cache.set(c(cacheKey, linksacheKey, links);
+                
+);
                 
                 // إخفاء مؤشر التحميل وعرض المحاضرات
-                loadingIndicator.style.display = 'none';
-                renderLinksList(links);
-                updateConnectionStatus(true);
-            }, (error) => {
-                console.error('Error loading videos:', error);
-                loadingIndicator.style.display = 'none';
-                savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">حدث خطأ في تحميل المحاضرات</p>';
+                // إخفاء مؤشر التحميل وعرض المحاضرات
+                loadingIndicator.style                loadingIndicator.style.display =.display = 'none';
+                render 'none';
+                renderLinksLinksList(links);
+List(links);
+                update                updateConnectionStatus(true);
+ConnectionStatus(true);
+            }, (error            }, (error) =>) => {
+                console.error {
+                console.error('Error('Error loading videos:', error loading videos:', error);
+               );
+                loadingIndicator.style.display loadingIndicator.style.display = ' = 'none';
+                savednone';
+                savedLinks.innerHTMLLinks.innerHTML = '<p style = '<p style="text="text-align: center;-align: center; color: color: #aaa; padding #aaa; padding: : 20px;">حدث20px;">حدث خط خطأ في تحميلأ في تحميل المح المحاضرات</pاضرات</p>';
                 updateConnectionStatus(false);
             });
-    } catch (error) {
-        console.error('Error setting up listener:', error);
-        loadingIndicator.style.display = 'none';
-        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">حدث خطأ في تحميل المحاضرات</p>';
-        updateConnectionStatus(false);
+    } catch (>';
+                updateConnectionStatus(false);
+            });
+    } catch (error)error) {
+        console.error {
+        console.error('Error('Error setting up listener:', setting up listener:', error);
+ error);
+        loading        loadingIndicator.style.display =Indicator.style.display = 'none';
+        'none';
+        savedLinks savedLinks.innerHTML = '<p.innerHTML = '<p style style="text-align="text-align: center: center; color: #; color: #aaa;aaa; padding: 20 padding: 20px;">px;">حدث خطأ فيحدث خطأ في تحم تحميل المحاضراتيل المحاضرات</p</p>';
+        updateConnection>';
+        updateConnectionStatus(falseStatus(false);
+    }
+);
     }
 }
 
-// دالة حفظ المحاضرات للجميع بدون تسجيل دخول
-async function saveLinkForAll() {
-    const name = document.getElementById('lectureName').value.trim();
-    const topic = document.getElementById('topicName').value.trim();
-    const link = document.getElementById('lectureLink').value.trim();
-    const duration = document.getElementById('saveDuration').value;
+// د}
+
+// دالة حفظ المحاضالة حفظ المحاضرات للرات للجميع بدون تسجميع بدون تسجيلجيل دخول دخول
+
+async functionasync function saveLinkForAll() {
+    const name = saveLinkForAll() {
+    const name = document.getElementById('lect document.getElementById('lectureNameureName').value').value.trim();
+    const.trim();
+    const topic = topic = document.getElementById('topicName document.getElementById('topicName').value.trim();
+    const link').value.trim();
+    const link = document.getElementById('lecture = document.getElementById('lectureLink').Link').value.trim();
+   value.trim();
+    const duration const duration = document.getElementById(' = document.getElementById('saveDurationsaveDuration').value').value;
     
-    if(!name || !topic || !link) {
-        alert('املأ جميع الحقول!');
+;
+    
+    if(!name    if(!name || ! || !topic ||topic || !link) {
+ !link) {
+        alert('        alert('املأ جميعاملأ جميع الحقول الحقول!');
+        return!');
         return;
+   ;
     }
     
-    // التحقق من صحة رابط اليوتيوب
+    // }
+    
+    // التحقق التحقق من صحة رابط من صحة رابط اليوت اليوتيوبيوب
+    const videoId = getYouTubeId(
     const videoId = getYouTubeId(link);
-    if (!videoId) {
-        alert('رابط اليوتيوب غير صحيح! يرجى إدخال رابط يوتيوب صالح.');
+   link);
+    if (!video if (!videoId)Id) {
+        {
+        alert('رابط الي alert('رابط اليوتوتيوب غير صحيح!يوب غير صحيح! يرجى إدخ يرجى إدخال رابط يوتال رابط يوتيوب صالح.');
+        return;
+يوب صالح.');
         return;
     }
     
-    // حساب وقت الانتهاء
+    // حساب    }
+    
+    // حساب وقت الانته وقت الانتهاء
+   اء
     let expiryDate = null;
     if (duration !== 'forever') {
+        const days = parseInt let expiryDate = null;
+    if (duration !== 'forever') {
         const days = parseInt(duration);
+        expiryDate =(duration);
         expiryDate = new Date();
+        expiryDate new Date();
         expiryDate.setDate(expiryDate.getDate() + days);
+.setDate(expiryDate.getDate() + days);
     }
     
+       }
+    
     try {
-        const lectureData = {
+ try {
+        const lectureData        const lectureData = = {
+            subject: current {
             subject: currentSubject,
             chapter: currentChapter,
+            name: nameSubject,
+            chapter: currentChapter,
             name: name,
+            topic:,
             topic: topic,
-            link: link,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            createdBy: 'public'
+            topic,
+            link: link link: link,
+            timestamp,
+            timestamp: firebase: firebase.firestore.FieldValue.firestore.FieldValue.serverTimestamp(),
+            createdBy.serverTimestamp(),
+            createdBy:: 'public'
+        'public'
         };
         
-        if (expiryDate) {
-            lectureData.expiry = firebase.firestore.Timestamp.fromDate(expiryDate);
+ };
+        
+        if (exp        if (expiryiryDate) {
+            lectureDate) {
+            lectureDataData.expiry.expiry = = firebase firebase.firestore.T.firestore.Timestamp.fromDate(expiryDate);
         }
         
-        await db.collection('lectures').add(lectureData);
+        awaitimestamp.fromDate(expiryDate);
+        }
         
-        alert('تم رفع المحاضرة للجميع بنجاح!');
-        document.getElementById('lectureName').value = "";
-        document.getElementById('topicName').value = "";
-        document.getElementById('lectureLink').value = "";
+        await db.collection db.collection('lectures').('lectures').add(add(lectureData);
+lectureData);
         
-        updateConnectionStatus(true);
-    } catch (error) {
-        console.error('Error saving video:', error);
-        alert('حدث خطأ أثناء حفظ المحاضرة: ' + error.message);
+        alert('تم ر        
+        alert('تم رفع المحفع المحاضرة للجماضرة للجميع بنيع بنجاح!');
+جاح!');
+               document.getElementById('lecture document.getElementById('lectureName').Name').value = "";
+       value = "";
+        document document.getElementById('topicName')..getElementById('topicName').value = "";
+       value = "";
+        document.getElementById(' document.getElementById('lectureLink').valuelectureLink').value = "";
+ = "";
+        
+        updateConnection        
+        updateConnectionStatusStatus(true);
+    }(true);
+    } catch ( catch (error) {
+error) {
+        console        console.error('.error('Error saving video:',Error saving video:', error);
+        alert(' error);
+        alert('حدث خطحدث خطأ أثناء حفظ المحاضأ أثناء حفظ المحاضرة: ' + errorرة: ' + error.message);
+        updateConnectionStatus(false.message);
         updateConnectionStatus(false);
     }
 }
 
-// حفظ رابط سريع محلياً
-function saveQuickLink() {
-    const link = quickLinkInput.value.trim();
+// حفظ رابط س);
+    }
+}
+
+// حفظ رابط سريع محليريع محلياً
+اً
+function saveQuickLinkfunction saveQuickLink() {
+() {
+    const link =    const link = quickLinkInput.value.trim();
+    const quickLinkInput.value.trim();
     const duration = quickSaveDurationSelect.value;
     
     if (!link) return alert('أدخل رابط اليوتيوب أولاً');
     
     const videoId = getYouTubeId(link);
-    if (!videoId) return alert('رابط اليوتيوب غير صحيح');
+ duration = quickSaveDurationSelect.value;
+    
+    if (!link) return alert('أدخل رابط اليوتيوب أولاً');
+    
+    const videoId = getYouTubeId(link);
+    if (!video    if (!videoId) return alert('رابط اليوتيوب غير صحيح');
+    
+    // حساب وقت الانId) return alert('رابط اليوتيوب غير صحيح');
     
     // حساب وقت الانتهاء
+    let expiryDate = nullتهاء
     let expiryDate = null;
     if (duration !== 'forever') {
         const days = parseInt(duration);
+        expiryDate;
+    if (duration !== 'forever') {
+        const days = parseInt(duration);
         expiryDate = new Date();
+        expiryDate.setDate(expiryDate.get = new Date();
         expiryDate.setDate(expiryDate.getDate() + days);
     }
     
-    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
-    quickSaves.push({
+    const quickSaves =Date() + days);
+    }
+    
+    const quickSaves = JSON.parse(localStorage.getItem JSON.parse(localStorage.getItem('quickSaves') ||('quickSaves') '[]');
+    || '[]');
+    quickSaves.push quickSaves.push({
+        link: link,
+        timestamp: Date.now(),
+        expiry: expiryDate ? expiryDate.getTime({
         link: link,
         timestamp: Date.now(),
         expiry: expiryDate ? expiryDate.getTime() : null,
-        duration: duration
+() : null,
+        duration        duration: duration
+   : duration
     });
     
-    localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
-    alert('تم حفظ الرابط محلياً بنجاح!');
+    localStorage.setItem });
+    
+    localStorage.setItem('('quickSaves', JSONquickSaves', JSON.stringify(quickSaves));
+.stringify(quickSaves));
+    alert('تم حفظ الر    alert('تم حفظ الرابط محابط محلياً بنجلياً بنجاحاح!');
 }
 
-// دالة حذف المحاضرة من Firebase
-async function deleteLink(id) {
-    if(confirm('هل أنت متأكد من أنك تريد حذف هذه المحاضرة؟')) {
+// د!');
+}
+
+// دالة حالة حذف المحاضذف المحاضرة منرة من Firebase
+async function Firebase
+async function deleteLink deleteLink(id) {
+    if(confirm('هل أنت(id) {
+    if(confirm('هل أنت متأكد من أن متأكد من أنك تريد حذفك تريد حذف هذه المحاضرة؟')) هذه المحاضرة؟')) {
+        try {
+            await db.collection('lectures').doc(id).delete();
+            
+            // تحديث الذاكرة المؤ {
         try {
             await db.collection('lectures').doc(id).delete();
             
             // تحديث الذاكرة المؤقتة
-            const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
+            constقتة
+            const cacheKey = `lectures cacheKey = `lect-${currentSubject}-${currentChapter}`;
+            const cached = cache.get(cacheures-${currentSubject}-${currentChapter}`;
             const cached = cache.get(cacheKey);
-            if (cached) {
-                const updated = cached.filter(item => item.id !== id);
-                cache.set(cacheKey, updated);
+            ifKey);
+            if ( (cached) {
+               cached) {
+                const updated = cached.filter(item => item const updated = cached.filter(item => item.id !== id);
+.id !== id);
+                cache                cache.set(cacheKey.set(cacheKey, updated, updated);
             }
             
-            updateConnectionStatus(true);
-        } catch (error) {
-            console.error('Error deleting video:', error);
+);
+            }
+            
+            update            updateConnectionStatus(true);
+ConnectionStatus(true);
+        }        } catch (error) catch (error) {
+            {
+            console.error('Error console.error('Error deleting video deleting video:', error);
+           :', error);
             alert('حدث خطأ أثناء حذف المحاضرة: ' + error.message);
             updateConnectionStatus(false);
         }
@@ -1195,29 +1821,80 @@ function getYouTubeId(url) {
 function renderLinksList(links) {
     savedLinks.innerHTML = '';
     
-    if (links.length === 0) {
-        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">لا توجد محاضرات محفوظة بعد</p>';
+    if alert('حدث خطأ أثناء حذف المحاضرة: ' + error.message);
+            updateConnectionStatus(false);
+        }
+    }
+}
+
+// دالة محسنة لاستخراج معرف فيديو يوتيوب من أي نوع من الروابط
+function getYouTubeId(url) {
+    if (!url) return null;
+    
+    // التعامل مع روابط youtube.com
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+    
+    // إذا كان الرابط يحتوي على 11 حرفاً (مثل معرف مباشر)
+    if (url.length === 11 && !url.includes('/') && !url.includes('.')) {
+        return url;
+    }
+    
+    return null;
+}
+
+// عرض قائمة المحاضرات
+function renderLinksList(links) {
+    savedLinks.innerHTML = '';
+    
+    (links.length === 0) {
+        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">لا توجد محاضرات محفو if (links.length === 0) {
+        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">لا توجد محاضراتظة بعد</p>';
         return;
     }
     
     links.forEach((l) => {
-        const videoId = getYouTubeId(l.link);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+        const videoId = محفوظة بعد</p>';
+        return;
+    }
+    
+    links.forEach((l) => {
+        const videoId getYouTubeId(l.link);
+ = getYouTubeId(l.link);
+        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+` : '';
         
         const li = document.createElement('li');
         li.className = 'video-item will-animate';
         
-        li.innerHTML = `
+               
+        const li = document.createElement('li');
+        li.className = 'video-item will-animate';
+        
+        li.innerHTML li.innerHTML = `
+            <div class="video-thumbnail optimized-image" style="background-image: url('${ = `
             <div class="video-thumbnail optimized-image" style="background-image: url('${thumbnailUrl}')" 
-                 onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')"></div>
+                 onclick="playVideothumbnailUrl}')" 
+                 onclick="playVideo('${l.link.replace(/'/g, "('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')"></div>
+            <div class="video-info">
+               \\'")}', '${videoQualitySelect.value}')"></div>
             <div class="video-info">
                 <div class="video-title">
-                    <strong>${l.name}</strong> - ${l.topic}
-                    ${l.timeRemaining ? `<div class="time-remaining ${l.statusClass}">${l.timeRemaining}</div>` : ''}
+                    <strong>${l.name}</strong <div class="video-title">
+                    <strong>> - ${l.topic}
+                    ${l.timeRemaining ? `<div class${l.name}</strong> - ${l.topic}
+                    ${l.timeRemaining ? `<div class="time-="time-remaining ${l.statusClass}">${l.timeRemaining}</remaining ${l.statusClass}">${l.timeRemaining}</div>` : ''}
                 </div>
                 <div class="video-actions">
-                    <button onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')">▶ تشغيل</button>
-                    <button onclick="deleteLink('${l.id}')">🗑 حذف</button>
+                    <button onclick="playdiv>` : ''}
+                </div>
+                <div class="video-actions">
+                    <button onclick="playVideo('${l.link.replace(/'/Video('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}g, "\\'")}', '${videoQualitySelect')">▶ تشغيل</button>
+                    <button onclick="deleteLink.value}')">▶ تشغيل</button>
+                    <button onclick="deleteLink('${l('${l.id}')">🗑 حذف.id}')">🗑 حذف</button>
                 </div>
             </div>
         `;
@@ -1226,9 +1903,28 @@ function renderLinksList(links) {
     });
 }
 
-// دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
+</button>
+                </div>
+            </div>
+        `;
+        
+        savedLinks.appendChild(li);
+    });
+}
+
+// دالة// دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
+function playVideo(link, quality محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
 function playVideo(link, quality = 'default'){
     if(!link) return;
+ = 'default'){
+    if(!link    
+    const videoId = getYouTubeId(link);
+    if (!videoId) {
+        alert('رابط اليوتيوب غير صحيح');
+        return;
+    }
+    
+    let embedUrl) return;
     
     const videoId = getYouTubeId(link);
     if (!videoId) {
@@ -1236,7 +1932,7 @@ function playVideo(link, quality = 'default'){
         return;
     }
     
-    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    let embedUrl = `https://www = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
     
     // إضافة معامل الجودة إذا تم اختيارها
     if (quality !== 'default') {
@@ -1254,8 +1950,33 @@ function playVideo(link, quality = 'default'){
 
 function playNewLink(){
     const link = document.getElementById('lectureLink').value.trim();
-    const quality = videoQualitySelect.value;
+    const quality = video.youtube.com/embed/${videoId}?autoplay=1`;
+    
+    // إضافة معامل الجودة إذا تم اختيارها
+    if (quality !== 'default') {
+        embedUrl += `&vq=${quality}`;
+    }
+    
+    // إضافة معلمات إضافية لتحسين الأداء
+    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+    
+    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    
+    // التمرير إلى الفيديو
+    videoContainer.scrollIntoView({ behavior: 'smooth' });
+}
+
+function playNewLink(){
+    const link = document.getElementById('lectureLink').value.trim();
+    const quality = videoQualityQualitySelect.value;
     if(!link) return alert('أدخل رابط لتشغيله');
+    playVideo(link, quality);
+Select.value;
+}
+
+function backToSubjects(){
+    chaptersPage.classList.add('hidden');
+    subjectsDiv.classList    if(!link) return alert('أدخل رابط لتشغيله');
     playVideo(link, quality);
 }
 
@@ -1264,16 +1985,28 @@ function backToSubjects(){
     subjectsDiv.classList.remove('hidden');
     
     // إلغاء الاشتراك في التحديثات الفورية عند الخروج
+    if (.remove('hidden');
+    
+    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
     if (unsubscribeLectures) {
         unsubscribeLectures();
-        unsubscribeLectures = null;
+        unsubscribeLectures =unsubscribeLectures) {
+        unsubscribeLectures();
+ null;
     }
     
     saveNavigationState();
 }
 
 function backToChapters(){
-    linksPage.classList.add('hidden');
+    linksPage.classList.add('hidden        unsubscribeLectures = null;
+    }
+    
+    saveNavigationState();
+}
+
+function backToChapters(){
+    linksPage.classList.add');
     chaptersPage.classList.remove('hidden');
     
     // إلغاء الاشتراك في التحديثات الفورية عند الخروج
@@ -1342,7 +2075,92 @@ quickPlayBtn.addEventListener('click', ()=>{
     document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 });
 
-// عرض العروض المحفوظة محلياً
+// عرض العروض المح('hidden');
+    chaptersPage.classList.remove('hidden');
+    
+    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
+    if (unsubscribeLectures) {
+        unsubscribeLectures();
+        unsubscribeLectures = null;
+    }
+    
+    saveNavigationState();
+}
+
+function backToMain(){
+    localSavesPage.classList.add('hidden');
+    subjectsDiv.classList.remove('hidden');
+}
+
+// حفظ حالة التصفح
+function saveNavigationState() {
+    const state = {
+        currentSubject: currentSubject,
+        currentChapter: currentChapter,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('navigationState', JSON.stringify(state));
+}
+
+// استعادة حالة التصفح
+function restoreNavigationState() {
+    const stateStr = localStorage.getItem('navigationState');
+    if (!stateStr) return;
+    
+    const state = JSON.parse(stateStr);
+    // إذا مر أقل من 30 دقيقة على حفظ الحالة
+    if (Date.now() - state.timestamp < 1800000) {
+        if (state.currentSubject && state.currentChapter) {
+            openSubject(state.currentSubject);
+            setTimeout(() => openChapter(state.currentChapter), 100);
+        } else if (state.currentSubject) {
+            openSubject(state.currentSubject);
+        }
+    }
+}
+
+// تشغيل سريع
+quickPlayBtn.addEventListener('click', ()=>{
+    const link = quickLinkInput.value.trim();
+    const quality = quickQualitySelect.value;
+    if(!link) return;
+    
+    const videoId = getYouTubeId(link);
+    if (!videoId) {
+        alert('رابط اليوتيوب غير صحيح');
+        return;
+    }
+    
+    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    
+    // إضافة معامل الجودة إذا تم اختيارها
+    if (quality !== 'default') {
+        embedUrl += `&vq=${quality}`;
+    }
+    
+    // إضافة معلمات إضافية لتحسين الأداء
+    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+    
+    document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+});
+
+// عرض العروض المحفوظة محليفوظة محلياً
+function showLocalSaves() {
+    subjectsDiv.classList.add('hidden');
+    chaptersPage.classList.add('hidden');
+    linksPage.classList.add('hidden');
+    localSavesPage.classList.remove('hidden');
+    
+    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
+    if (unsubscribeLectures) {
+        unsubscribeLectures();
+        unsubscribeLectures = null;
+    }
+    
+    loadLocalSaves();
+}
+
+// تحميل العروض المحفوظة محلياًاً
 function showLocalSaves() {
     subjectsDiv.classList.add('hidden');
     chaptersPage.classList.add('hidden');
@@ -1359,15 +2177,24 @@ function showLocalSaves() {
 }
 
 // تحميل العروض المحفوظة محلياً
+
 function loadLocalSaves() {
-    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
+    const quickSaves = JSON.parse(localStorage.getItem('quickfunction loadLocalSaves() {
+    const quickSaves = JSON.parse(localStorage.getItem('quickSaves')Saves') || '[]');
     
     if (quickSaves.length === 0) {
         localSavesList.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
                 <h3>لا توجد عروض محفوظة</h3>
-                <p>لم تقم بحفظ أي عروض محلياً بعد</p>
+                <p>لم تقم بحفظ أي عرو || '[]');
+    
+    if (quickSaves.length === 0) {
+        localSavesList.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>لا توجد عروض محفوظة</h3>
+                <p>لم تقم بحفظ أي عروض محض محلياً بعد</p>
             </div>
         `;
         return;
@@ -1376,7 +2203,16 @@ function loadLocalSaves() {
     let html = '';
     quickSaves.forEach((save, index) => {
         const videoId = getYouTubeId(save.link);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+       لياً بعد</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    quickSaves.forEach((save, index) => {
+        const videoId = getYouTubeId(save.link);
+        const thumbnailUrl const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
         const saveDate = new Date(save.timestamp).toLocaleDateString('ar-SA');
         
         // حساب الوقت المتبقي إن وجد
@@ -1387,13 +2223,38 @@ function loadLocalSaves() {
             
             if (remainingTime > 0) {
                 const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                timeInfo = `<div class="local-save-details">تنتهي بعد: ${days} يوم و${hours} ساعة</div>`;
-            } else {
-                timeInfo = '<div class="local-save-details" style="color:#ff4757">انتهت مدة الحفظ</div>';
+                const hours = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+        const saveDate = new Date(save.timestamp).toLocaleDateString('ar-SA');
+        
+        // حساب الوقت المتبقي إن وجد
+        let timeInfo = '';
+        if (save.expiry) {
+            const now = Date.now();
+            const remainingTime = save.expiry - now;
+            
+            if (remainingTime > 0) {
+                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+ = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                timeInfo = `< * 60));
+                timeInfo = `<div class="local-save-details">تنتهي بعد: ${div class="local-save-details">تنتهي بعد: ${days} يوم و${hours} ساعة</div>`;
+           days} يوم و${hours} ساعة</div>`;
+            } } else {
+                timeInfo = '<div class="local-save-details" style="color:#ff475 else {
+                timeInfo = '<div class="local-save-details7">انتهت مدة الحفظ</div>';
             }
         } else if (save.duration === 'forever') {
-            timeInfo = '<div class="local-save-details">محفوظ إلى الأبد</div>';
+           " style="color:#ff4757">انتهت مدة الحفظ</div>';
+            }
+        } else if (save.duration === 'forever') {
+            timeInfo timeInfo = '<div class="local-save-details">محفوظ إلى الأبد</div>';
+        }
+        
+        html += `
+            <div class="local-save-item">
+                <div class="local-save-header">
+                    <div class="local-save-link">${save.link}</div>
+                    <div class="local-save-actions">
+                        <button onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')">▶ تشغيل</button = '<div class="local-save-details">محفوظ إلى الأبد</div>';
         }
         
         html += `
@@ -1402,6 +2263,7 @@ function loadLocalSaves() {
                     <div class="local-save-link">${save.link}</div>
                     <div class="local-save-actions">
                         <button onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')">▶ تشغيل</button>
+                       >
                         <button onclick="deleteLocalSave(${index})">🗑 حذف</button>
                     </div>
                 </div>
@@ -1450,31 +2312,109 @@ function updateConnectionStatus(connected) {
 playNewBtn.addEventListener('click', playNewLink);
 saveBtn.addEventListener('click', saveLinkForAll);
 quickSaveBtn.addEventListener('click', saveQuickLink);
+themeToggle.addEventListener <button onclick="deleteLocalSave(${index})">🗑 حذف</button>
+                    </div>
+                </div>
+                ${thumbnailUrl ? `<div class="video-thumbnail" style="background-image: url('${thumbnailUrl}')" onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')"></div>` : ''}
+                <div class="local-save-details">
+                    تم الحفظ في: ${saveDate} 
+                    ${save.duration && save.duration !== 'forever' ? `• المدة: ${save.duration} يوم` : ''}
+                </div>
+                ${timeInfo}
+            </div>
+        `;
+    });
+    
+    localSavesList.innerHTML = html;
+}
+
+// حذف عرض محلي
+function deleteLocalSave(index) {
+    if (confirm('هل أنت متأكد من أنك تريد حذف هذا العرض المحفوظ؟')) {
+        const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
+        quickSaves.splice(index, 1);
+        localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
+        loadLocalSaves();
+    }
+}
+
+// تحديث حالة الاتصال
+function updateConnectionStatus(connected) {
+    const statusElement = document.getElementById('connectionStatus');
+    statusElement.classList.remove('hidden');
+    
+    if (connected) {
+        statusElement.innerHTML = '<i class="fas fa-wifi"></i> متصل بقاعدة البيانات';
+        statusElement.className = 'connection-status status-connected';
+    } else {
+        statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> غير متصل بقاعدة البيانات';
+        statusElement.className = 'connection-status status-disconnected';
+    }
+    
+    setTimeout(() => {
+        statusElement.classList.add('hidden');
+    }, 3000);
+}
+
+// ربط الأحداث
+playNewBtn.addEventListener('click', playNewLink);
+saveBtn.addEventListener('click', saveLinkForAll);
+quickSaveBtn.addEventListener('click', saveQuickLink);
+themeToggle.addEventListener('click', toggleTheme);
+('click', toggleTheme);
   
 // تهيئة التطبيق عند التحميل
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     renderSubjects();
     restoreNavigationState();
     
-    // تنظيف المحاضرات المنتهية الصلاحية كل ساعة
+    // تنظيف المحاضرات المنتهية  
+// تهيئة التطبيق عند التحميل
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    renderSubjects();
+    restoreNavigationState();
+    
+    // تنظيف المحاضرات المنتهية الصل الصلاحية كل ساعة
     setInterval(cleanExpiredLectures, 3600000);
 });
 
-// تنظيف المحاضرات المنتهية الصلاحية
+// تنظيف المحاضرات المناحية كل ساعة
+    setInterval(cleanExpiredLectures, 3600000);
+});
+
+// تنظيف المحاضرات المنتهيةتهية الصلاحية
+async function cleanExpiredLectures() {
+    try {
+        const now الصلاحية
 async function cleanExpiredLectures() {
     try {
         const now = firebase.firestore.Timestamp.now();
-        const expiredLectures = await db.collection('lectures')
+        = firebase.firestore.Timestamp.now();
+        const expiredLectures = await const expiredLectures = await db.collection('lectures')
             .where('expiry', '<=', now)
             .get();
         
         const deletePromises = [];
-        expiredLectures.forEach(doc => {
+ db.collection('lectures')
+            .where('expiry', '<=', now)
+            .get();
+        
+        const deletePromises = [];
+        expiredLectures        expiredLectures.forEach(doc => {
+            deletePromises.push(doc.ref.delete());
+        });
+        
+        await Promise.all(.forEach(doc => {
             deletePromises.push(doc.ref.delete());
         });
         
         await Promise.all(deletePromises);
-        console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
+        console.log(`تم حذف ${deletePromises.length} محdeletePromises);
+        console.log(`تم حذف ${deletePromises.length} محاضرةاضرة منتهية الصلاحية`);
+        updateConnectionStatus(true);
+    } catch (error منتهية الصلاحية`);
         updateConnectionStatus(true);
     } catch (error) {
         console.error('Error cleaning expired lectures:', error);
@@ -1482,7 +2422,15 @@ async function cleanExpiredLectures() {
     }
 }
 
+// إضافة معالجة) {
+        console.error('Error cleaning expired lectures:', error);
+        updateConnectionStatus(false);
+    }
+}
+
 // إضافة معالجة أخطاء الشبكة
+window.addEventListener('online', () => {
+ أخطاء الشبكة
 window.addEventListener('online', () => {
     console.log("أصبح التطبيق متصلاً بالإنترنت");
     updateConnectionStatus(true);
