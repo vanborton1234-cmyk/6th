@@ -8,7 +8,6 @@
     <!-- استخدام إصدار متوافق من Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         /* أنماط CSS الأساسية */
         :root {
@@ -317,131 +316,21 @@
             display: none;
         }
         
-        /* مشغل الفيديو المتقدم */
-        #videoContainer,
-        #quickContainer {
-            position: relative;
+        #videoContainer iframe,
+        #quickContainer iframe {
             width: 100%;
-            margin-top: 25px;
+            height: 500px;
             border-radius: 15px;
-            overflow: hidden;
+            margin-top: 25px;
+            border: none;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
-        [data-theme="light"] #videoContainer,
-        [data-theme="light"] #quickContainer {
+        [data-theme="light"] #videoContainer iframe,
+        [data-theme="light"] #quickContainer iframe {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
-
-        .youtube-player {
-            width: 100%;
-            height: 500px;
-            border: none;
-        }
-
-        .video-controls-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        #videoContainer:hover .video-controls-overlay,
-        #quickContainer:hover .video-controls-overlay {
-            opacity: 1;
-        }
-
-        .control-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .control-btn-large {
-            width: 80px;
-            height: 80px;
-            font-size: 28px;
-        }
-
-        .progress-container {
-            position: absolute;
-            bottom: 100px;
-            left: 20px;
-            right: 20px;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--primary-color);
-            border-radius: 3px;
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-
-        .time-display {
-            position: absolute;
-            bottom: 110px;
-            color: white;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px 10px;
-            border-radius: 10px;
-        }
-
-        .current-time {
-            left: 20px;
-        }
-
-        .duration {
-            right: 20px;
-        }
-
-        .pip-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .pip-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
-        }
-
-        /* بقية الأنماط تبقى كما هي */
+        
         ul {
             padding: 0;
             list-style: none;
@@ -851,7 +740,8 @@
                 min-width: 100%;
             }
             
-            .youtube-player {
+            #videoContainer iframe,
+            #quickContainer iframe {
                 height: 300px;
             }
             
@@ -895,23 +785,6 @@
                 margin-top: 10px;
                 width: 100%;
                 justify-content: space-between;
-            }
-
-            .control-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 16px;
-            }
-
-            .control-btn-large {
-                width: 60px;
-                height: 60px;
-                font-size: 22px;
-            }
-
-            .video-controls-overlay {
-                gap: 20px;
-                padding: 15px;
             }
         }
 
@@ -964,13 +837,13 @@
             <i class="fas fa-moon"></i>
         </button>
         
-        <h1>مدرسة ثانوية اور المختلطة الالكترونية - للصف السادس العلمي</h1>
+        <h1>الدروس الالكترونية - للصف السادس العلمي</h1>
         <p>تم تصميم هذا الموقع لطلّاب السادس</p>
         
         <div class="top-buttons">
-            <a class="action-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
+            <a class="action-btn" href="https://t.me/N7BBOT" target="_blank">🚀 نظم وقتك</a>
             <a class="action-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
-            <a class="action-btn" href="https://t.me/manasaate" target="_blank">📺 قناة التحدي</a>
+            <a class="action-btn" href="https://t.me/manasaate" target="_blank">📺 قناة عامة</a>
             <a class="action-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
             <button class="action-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button>
         </div>
@@ -1165,8 +1038,6 @@ const themeToggle = document.getElementById('themeToggle');
 
 let currentSubject = "", currentChapter = "";
 let unsubscribeLectures = null; // دالة إلغاء الاشتراك في التحديثات الفورية
-let youtubePlayer = null;
-let quickYoutubePlayer = null;
 
 // تحسين الأداء: التخزين المحلي للبيانات
 const cache = {
@@ -1527,7 +1398,7 @@ function renderLinksList(links) {
     });
 }
 
-// دالة محسنة لتشغيل الفيديو مع مشغل متقدم
+// دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
 function playVideo(link, quality = 'default'){
     if(!link) return;
     
@@ -1537,276 +1408,27 @@ function playVideo(link, quality = 'default'){
         return;
     }
     
-    videoContainer.innerHTML = `
-        <div id="player"></div>
-        <button class="pip-btn" onclick="togglePictureInPicture()">
-            <i class="fas fa-compress"></i> وضع النافذة العائمة
-        </button>
-        <div class="video-controls-overlay">
-            <button class="control-btn" onclick="seekBackward()">
-                <i class="fas fa-backward"></i> 10
-            </button>
-            <button class="control-btn control-btn-large" id="playPauseBtn" onclick="togglePlayPause()">
-                <i class="fas fa-play"></i>
-            </button>
-            <button class="control-btn" onclick="seekForward()">
-                <i class="fas fa-forward"></i> 10
-            </button>
-        </div>
-        <div class="progress-container" onclick="seekToTime(event)">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div class="time-display current-time" id="currentTime">0:00</div>
-        <div class="time-display duration" id="duration">0:00</div>
-    `;
+    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
     
-    // تهيئة مشغل YouTube
-    youtubePlayer = new YT.Player('player', {
-        height: '500',
-        width: '100%',
-        videoId: videoId,
-        playerVars: {
-            'playsinline': 1,
-            'rel': 0,
-            'modestbranding': 1,
-            'autohide': 1,
-            'showinfo': 0,
-            'iv_load_policy': 3
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
+    // إضافة معامل الجودة إذا تم اختيارها
+    if (quality !== 'default') {
+        embedUrl += `&vq=${quality}`;
+    }
+    
+    // إضافة معلمات إضافية لتحسين الأداء
+    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+    
+    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
     // التمرير إلى الفيديو
     videoContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
-// دالة تشغيل سريع مع مشغل متقدم
-function playQuickVideo(){
-    const link = quickLinkInput.value.trim();
-    if(!link) return;
-    
-    const videoId = getYouTubeId(link);
-    if (!videoId) {
-        alert('رابط اليوتيوب غير صحيح');
-        return;
-    }
-    
-    document.getElementById('quickContainer').innerHTML = `
-        <div id="quickPlayer"></div>
-        <button class="pip-btn" onclick="toggleQuickPictureInPicture()">
-            <i class="fas fa-compress"></i> وضع النافذة العائمة
-        </button>
-        <div class="video-controls-overlay">
-            <button class="control-btn" onclick="quickSeekBackward()">
-                <i class="fas fa-backward"></i> 10
-            </button>
-            <button class="control-btn control-btn-large" id="quickPlayPauseBtn" onclick="quickTogglePlayPause()">
-                <i class="fas fa-play"></i>
-            </button>
-            <button class="control-btn" onclick="quickSeekForward()">
-                <i class="fas fa-forward"></i> 10
-            </button>
-        </div>
-        <div class="progress-container" onclick="quickSeekToTime(event)">
-            <div class="progress-bar" id="quickProgressBar"></div>
-        </div>
-        <div class="time-display current-time" id="quickCurrentTime">0:00</div>
-        <div class="time-display duration" id="quickDuration">0:00</div>
-    `;
-    
-    // تهيئة مشغل YouTube السريع
-    quickYoutubePlayer = new YT.Player('quickPlayer', {
-        height: '500',
-        width: '100%',
-        videoId: videoId,
-        playerVars: {
-            'playsinline': 1,
-            'rel': 0,
-            'modestbranding': 1,
-            'autohide': 1,
-            'showinfo': 0,
-            'iv_load_policy': 3
-        },
-        events: {
-            'onReady': onQuickPlayerReady,
-            'onStateChange': onQuickPlayerStateChange
-        }
-    });
-}
-
-// أحداث المشغل الرئيسي
-function onPlayerReady(event) {
-    updateProgressBar();
-    updateTimeDisplay();
-}
-
-function onPlayerStateChange(event) {
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    if (event.data == YT.PlayerState.PLAYING) {
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-    }
-    updateProgressBar();
-    updateTimeDisplay();
-}
-
-// أحداث المشغل السريع
-function onQuickPlayerReady(event) {
-    updateQuickProgressBar();
-    updateQuickTimeDisplay();
-}
-
-function onQuickPlayerStateChange(event) {
-    const quickPlayPauseBtn = document.getElementById('quickPlayPauseBtn');
-    if (event.data == YT.PlayerState.PLAYING) {
-        quickPlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        quickPlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-    }
-    updateQuickProgressBar();
-    updateQuickTimeDisplay();
-}
-
-// وظائف التحكم للمشغل الرئيسي
-function togglePlayPause() {
-    if (youtubePlayer.getPlayerState() == YT.PlayerState.PLAYING) {
-        youtubePlayer.pauseVideo();
-    } else {
-        youtubePlayer.playVideo();
-    }
-}
-
-function seekForward() {
-    const currentTime = youtubePlayer.getCurrentTime();
-    youtubePlayer.seekTo(currentTime + 10, true);
-}
-
-function seekBackward() {
-    const currentTime = youtubePlayer.getCurrentTime();
-    youtubePlayer.seekTo(currentTime - 10, true);
-}
-
-function seekToTime(event) {
-    const progressContainer = event.currentTarget;
-    const clickPosition = (event.clientX - progressContainer.getBoundingClientRect().left) / progressContainer.offsetWidth;
-    const duration = youtubePlayer.getDuration();
-    youtubePlayer.seekTo(duration * clickPosition, true);
-}
-
-function updateProgressBar() {
-    if (youtubePlayer && youtubePlayer.getDuration) {
-        const currentTime = youtubePlayer.getCurrentTime();
-        const duration = youtubePlayer.getDuration();
-        const progress = (currentTime / duration) * 100;
-        document.getElementById('progressBar').style.width = progress + '%';
-        
-        setTimeout(updateProgressBar, 1000);
-    }
-}
-
-function updateTimeDisplay() {
-    if (youtubePlayer && youtubePlayer.getCurrentTime && youtubePlayer.getDuration) {
-        const currentTime = formatTime(youtubePlayer.getCurrentTime());
-        const duration = formatTime(youtubePlayer.getDuration());
-        document.getElementById('currentTime').textContent = currentTime;
-        document.getElementById('duration').textContent = duration;
-        
-        setTimeout(updateTimeDisplay, 1000);
-    }
-}
-
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-}
-
-async function togglePictureInPicture() {
-    try {
-        if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-        } else if (document.pictureInPictureEnabled) {
-            const videoElement = document.querySelector('#player iframe');
-            if (videoElement) {
-                await videoElement.requestPictureInPicture();
-            }
-        }
-    } catch (error) {
-        console.error('Error toggling Picture-in-Picture:', error);
-    }
-}
-
-// وظائف التحكم للمشغل السريع
-function quickTogglePlayPause() {
-    if (quickYoutubePlayer.getPlayerState() == YT.PlayerState.PLAYING) {
-        quickYoutubePlayer.pauseVideo();
-    } else {
-        quickYoutubePlayer.playVideo();
-    }
-}
-
-function quickSeekForward() {
-    const currentTime = quickYoutubePlayer.getCurrentTime();
-    quickYoutubePlayer.seekTo(currentTime + 10, true);
-}
-
-function quickSeekBackward() {
-    const currentTime = quickYoutubePlayer.getCurrentTime();
-    quickYoutubePlayer.seekTo(currentTime - 10, true);
-}
-
-function quickSeekToTime(event) {
-    const progressContainer = event.currentTarget;
-    const clickPosition = (event.clientX - progressContainer.getBoundingClientRect().left) / progressContainer.offsetWidth;
-    const duration = quickYoutubePlayer.getDuration();
-    quickYoutubePlayer.seekTo(duration * clickPosition, true);
-}
-
-function updateQuickProgressBar() {
-    if (quickYoutubePlayer && quickYoutubePlayer.getDuration) {
-        const currentTime = quickYoutubePlayer.getCurrentTime();
-        const duration = quickYoutubePlayer.getDuration();
-        const progress = (currentTime / duration) * 100;
-        document.getElementById('quickProgressBar').style.width = progress + '%';
-        
-        setTimeout(updateQuickProgressBar, 1000);
-    }
-}
-
-function updateQuickTimeDisplay() {
-    if (quickYoutubePlayer && quickYoutubePlayer.getCurrentTime && quickYoutubePlayer.getDuration) {
-        const currentTime = formatTime(quickYoutubePlayer.getCurrentTime());
-        const duration = formatTime(quickYoutubePlayer.getDuration());
-        document.getElementById('quickCurrentTime').textContent = currentTime;
-        document.getElementById('quickDuration').textContent = duration;
-        
-        setTimeout(updateQuickTimeDisplay, 1000);
-    }
-}
-
-async function toggleQuickPictureInPicture() {
-    try {
-        if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-        } else if (document.pictureInPictureEnabled) {
-            const videoElement = document.querySelector('#quickPlayer iframe');
-            if (videoElement) {
-                await videoElement.requestPictureInPicture();
-            }
-        }
-    } catch (error) {
-        console.error('Error toggling Picture-in-Picture:', error);
-    }
-}
-
 function playNewLink(){
     const link = document.getElementById('lectureLink').value.trim();
+    const quality = videoQualitySelect.value;
     if(!link) return alert('أدخل رابط لتشغيله');
-    playVideo(link, videoQualitySelect.value);
+    playVideo(link, quality);
 }
 
 function backToSubjects(){
@@ -1868,10 +1490,29 @@ function restoreNavigationState() {
 }
 
 // تشغيل سريع
-quickPlayBtn.addEventListener('click', playQuickVideo);
-
-// حفظ رابط سريع
-quickSaveBtn.addEventListener('click', saveQuickLink);
+quickPlayBtn.addEventListener('click', ()=>{
+    const link = quickLinkInput.value.trim();
+    const quality = quickQualitySelect.value;
+    if(!link) return;
+    
+    const videoId = getYouTubeId(link);
+    if (!videoId) {
+        alert('رابط اليوتيوب غير صحيح');
+        return;
+    }
+    
+    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    
+    // إضافة معامل الجودة إذا تم اختيارها
+    if (quality !== 'default') {
+        embedUrl += `&vq=${quality}`;
+    }
+    
+    // إضافة معلمات إضافية لتحسين الأداء
+    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+    
+    document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+});
 
 // عرض العروض المحفوظة محلياً
 function showLocalSaves() {
@@ -1980,6 +1621,7 @@ function updateConnectionStatus(connected) {
 // ربط الأحداث
 playNewBtn.addEventListener('click', playNewLink);
 saveBtn.addEventListener('click', saveLinkForAll);
+quickSaveBtn.addEventListener('click', saveQuickLink);
 themeToggle.addEventListener('click', toggleTheme);
   
 // تهيئة التطبيق عند التحميل
