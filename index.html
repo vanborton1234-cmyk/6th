@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -6,37 +6,34 @@
     <title>منصة تجلّي أكاديمي - الصف السادس العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- استخدام إصدار متوافق من Firebase -->
-    <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
-    authDomain: "project-e1da3.firebaseapp.com",
-    projectId: "project-e1da3",
-    storageBucket: "project-e1da3.firebasestorage.app",
-    messagingSenderId: "560086523718",
-    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
-    measurementId: "G-ZVS3WY5NT2"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const db = getFirestore(app);
-</script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
-        /* أنماط CSS الموجودة سابقًا */
+        /* أنماط CSS الأساسية */
         :root {
             --primary-color: #00ccff;
             --secondary-color: #007bff;
+            --accent-color: #ff6b6b;
+            --success-color: #38ff5c;
+            --warning-color: #ffcc00;
             --dark-bg: #0b0b0b;
             --card-bg: linear-gradient(135deg, #007bff, #00aaff);
             --header-bg: linear-gradient(135deg, #001f4d 0%, #003580 100%);
             --text-color: #fff;
             --card-hover: linear-gradient(135deg, #00aaff, #00ccff);
-            --success-color: #38ff5c;
-            --warning-color: #ffcc00;
+        }
+
+        [data-theme="light"] {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --dark-bg: #f8f9fa;
+            --card-bg: linear-gradient(135deg, #4facfe, #00f2fe);
+            --header-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-color: #333;
+            --card-hover: linear-gradient(135deg, #00f2fe, #4facfe);
         }
         
         * {
@@ -52,6 +49,11 @@
             line-height: 1.8;
             padding: 20px;
             min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #e9ecef 100%);
         }
         
         .container {
@@ -61,6 +63,12 @@
             background: rgba(15, 15, 15, 0.9);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .container {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
         header {
@@ -72,6 +80,47 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--primary-color);
             animation: float 6s ease-in-out infinite;
+            position: relative;
+        }
+
+        [data-theme="light"] header {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .top-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            color: #333;
+            background: rgba(0, 0, 0, 0.1);
         }
         
         @keyframes float {
@@ -85,34 +134,42 @@
             margin-bottom: 15px;
             text-shadow: 0 2px 10px rgba(0, 204, 255, 0.5);
         }
+
+        [data-theme="light"] header h1 {
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
         
         header p {
             font-size: 22px;
             color: #e0e0e0;
             margin: 12px 0;
         }
+
+        [data-theme="light"] header p {
+            color: #fff;
+        }
         
-        .developer-btn, .challenge-btn {
+        .action-btn {
             display: inline-block;
-            padding: 15px 30px;
+            padding: 12px 25px;
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-color);
+            color: white;
             border-radius: 14px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 20px;
-            margin: 15px 5px;
-            animation: pulse 1.8s infinite alternate, float 4s ease-in-out infinite;
+            font-size: 18px;
+            margin: 8px 5px;
             box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            animation: pulse 1.8s infinite alternate;
         }
         
-        .developer-btn:hover, .challenge-btn:hover {
+        .action-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 123, 255, 0.6);
-            animation: pulse 1.8s infinite alternate, float 3s ease-in-out infinite;
         }
         
         @keyframes pulse {
@@ -135,6 +192,11 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .quick-player {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
         
         .quick-player h3 {
             margin-top: 0;
@@ -142,6 +204,10 @@
             color: var(--primary-color);
             margin-bottom: 25px;
             text-align: center;
+        }
+
+        [data-theme="light"] .quick-player h3 {
+            color: #007bff;
         }
         
         input, select {
@@ -155,6 +221,13 @@
             font-size: 20px;
             transition: all 0.3s ease;
         }
+
+        [data-theme="light"] input, 
+        [data-theme="light"] select {
+            background: #fff;
+            color: #333;
+            border: 2px solid #4facfe;
+        }
         
         input:focus, select:focus {
             outline: none;
@@ -162,9 +235,20 @@
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
             background: #2a2a2a;
         }
+
+        [data-theme="light"] input:focus, 
+        [data-theme="light"] select:focus {
+            background: #fff;
+            border-color: #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+        }
         
         input::placeholder {
             color: #aaa;
+        }
+
+        [data-theme="light"] input::placeholder {
+            color: #888;
         }
         
         button {
@@ -172,21 +256,19 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            background: linear-gradient(45deg, var(--primary-color), #00aaff);
-            color: #000;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
             font-weight: bold;
             margin: 15px;
             transition: all 0.3s ease;
             font-size: 20px;
             box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
-            animation: float 5s ease-in-out infinite;
         }
         
         button:hover {
             background: linear-gradient(45deg, #00ffdd, var(--primary-color));
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 204, 255, 0.5);
-            animation: float 3s ease-in-out infinite;
         }
         
         .grid {
@@ -198,7 +280,7 @@
         
         .card {
             background: var(--card-bg);
-            color: var(--text-color);
+            color: white;
             padding: 40px 30px;
             border-radius: 18px;
             font-weight: bold;
@@ -214,12 +296,20 @@
             border: 2px solid rgba(255, 255, 255, 0.1);
             animation: float 6s ease-in-out infinite;
         }
+
+        [data-theme="light"] .card {
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
         
         .card:hover {
             transform: scale(1.05) translateY(-10px);
             box-shadow: 0 15px 35px rgba(0, 123, 255, 0.5);
             background: var(--card-hover);
             animation: float 4s ease-in-out infinite;
+        }
+
+        [data-theme="light"] .card:hover {
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.5);
         }
         
         .hidden {
@@ -234,6 +324,11 @@
             margin-top: 25px;
             border: none;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] #videoContainer iframe,
+        [data-theme="light"] #quickContainer iframe {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
         
         ul {
@@ -254,10 +349,19 @@
             align-items: center;
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] li {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         li strong {
             font-size: 22px;
             color: var(--primary-color);
+        }
+
+        [data-theme="light"] li strong {
+            color: #007bff;
         }
         
         .video-quality {
@@ -271,11 +375,19 @@
             border-radius: 12px;
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .video-quality {
+            background: rgba(255, 255, 255, 0.5);
+        }
         
         .video-quality label {
             margin-right: 20px;
             font-size: 22px;
             color: var(--primary-color);
+        }
+
+        [data-theme="light"] .video-quality label {
+            color: #007bff;
         }
         
         .video-quality select {
@@ -287,6 +399,11 @@
             font-size: 18px;
             min-width: 200px;
         }
+
+        [data-theme="light"] .video-quality select {
+            background: #fff;
+            color: #333;
+        }
         
         h2 {
             font-size: 36px;
@@ -296,6 +413,11 @@
             text-shadow: 0 2px 5px rgba(0, 204, 255, 0.3);
             animation: float 6s ease-in-out infinite;
         }
+
+        [data-theme="light"] h2 {
+            color: #007bff;
+            text-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+        }
         
         h3 {
             font-size: 32px;
@@ -303,6 +425,10 @@
             text-align: center;
             color: #00ffdd;
             animation: float 5s ease-in-out infinite;
+        }
+
+        [data-theme="light"] h3 {
+            color: #00b894;
         }
         
         .chapter-buttons {
@@ -350,6 +476,11 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .video-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         .video-thumbnail {
             width: 100%;
@@ -377,6 +508,10 @@
             color: var(--primary-color);
             flex: 1;
         }
+
+        [data-theme="light"] .video-title {
+            color: #007bff;
+        }
         
         .video-actions {
             display: flex;
@@ -391,6 +526,10 @@
             border-radius: 10px;
             margin-top: 20px;
         }
+
+        [data-theme="light"] .playlist-container {
+            background: rgba(255, 255, 255, 0.5);
+        }
         
         .floating-btn-container {
             position: fixed;
@@ -403,13 +542,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
             padding: 15px 25px;
-            background: linear-gradient(135deg, #6bff8d, #38ff5c);
+            background: linear-gradient(135deg, var(--accent-color), #ff8e8e);
             color: white;
             text-decoration: none;
             border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(107, 255, 141, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
             transition: all 0.3s ease;
             animation: floating 3s ease-in-out infinite;
             font-weight: bold;
@@ -419,7 +557,7 @@
         
         .floating-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(107, 255, 141, 0.6);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
         }
         
         @keyframes floating {
@@ -429,27 +567,6 @@
             50% { 
                 transform: translateY(-10px); 
             }
-        }
-        
-        .bottom-developer-btn {
-            display: block;
-            margin: 30px auto 10px;
-            width: fit-content;
-            text-align: center;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-color);
-            padding: 15px 30px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-        }
-        
-        .bottom-developer-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
         }
         
         .loading {
@@ -477,6 +594,10 @@
             font-size: 20px;
             color: var(--primary-color);
             margin-right: 15px;
+        }
+
+        [data-theme="light"] .save-duration label {
+            color: #007bff;
         }
         
         .save-duration select {
@@ -533,6 +654,11 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             animation: float 5s ease-in-out infinite;
         }
+
+        [data-theme="light"] .local-save-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
         
         .local-save-header {
             display: flex;
@@ -546,6 +672,10 @@
             word-break: break-all;
             font-size: 18px;
         }
+
+        [data-theme="light"] .local-save-link {
+            color: #007bff;
+        }
         
         .local-save-actions {
             display: flex;
@@ -557,11 +687,19 @@
             font-size: 14px;
             margin-top: 10px;
         }
+
+        [data-theme="light"] .local-save-details {
+            color: #666;
+        }
         
         .empty-state {
             text-align: center;
             padding: 40px;
             color: #aaa;
+        }
+
+        [data-theme="light"] .empty-state {
+            color: #666;
         }
         
         .empty-state i {
@@ -580,6 +718,13 @@
             
             header h1 {
                 font-size: 32px;
+            }
+            
+            .theme-toggle {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 10px auto;
             }
             
             .grid {
@@ -653,6 +798,10 @@
             max-height: 200px;
             overflow-y: auto;
         }
+
+        [data-theme="light"] .debug-info {
+            background: rgba(0, 0, 0, 0.1);
+        }
         
         .status-connected {
             color: #38ff5c;
@@ -671,6 +820,12 @@
             font-weight: bold;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        [data-theme="light"] .connection-status {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
         }
     </style>
 </head>
@@ -678,11 +833,20 @@
 
 <div class="container">
     <header>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        
         <h1>منصة تجلّي أكاديمي - للصف السادس العلمي</h1>
         <p>تم تصميم هذا الموقع لطلّاب السادس</p>
-        <div>
-            <a class="challenge-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
-            <button class="developer-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button> 
+        
+        <div class="top-buttons">
+            <a class="action-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
+            <a class="action-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
+            <a class="action-btn" href="https://t.me/manasaate" target="_blank">📺 قناة التحدي</a>
+            <a class="action-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
+            <button class="action-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button>
+        </div>
     </header>
 
     <div class="quick-player">
@@ -709,7 +873,7 @@
         </div>
         <div style="text-align: center;">
             <button id="quickPlayBtn">▶ تشغيل</button>
-            <button id="quickSaveBtn">💾 حفظ الرابط </button>
+            <button id="quickSaveBtn"> حفظ الرابط </button>
         </div>
         <div id="quickContainer"></div>
     </div>
@@ -780,11 +944,6 @@
         </div>
         <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسية</button>
     </div>
-    
-    <a class="bottom-developer-btn" href="https://t.me/DA_ali_1a" target="_blank">👨‍💻 المطور : علي يوسف</a>
-    <a class="bottom-developer-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
-    <a class="bottom-developer-btn" href="https://t.me/asdfgbnrt" target="_blank">📺 قناة التحدي</a><br>
-    <a class="bottom-developer-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
 </div>
 
 <div class="floating-btn-container">
@@ -821,10 +980,9 @@ const firebaseConfig = {
     measurementId: "G-ZVS3WY5NT2"
 };
 
-// تهيئة Firebase مرة واحدة فقط
+// تهيئة Firebase بدون مصادقة
 let firebaseApp;
 let db;
-let auth;
 
 try {
     if (!firebase.apps.length) {
@@ -834,9 +992,8 @@ try {
         firebaseApp = firebase.app();
     }
     
-    // تهيئة Firestore و Authentication
+    // تهيئة Firestore فقط
     db = firebase.firestore();
-    auth = firebase.auth();
     
     // تمكين الثبات بدون اتصال
     db.enablePersistence()
@@ -846,39 +1003,12 @@ try {
         })
         .catch((err) => {
             console.error("خطأ في تمكين الثبات بدون اتصال:", err);
-            if (err.code === 'failed-precondition') {
-                console.warn("يتم فتح التطبيق في أكثر من تبويب، سيتم تعطيل الثبات بدون اتصال");
-            } else if (err.code === 'unimplemented') {
-                console.warn("المتصفح لا يدعم الثبات بدون اتصال");
-            }
+            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
         });
-    
-    // تسجيل الدخول كمستخدم مجهول للوصول الآمن
-    auth.signInAnonymously()
-        .then(() => {
-            console.log("تم تسجيل الدخول كمستخدم مجهول");
-            updateConnectionStatus(true);
-        })
-        .catch((error) => {
-            console.error("خطأ في تسجيل الدخول المجهول:", error);
-            updateConnectionStatus(false);
-        });
-        
-    // مراقبة حالة المصادقة
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log("المستخدم مجهول مسجل:", user.uid);
-            updateConnectionStatus(true);
-        } else {
-            console.log("لا يوجد مستخدم مسجل");
-            updateConnectionStatus(false);
-        }
-    });
     
 } catch (error) {
     console.error("Firebase initialization error:", error);
     updateConnectionStatus(false);
-    alert("حدث خطأ في تهيئة قاعدة البيانات. يرجى التحقق من اتصال الإنترنت وإعادة تحميل الصفحة.");
 }
 
 // العناصر في DOM
@@ -904,6 +1034,7 @@ const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
 const playlistContainer = document.getElementById('playlistContainer');
 const loadingIndicator = document.getElementById('loadingIndicator');
 const connectionStatus = document.getElementById('connectionStatus');
+const themeToggle = document.getElementById('themeToggle');
 
 let currentSubject = "", currentChapter = "";
 let unsubscribeLectures = null; // دالة إلغاء الاشتراك في التحديثات الفورية
@@ -930,15 +1061,35 @@ const cache = {
     }
 };
 
+// إدارة الثيم
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const icon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+        icon.className = 'fas fa-moon';
+    } else {
+        icon.className = 'fas fa-sun';
+    }
+}
+
 // إنشاء مربعات المواد مع تحسين الأداء
 function renderSubjects() {
-    const cached = cache.get('subjects');
-    if (cached) {
-        subjectsDiv.innerHTML = cached;
-        attachSubjectEvents();
-        updateConnectionStatus(true);
-        return;
-    }
+    // مسح المحتوى الحالي
+    subjectsDiv.innerHTML = '';
 
     let html = '';
     Object.keys(subjectsData).forEach(sub => {
@@ -1083,23 +1234,17 @@ function loadLinksForAll() {
     }
 }
 
+// دالة حفظ المحاضرات للجميع بدون تسجيل دخول
 async function saveLinkForAll() {
-  // تحقق من أن المستخدم مسجل وليس مجهولاً - الكود الجديد
-  if (!auth.currentUser || auth.currentUser.isAnonymous) {
-    alert('يجب تسجيل الدخول بحساب دائم (بريد إلكتروني) لإضافة محاضرات');
-    return;
-  }
-  
-  const name = document.getElementById('lectureName').value.trim();
-  const topic = document.getElementById('topicName').value.trim();
-  const link = document.getElementById('lectureLink').value.trim();
-  const duration = document.getElementById('saveDuration').value;
-  
-  if(!name || !topic || !link) {
-    alert('املأ جميع الحقول!');
-    return;
-  }
-  // ... rest of the function remains the same
+    const name = document.getElementById('lectureName').value.trim();
+    const topic = document.getElementById('topicName').value.trim();
+    const link = document.getElementById('lectureLink').value.trim();
+    const duration = document.getElementById('saveDuration').value;
+    
+    if(!name || !topic || !link) {
+        alert('املأ جميع الحقول!');
+        return;
+    }
     
     // التحقق من صحة رابط اليوتيوب
     const videoId = getYouTubeId(link);
@@ -1117,11 +1262,6 @@ async function saveLinkForAll() {
     }
     
     try {
-        // التحقق من اتصال Firebase
-        if (!db) {
-            throw new Error("لا يوجد اتصال بقاعدة البيانات");
-        }
-        
         const lectureData = {
             subject: currentSubject,
             chapter: currentChapter,
@@ -1129,7 +1269,7 @@ async function saveLinkForAll() {
             topic: topic,
             link: link,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            createdBy: auth.currentUser ? auth.currentUser.uid : 'anonymous'
+            createdBy: 'public'
         };
         
         if (expiryDate) {
@@ -1143,7 +1283,6 @@ async function saveLinkForAll() {
         document.getElementById('topicName').value = "";
         document.getElementById('lectureLink').value = "";
         
-        // لا داعي لإعادة تحميل المحاضرات لأن الـ listener سيتلقى التحديث تلقائياً
         updateConnectionStatus(true);
     } catch (error) {
         console.error('Error saving video:', error);
@@ -1196,7 +1335,6 @@ async function deleteLink(id) {
                 cache.set(cacheKey, updated);
             }
             
-            // لا داعي لإعادة تحميل المحاضرات لأن الـ listener سيتلقى التحديث تلقائياً
             updateConnectionStatus(true);
         } catch (error) {
             console.error('Error deleting video:', error);
@@ -1480,13 +1618,15 @@ function updateConnectionStatus(connected) {
     }, 3000);
 }
 
-// ربط الأحداث - الكود المعدل
+// ربط الأحداث
 playNewBtn.addEventListener('click', playNewLink);
-saveBtn.addEventListener('click', checkAuthBeforeSave); // تغيير هنا
+saveBtn.addEventListener('click', saveLinkForAll);
 quickSaveBtn.addEventListener('click', saveQuickLink);
+themeToggle.addEventListener('click', toggleTheme);
   
 // تهيئة التطبيق عند التحميل
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     renderSubjects();
     restoreNavigationState();
     
@@ -1526,68 +1666,6 @@ window.addEventListener('offline', () => {
     console.log("فقد التطبيق الاتصال بالإنترنت");
     updateConnectionStatus(false);
 });
-  // دالة التحقق قبل الحفظ - جديدة
-function checkAuthBeforeSave() {
-  if (!auth.currentUser || auth.currentUser.isAnonymous) {
-    if (confirm('لإضافة محاضرات، يجب التسجيل بحساب دائم. هل تريد التسجيل الآن؟')) {
-      showSignUpForm();
-    }
-    return false;
-  }
-  saveLinkForAll();
-  return true;
-}
-
-// دالة لعرض نموذج التسجيل - جديدة
-function showSignUpForm() {
-  const signUpHTML = `
-    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                background: rgba(0,0,0,0.8); display: flex; justify-content: center; 
-                align-items: center; z-index: 10000;">
-      <div style="background: #222; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;">
-        <h3 style="color: var(--primary-color); text-align: center;">التسجيل بحساب جديد</h3>
-        <input type="email" id="signupEmail" placeholder="البريد الإلكتروني" style="width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px;">
-        <input type="password" id="signupPassword" placeholder="كلمة المرور" style="width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px;">
-        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-          <button onclick="closeSignUpForm()" style="padding: 10px 20px; background: #555;">إلغاء</button>
-          <button onclick="signUpWithEmail()" style="padding: 10px 20px; background: var(--primary-color);">تسجيل</button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  const signUpDiv = document.createElement('div');
-  signUpDiv.innerHTML = signUpHTML;
-  signUpDiv.id = 'signUpForm';
-  document.body.appendChild(signUpDiv);
-}
-
-// دالة إغلاق نموذج التسجيل
-function closeSignUpForm() {
-  const signUpForm = document.getElementById('signUpForm');
-  if (signUpForm) {
-    signUpForm.remove();
-  }
-}
-
-// دالة التسجيل بالبريد الإلكتروني
-async function signUpWithEmail() {
-  const email = document.getElementById('signupEmail').value;
-  const password = document.getElementById('signupPassword').value;
-  
-  if (!email || !password) {
-    alert('يرجى إدخال البريد الإلكتروني وكلمة المرور');
-    return;
-  }
-  
-  try {
-    await auth.createUserWithEmailAndPassword(email, password);
-    alert('تم إنشاء الحساب بنجاح! يمكنك الآن إضافة المحاضرات.');
-    closeSignUpForm();
-  } catch (error) {
-    alert('حدث خطأ: ' + error.message);
-  }
-}
 </script>
 </body>
 </html>
