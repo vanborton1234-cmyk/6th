@@ -6,9 +6,25 @@
     <title>منصة تجلّي أكاديمي - الصف السادس العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- استخدام إصدار متوافق من Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <style>
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
+    authDomain: "project-e1da3.firebaseapp.com",
+    projectId: "project-e1da3",
+    storageBucket: "project-e1da3.firebasestorage.app",
+    messagingSenderId: "560086523718",
+    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
+    measurementId: "G-ZVS3WY5NT2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+</script>
         /* أنماط CSS الأساسية */
         :root {
             --primary-color: #00ccff;
@@ -970,44 +986,7 @@ const subjectsData = {
     "اللغة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
 };
 
-// تهيئة Firebase باستخدام التكوين الصحيح
-const firebaseConfig = {
-    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
-    authDomain: "project-e1da3.firebaseapp.com",
-    projectId: "project-e1da3",
-    storageBucket: "project-e1da3.firebasestorage.app",
-    messagingSenderId: "560086523718",
-    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
-    measurementId: "G-ZVS3WY5NT2"
-};
-
-// تهيئة Firebase بدون مصادقة
-let firebaseApp;
-let db;
-
-try {
-    if (!firebase.apps.length) {
-        firebaseApp = firebase.initializeApp(firebaseConfig);
-        console.log("Firebase initialized successfully");
-    } else {
-        firebaseApp = firebase.app();
-    }
-    
-    // تهيئة Firestore فقط
-    db = firebase.firestore();
-    
-    // تمكين الثبات بدون اتصال
-    db.enablePersistence()
-        .then(() => {
-            console.log("تم تمكين الثبات بدون اتصال");
-            updateConnectionStatus(true);
-        })
-        .catch((err) => {
-            console.error("خطأ في تمكين الثبات بدون اتصال:", err);
-            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
-        });
-    
-} catch (error) {
+ {
     console.error("Firebase initialization error:", error);
     updateConnectionStatus(false);
 }
