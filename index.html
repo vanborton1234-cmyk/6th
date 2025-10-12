@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة تجلّي أكاديمي - الصف السادس العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- استخدام إصدار متوافق من Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <style>
         /* أنماط CSS الأساسية */
         :root {
@@ -56,6 +53,87 @@
             background: linear-gradient(135deg, var(--dark-bg) 0%, #e9ecef 100%);
         }
         
+        /* شاشة المصادقة */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+        }
+        
+        .auth-box {
+            background: rgba(15, 15, 15, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .auth-box h2 {
+            color: var(--primary-color);
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-box p {
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #aaa;
+        }
+        
+        .code-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px solid var(--primary-color);
+            background: #222;
+            color: white;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .code-input:focus {
+            outline: none;
+            border-color: #00ffdd;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+        }
+        
+        .auth-btn {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+        
+        .error-message {
+            color: #ff4757;
+            margin-top: 15px;
+            font-size: 16px;
+            display: none;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -64,6 +142,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
+            display: none;
         }
 
         [data-theme="light"] .container {
@@ -85,6 +164,22 @@
 
         [data-theme="light"] header {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pledge {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-right: 5px solid var(--primary-color);
+            font-size: 22px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .pledge i {
+            color: var(--primary-color);
+            margin-left: 10px;
         }
         
         .top-buttons {
@@ -183,352 +278,296 @@
             }
         }
         
-        .quick-player {
+        /* مشغل الفيديو المبسط */
+        .simple-video-container {
+            position: relative;
+            width: 100%;
+            margin: 20px 0 40px 0;
             background: linear-gradient(135deg, #111 0%, #222 100%);
-            padding: 35px;
             border-radius: 18px;
-            margin-bottom: 40px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             border-left: 8px solid var(--primary-color);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
             animation: float 5s ease-in-out infinite;
         }
 
-        [data-theme="light"] .quick-player {
+        [data-theme="light"] .simple-video-container {
             background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
-        .quick-player h3 {
-            margin-top: 0;
-            font-size: 32px;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        [data-theme="light"] .quick-player h3 {
-            color: #007bff;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid var(--primary-color);
-            background: #222;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            font-size: 20px;
-            transition: all 0.3s ease;
-        }
-
-        [data-theme="light"] input, 
-        [data-theme="light"] select {
-            background: #fff;
-            color: #333;
-            border: 2px solid #4facfe;
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: #00ffdd;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
-            background: #2a2a2a;
-        }
-
-        [data-theme="light"] input:focus, 
-        [data-theme="light"] select:focus {
-            background: #fff;
-            border-color: #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
-        }
-        
-        input::placeholder {
-            color: #aaa;
-        }
-
-        [data-theme="light"] input::placeholder {
-            color: #888;
-        }
-        
-        button {
-            padding: 18px 30px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            font-weight: bold;
-            margin: 15px;
-            transition: all 0.3s ease;
-            font-size: 20px;
-            box-shadow: 0 5px 15px rgba(0, 170, 255, 0.3);
-        }
-        
-        button:hover {
-            background: linear-gradient(45deg, #00ffdd, var(--primary-color));
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 204, 255, 0.5);
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin: 35px 0;
-        }
-        
-        .card {
-            background: var(--card-bg);
-            color: white;
-            padding: 40px 30px;
-            border-radius: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.4s ease;
-            font-size: 28px;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .card {
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
-        }
-        
-        .card:hover {
-            transform: scale(1.05) translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.5);
-            background: var(--card-hover);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .card:hover {
-            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.5);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        #videoContainer iframe,
-        #quickContainer iframe {
-            width: 100%;
-            height: 500px;
-            border-radius: 15px;
-            margin-top: 25px;
-            border: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
-
-        [data-theme="light"] #videoContainer iframe,
-        [data-theme="light"] #quickContainer iframe {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        ul {
-            padding: 0;
-            list-style: none;
-            margin: 30px 0;
-        }
-        
-        li {
-            margin-bottom: 20px;
-            padding: 25px;
-            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-            border-radius: 15px;
-            border-left: 5px solid var(--primary-color);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: float 5s ease-in-out infinite;
-        }
-
-        [data-theme="light"] li {
-            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        li strong {
-            font-size: 22px;
-            color: var(--primary-color);
-        }
-
-        [data-theme="light"] li strong {
-            color: #007bff;
-        }
-        
-        .video-quality {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 25px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            animation: float 5s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .video-quality {
-            background: rgba(255, 255, 255, 0.5);
-        }
-        
-        .video-quality label {
-            margin-right: 20px;
-            font-size: 22px;
-            color: var(--primary-color);
-        }
-
-        [data-theme="light"] .video-quality label {
-            color: #007bff;
-        }
-        
-        .video-quality select {
-            background: #222;
-            color: var(--text-color);
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--primary-color);
-            font-size: 18px;
-            min-width: 200px;
-        }
-
-        [data-theme="light"] .video-quality select {
-            background: #fff;
-            color: #333;
-        }
-        
-        h2 {
+        .simple-video-container h2 {
             font-size: 36px;
             color: var(--primary-color);
-            margin: 30px 0 20px 0;
+            margin-bottom: 25px;
             text-align: center;
             text-shadow: 0 2px 5px rgba(0, 204, 255, 0.3);
             animation: float 6s ease-in-out infinite;
         }
 
-        [data-theme="light"] h2 {
+        [data-theme="light"] .simple-video-container h2 {
             color: #007bff;
             text-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
         }
         
-        h3 {
-            font-size: 32px;
-            margin: 25px 0;
-            text-align: center;
-            color: #00ffdd;
-            animation: float 5s ease-in-out infinite;
-        }
-
-        [data-theme="light"] h3 {
-            color: #00b894;
-        }
-        
-        .chapter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 30px 0;
-            justify-content: center;
-        }
-        
-        .chapter-buttons button {
-            flex: 1;
-            min-width: 250px;
-            padding: 22px;
-            font-size: 22px;
-        }
-        
-        .back-button {
-            background: linear-gradient(45deg, #555, #777);
-            color: white;
-            margin-top: 30px;
-            padding: 18px 35px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 22px;
-        }
-        
-        .back-button:hover {
-            background: linear-gradient(45deg, #777, #999);
-        }
-        
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 25px 0;
-        }
-        
-        .video-item {
-            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: float 5s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .video-item {
-            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .video-thumbnail {
+        .video-player {
             width: 100%;
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            height: 500px;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            background: #000;
+            display: none;
         }
         
-        .video-thumbnail:hover {
-            transform: scale(1.03);
-        }
-        
-        .video-info {
+        .video-placeholder {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-        }
-        
-        .video-title {
-            font-size: 18px;
-            color: var(--primary-color);
-            flex: 1;
+            justify-content: center;
+            height: 500px;
+            background: #000;
+            border-radius: 15px;
         }
 
-        [data-theme="light"] .video-title {
+        [data-theme="light"] .video-placeholder {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        .video-placeholder i {
+            font-size: 80px;
+            margin-bottom: 20px;
+            display: block;
+            color: var(--primary-color);
+        }
+        
+        .video-controls {
+            background: rgba(44, 62, 80, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .url-input-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .url-input {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px 0 0 12px;
+            background: #222;
+            color: var(--text-color);
+            font-size: 18px;
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+
+        [data-theme="light"] .url-input {
+            background: #fff;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .url-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+            background: #2a2a2a;
+        }
+
+        [data-theme="light"] .url-input:focus {
+            background: #fff;
+        }
+        
+        .load-btn {
+            padding: 18px 30px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .load-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .paste-hint {
+            text-align: center;
+            color: #aaa;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        [data-theme="light"] .paste-hint {
+            color: #666;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid var(--primary-color);
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--success-color);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+            font-weight: bold;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: var(--accent-color);
+        }
+        
+        .wisdom-section {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 170, 255, 0.1) 100%);
+            padding: 40px;
+            border-radius: 18px;
+            margin: 40px 0;
+            text-align: center;
+            border-left: 8px solid var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] .wisdom-section {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .wisdom-section h2 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        [data-theme="light"] .wisdom-section h2 {
             color: #007bff;
         }
         
-        .video-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .playlist-container {
-            max-height: 500px;
-            overflow-y: auto;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin-top: 20px;
+        .wisdom-card {
+            background: rgba(44, 62, 80, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            text-align: right;
+            border-right: 5px solid var(--primary-color);
         }
 
-        [data-theme="light"] .playlist-container {
-            background: rgba(255, 255, 255, 0.5);
+        [data-theme="light"] .wisdom-card {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .wisdom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .wisdom-text {
+            font-size: 22px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .wisdom-source {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        [data-theme="light"] .wisdom-source {
+            color: #007bff;
+        }
+        
+        .encouragement {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 24px;
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .emoji {
+            font-size: 40px;
+            margin: 0 10px;
+            animation: bounce 2s infinite;
+        }
+        
+        .network-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+        }
+
+        .network-status.online {
+            background: var(--success-color);
+            color: #000;
+        }
+
+        .network-status.offline {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .floating-btn-container {
@@ -569,144 +608,6 @@
             }
         }
         
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--primary-color);
-            font-size: 20px;
-        }
-        
-        .loading i {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .save-duration {
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .save-duration label {
-            font-size: 20px;
-            color: var(--primary-color);
-            margin-right: 15px;
-        }
-
-        [data-theme="light"] .save-duration label {
-            color: #007bff;
-        }
-        
-        .save-duration select {
-            width: auto;
-            min-width: 150px;
-            display: inline-block;
-        }
-        
-        .time-remaining {
-            font-size: 14px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            margin-top: 5px;
-            display: inline-block;
-        }
-        
-        .time-remaining.forever {
-            background-color: var(--success-color);
-            color: #000;
-        }
-        
-        .time-remaining.normal {
-            background-color: var(--primary-color);
-            color: #000;
-        }
-        
-        .time-remaining.warning {
-            background-color: var(--warning-color);
-            color: #000;
-        }
-        
-        .time-remaining.expired {
-            background-color: #ff4757;
-            color: white;
-        }
-
-        .will-animate {
-            will-change: transform, opacity;
-        }
-        
-        .optimized-image {
-            content-visibility: auto;
-        }
-        
-        #localSavesPage {
-            padding: 20px;
-        }
-        
-        .local-save-item {
-            background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: float 5s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .local-save-item {
-            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .local-save-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .local-save-link {
-            color: var(--primary-color);
-            word-break: break-all;
-            font-size: 18px;
-        }
-
-        [data-theme="light"] .local-save-link {
-            color: #007bff;
-        }
-        
-        .local-save-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .local-save-details {
-            color: #aaa;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        [data-theme="light"] .local-save-details {
-            color: #666;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #aaa;
-        }
-
-        [data-theme="light"] .empty-state {
-            color: #666;
-        }
-        
-        .empty-state i {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-        
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -720,6 +621,11 @@
                 font-size: 32px;
             }
             
+            .pledge {
+                font-size: 18px;
+                padding: 15px;
+            }
+            
             .theme-toggle {
                 position: relative;
                 top: 0;
@@ -727,33 +633,8 @@
                 margin: 10px auto;
             }
             
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .card {
-                padding: 30px 20px;
-                font-size: 24px;
-            }
-            
-            .chapter-buttons button {
-                min-width: 100%;
-            }
-            
-            #videoContainer iframe,
-            #quickContainer iframe {
-                height: 300px;
-            }
-            
-            .video-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .video-actions {
-                margin-top: 10px;
-                width: 100%;
-                justify-content: space-between;
+            .video-player {
+                height: 400px;
             }
             
             .floating-btn-container {
@@ -766,78 +647,66 @@
                 font-size: 16px;
             }
             
-            .save-duration {
-                display: flex;
+            .url-input-container {
                 flex-direction: column;
-                align-items: center;
             }
             
-            .save-duration label {
+            .url-input, .load-btn {
+                border-radius: 12px;
                 margin-bottom: 10px;
             }
             
-            .local-save-header {
-                flex-direction: column;
-                align-items: flex-start;
+            .wisdom-section {
+                padding: 25px;
             }
             
-            .local-save-actions {
-                margin-top: 10px;
-                width: 100%;
-                justify-content: space-between;
+            .wisdom-text {
+                font-size: 18px;
             }
-        }
-
-        .debug-info {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 14px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        [data-theme="light"] .debug-info {
-            background: rgba(0, 0, 0, 0.1);
-        }
-        
-        .status-connected {
-            color: #38ff5c;
-        }
-        
-        .status-disconnected {
-            color: #ff4757;
-        }
-        
-        .connection-status {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            padding: 10px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        [data-theme="light"] .connection-status {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
+            
+            .wisdom-source {
+                font-size: 16px;
+            }
+            
+            .encouragement {
+                font-size: 20px;
+            }
+            
+            .network-status {
+                bottom: 80px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- شاشة المصادقة -->
+<div class="auth-container" id="authContainer">
+    <div class="auth-box">
+        <h2>المدرسة الالكترونية المجانية</h2>
+        <p>يرجى إدخال كود الدخول للوصول إلى المحتوى</p>
+        
+        <input type="text" class="code-input" id="codeInput" placeholder="أدخل الكود المكون من 11 حرفًا" maxlength="11">
+        <button class="auth-btn" id="authBtn">دخول</button>
+        <div class="error-message" id="errorMessage">الكود غير صحيح، يرجى المحاولة مرة أخرى</div>
+    </div>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div class="container" id="mainContainer">
     <header>
         <button class="theme-toggle" id="themeToggle">
             <i class="fas fa-moon"></i>
         </button>
         
         <h1>منصة تجلّي أكاديمي - للصف السادس العلمي</h1>
+        
+        <div class="pledge">
+            <i class="fas fa-hand-holding-heart"></i>
+            أُقسِمُ بالله سأستمر مهما ضعفت همتي ، وأقسم بان ادخل ولا أسوّف في وقتي من هذه اللحظة
+        </div>
+        
         <p>تم تصميم هذا الموقع لطلّاب السادس</p>
         
         <div class="top-buttons">
@@ -845,104 +714,57 @@
             <a class="action-btn" href="https://t.me/asssd_log" target="_blank">الامتحانات</a>
             <a class="action-btn" href="https://t.me/manasaate" target="_blank">📺 قناة التحدي</a>
             <a class="action-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot اسأل </a>
-            <button class="action-btn" onclick="showLocalSaves()">📁 الروابط المحفوظة</button>
         </div>
     </header>
 
-    <div class="quick-player">
-        <h3>تشغيل فيديو بسرعة</h3>
-        <input id="quickLink" placeholder="ضع رابط الفيديو هنا">
-        <div class="video-quality">
-            <label for="quickQuality">جودة الفيديو:</label>
-            <select id="quickQuality">
-                <option value="default">افتراضي</option>
-                <option value="hd720">HD (720p)</option>
-                <option value="hd1080">Full HD (1080p)</option>
-                <option value="highres">أعلى جودة</option>
-            </select>
-        </div>
-        <div class="save-duration">
-            <label for="quickSaveDuration">مدة الحفظ:</label>
-            <select id="quickSaveDuration">
-                <option value="1">يوم واحد</option>
-                <option value="7">أسبوع واحد</option>
-                <option value="30">شهر واحد</option>
-                <option value="365">سنة واحدة</option>
-                <option value="forever">إلى الأبد</option>
-            </select>
-        </div>
-        <div style="text-align: center;">
-            <button id="quickPlayBtn">▶ تشغيل</button>
-            <button id="quickSaveBtn"> حفظ الرابط </button>
-        </div>
-        <div id="quickContainer"></div>
-    </div>
-
-    <h2>اختر المادة</h2>
-    <div id="subjects" class="grid">
-        <div class="loading">
-            <i class="fas fa-spinner"></i> جاري تحميل المواد...
-        </div>
-    </div>
-
-    <div id="chaptersPage" class="hidden">
-        <h3 id="subjectTitle"></h3>
-        <div id="chapters" class="chapter-buttons">
-            <div class="loading">
-                <i class="fas fa-spinner"></i> جاري تحميل الفصول...
+    <!-- مشغل الفيديو المبسط -->
+    <div class="simple-video-container">
+        <h2>مشغل الفيديو</h2>
+        
+        <div class="video-player" id="videoPlayer">
+            <div class="video-placeholder" id="videoPlaceholder">
+                <i class="fas fa-play-circle"></i>
+                <p>سيظهر الفيديو هنا بعد إدخال الرابط</p>
             </div>
         </div>
-        <button class="back-button" onclick="backToSubjects()">⬅ العودة للمواد</button>
-    </div>
-
-    <div id="linksPage" class="hidden">
-        <h3 id="chapterTitle"></h3>
-        <input id="lectureName" placeholder="اسم المحاضرة">
-        <input id="topicName" placeholder="اسم الموضوع">
-        <input id="lectureLink" placeholder="رابط اليوتيوب">
-        <div class="video-quality">
-            <label for="videoQuality">جودة الفيديو:</label>
-            <select id="videoQuality">
-                <option value="default">افتراضي</option>
-                <option value="hd720">HD (720p)</option>
-                <option value="hd1080">Full HD (1080p)</option>
-                <option value="highres">أعلى جودة</option>
-            </select>
-        </div>
-        <div class="save-duration">
-            <label for="saveDuration">مدة الحفظ:</label>
-            <select id="saveDuration">
-                <option value="1">يوم واحد</option>
-                <option value="7">أسبوع واحد</option>
-                <option value="30">شهر واحد</option>
-                <option value="365">سنة واحدة</option>
-                <option value="forever">إلى الأبد</option>
-            </select>
-        </div>
-        <div class="action-buttons">
-            <button id="saveBtn">💾 حفظ</button>
-            <button id="playNewBtn">▶ تشغيل مباشر</button>
-        </div>
         
-        <div class="playlist-container" id="playlistContainer">
+        <div class="video-controls">
+            <div class="url-input-container">
+                <input type="text" class="url-input" id="videoUrl" placeholder="ضع رابط الفيديو هنا" autocomplete="off">
+                <button class="load-btn" id="loadVideo">تشغيل الفيديو</button>
+            </div>
+            
+            <div class="paste-hint">
+                <i class="fas fa-lightbulb"></i> نصيحة: انسخ الرابط فقط دون نصوص إضافية
+            </div>
+            
             <div class="loading" id="loadingIndicator">
-                <i class="fas fa-spinner"></i> جاري تحميل المحاضرات...
+                <div class="spinner"></div>
+                <p>جاري تحميل الفيديو...</p>
             </div>
-            <ul id="savedLinks"></ul>
+        </div>
+    </div>
+
+    <!-- قسم الحكمة والاقتباسات -->
+    <div class="wisdom-section">
+        <h2>حكم ومواعظ</h2>
+        
+        <div class="wisdom-card">
+            <p class="wisdom-text">"يبعد الله عنك ما تريد ليعطيك ما تحتاج"</p>
+            <p class="wisdom-source">- الإمام علي بن أبي طالب عليه السلام</p>
         </div>
         
-        <div id="videoContainer"></div>
-        <button class="back-button" onclick="backToChapters()">⬅ العودة للفصول</button>
-    </div>
-    
-    <div id="localSavesPage" class="hidden">
-        <h2>العروض المحفوظة محلياً</h2>
-        <div id="localSavesList">
-            <div class="loading">
-                <i class="fas fa-spinner"></i> جاري تحميل الروابط المحفوظة...
-            </div>
+        <div class="wisdom-card">
+            <p class="wisdom-text">"وعسى أن تكرهوا شيئاً وهو خير لكم"</p>
+            <p class="wisdom-source">- القرآن الكريم، سورة البقرة، الآية 216</p>
         </div>
-        <button class="back-button" onclick="backToMain()">⬅ العودة للرئيسية</button>
+        
+        
+        <div class="encouragement">
+            <span class="emoji">💪</span>
+          استمر ولا تستسلم، النجاح قادم!
+            <span class="emoji">🚀</span>
+        </div>
     </div>
 </div>
 
@@ -953,113 +775,253 @@
     </a>
 </div>
 
-<div id="connectionStatus" class="connection-status hidden">
-    <i class="fas fa-wifi"></i> حالة الاتصال
+<div class="notification" id="notification">تم تحميل الفيديو بنجاح!</div>
+<div class="network-status" id="networkStatus">
+    <i class="fas fa-wifi"></i> <span id="networkText">الاتصال جيد</span>
 </div>
 
 <script>
-// بيانات المواد والفصول
-const subjectsData = {
-    "الرياضيات": ["الأعداد المركبة", "القطوع المخروطية", "تطبيقات التفاضل", "التكامل", "المعادلات التفاضلية الاعتيادية", "الهندسة الفضائية"],
-    "الفيزياء": ["المتسعات", "الحث الكهرومغناطيسي", "التيار المتناوب", "الموجات الكهرومغناطيسية", "البصريات الفيزيائية", "الفيزياء الحديثة", "إلكترونيات الحالة الصلبة", "الأطياف الذرية والليزر", "الفيزياء النووية"],
-    "الكيمياء": ["الثرموداينمك", "الاتزان الكيميائي", "الاتزان الأيوني", "تفاعلات التأكسد والاختزال والكيمياء الكهربائية", "الكيمياء التناسقية", "طرائق التحليل الكيميائي", "الكيمياء العضوية للهيدروكربونات المعوضة", "الكيمياء الحياتية"],
-    "الأحياء": ["الخلية", "الأنسجة", "التكاثر", "التكوين الجنيني", "الوراثة"],
-    "الإسلامية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة"],
-    "العربي": ["الوحدة الأولى (مواضيع متعددة)", "الوحدة الثانية (مواضيع متعددة)"],
-    "اللغة الإنجليزية": ["الوحدة الأولى", "الوحدة الثانية", "الوحدة الثالثة", "الوحدة الرابعة", "الوحدة الخامسة", "الوحدة السادسة", "الوحدة السابعة", "الوحدة الثامنة"]
-};
+// نظام المصادقة
+const authContainer = document.getElementById('authContainer');
+const mainContainer = document.getElementById('mainContainer');
+const codeInput = document.getElementById('codeInput');
+const authBtn = document.getElementById('authBtn');
+const errorMessage = document.getElementById('errorMessage');
 
-// تهيئة Firebase باستخدام التكوين الصحيح
-const firebaseConfig = {
-    apiKey: "AIzaSyCn9fVad2lA1_5AwRG6xC8lupndI2eYow4",
-    authDomain: "project-e1da3.firebaseapp.com",
-    projectId: "project-e1da3",
-    storageBucket: "project-e1da3.firebasestorage.app",
-    messagingSenderId: "560086523718",
-    appId: "1:560086523718:web:82cbc64c6228d6a52b4f47",
-    measurementId: "G-ZVS3WY5NT2"
-};
+// الكود المطلوب: يبدأ بـ AB وينتهي بـ XY وبينهما 7 أرقام
+const requiredStart = 'AB';
+const requiredEnd = 'XY';
+const codeLength = 11;
 
-// تهيئة Firebase بدون مصادقة
-let firebaseApp;
-let db;
-
-try {
-    if (!firebase.apps.length) {
-        firebaseApp = firebase.initializeApp(firebaseConfig);
-        console.log("Firebase initialized successfully");
-    } else {
-        firebaseApp = firebase.app();
+// التحقق إذا كان المستخدم قد دخل من قبل
+function checkAuthentication() {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (isAuthenticated === 'true') {
+        authContainer.style.display = 'none';
+        mainContainer.style.display = 'block';
+        return true;
     }
-    
-    // تهيئة Firestore فقط
-    db = firebase.firestore();
-    
-    // تمكين الثبات بدون اتصال
-    db.enablePersistence()
-        .then(() => {
-            console.log("تم تمكين الثبات بدون اتصال");
-            updateConnectionStatus(true);
-        })
-        .catch((err) => {
-            console.error("خطأ في تمكين الثبات بدون اتصال:", err);
-            updateConnectionStatus(true); // الاستمرار حتى مع الأخطاء
-        });
-    
-} catch (error) {
-    console.error("Firebase initialization error:", error);
-    updateConnectionStatus(false);
+    return false;
 }
 
-// العناصر في DOM
-const subjectsDiv = document.getElementById('subjects');
-const chaptersPage = document.getElementById('chaptersPage');
-const linksPage = document.getElementById('linksPage');
-const localSavesPage = document.getElementById('localSavesPage');
-const localSavesList = document.getElementById('localSavesList');
-const chaptersDiv = document.getElementById('chapters');
-const subjectTitle = document.getElementById('subjectTitle');
-const chapterTitle = document.getElementById('chapterTitle');
-const savedLinks = document.getElementById('savedLinks');
-const videoContainer = document.getElementById('videoContainer');
-const quickLinkInput = document.getElementById('quickLink');
-const quickPlayBtn = document.getElementById('quickPlayBtn');
-const quickSaveBtn = document.getElementById('quickSaveBtn');
-const saveBtn = document.getElementById('saveBtn');
-const playNewBtn = document.getElementById('playNewBtn');
-const videoQualitySelect = document.getElementById('videoQuality');
-const quickQualitySelect = document.getElementById('quickQuality');
-const saveDurationSelect = document.getElementById('saveDuration');
-const quickSaveDurationSelect = document.getElementById('quickSaveDuration');
-const playlistContainer = document.getElementById('playlistContainer');
-const loadingIndicator = document.getElementById('loadingIndicator');
-const connectionStatus = document.getElementById('connectionStatus');
-const themeToggle = document.getElementById('themeToggle');
+// التحقق من صحة الكود
+function validateCode(code) {
+    if (code.length !== codeLength) return false;
+    if (!code.startsWith(requiredStart)) return false;
+    if (!code.endsWith(requiredEnd)) return false;
+    
+    // التحقق من أن الأجزاء الوسطى هي أرقام
+    const middlePart = code.substring(2, 9);
+    return /^\d+$/.test(middlePart);
+}
 
-let currentSubject = "", currentChapter = "";
-let unsubscribeLectures = null; // دالة إلغاء الاشتراك في التحديثات الفورية
-
-// تحسين الأداء: التخزين المحلي للبيانات
-const cache = {
-    set: (key, data, ttl = 300000) => {
-        const item = {
-            data: data,
-            expiry: Date.now() + ttl
-        };
-        localStorage.setItem(key, JSON.stringify(item));
-    },
-    get: (key) => {
-        const itemStr = localStorage.getItem(key);
-        if (!itemStr) return null;
+// معالجة عملية الدخول
+function handleAuthentication() {
+    const code = codeInput.value.trim().toUpperCase();
+    
+    if (validateCode(code)) {
+        // تخزين حالة المصادقة
+        localStorage.setItem('isAuthenticated', 'true');
         
-        const item = JSON.parse(itemStr);
-        if (Date.now() > item.expiry) {
-            localStorage.removeItem(key);
-            return null;
-        }
-        return item.data;
+        // إخفاء شاشة المصادقة وإظهار المحتوى الرئيسي
+        authContainer.style.display = 'none';
+        mainContainer.style.display = 'block';
+    } else {
+        errorMessage.style.display = 'block';
+        codeInput.value = '';
+        codeInput.focus();
     }
-};
+}
+
+// إضافة مستمعي الأحداث
+authBtn.addEventListener('click', handleAuthentication);
+
+codeInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        handleAuthentication();
+    }
+});
+
+// التحقق من المصادقة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    if (!checkAuthentication()) {
+        authContainer.style.display = 'flex';
+        mainContainer.style.display = 'none';
+        codeInput.focus();
+    } else {
+        initTheme();
+        initVideoPlayer();
+        initNetworkMonitoring();
+    }
+});
+
+// العناصر في DOM
+const videoPlayer = document.getElementById('videoPlayer');
+const videoPlaceholder = document.getElementById('videoPlaceholder');
+const videoUrlInput = document.getElementById('videoUrl');
+const loadVideoBtn = document.getElementById('loadVideo');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const notification = document.getElementById('notification');
+const themeToggle = document.getElementById('themeToggle');
+const networkStatus = document.getElementById('networkStatus');
+const networkText = document.getElementById('networkText');
+
+// تهيئة مشغل الفيديو
+function initVideoPlayer() {
+    // تحميل الفيديو عند النقر على الزر
+    loadVideoBtn.addEventListener('click', loadVideo);
+    
+    // تحميل الفيديو عند الضغط على Enter
+    videoUrlInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            loadVideo();
+        }
+    });
+    
+    // تنظيف الحقل عند التركيز عليه
+    videoUrlInput.addEventListener('focus', function() {
+        this.select();
+    });
+    
+    // معالجة اللصق التلقائي
+    videoUrlInput.addEventListener('paste', function(e) {
+        // السماح للصق بالحدوث أولاً
+        setTimeout(function() {
+            cleanPastedUrl();
+        }, 10);
+    });
+    
+    // التركيز التلقائي على حقل الإدخال
+    videoUrlInput.focus();
+}
+
+// مراقبة حالة الشبكة
+function initNetworkMonitoring() {
+    function updateNetworkStatus() {
+        if (navigator.onLine) {
+            networkStatus.className = 'network-status online';
+            networkStatus.innerHTML = '<i class="fas fa-wifi"></i> <span id="networkText">الاتصال جيد</span>';
+            networkStatus.style.display = 'block';
+            setTimeout(() => {
+                networkStatus.style.display = 'none';
+            }, 3000);
+        } else {
+            networkStatus.className = 'network-status offline';
+            networkStatus.innerHTML = '<i class="fas fa-wifi-slash"></i> <span id="networkText">لا يوجد اتصال بالإنترنت</span>';
+            networkStatus.style.display = 'block';
+        }
+    }
+
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+    
+    // التحقق الأولي
+    updateNetworkStatus();
+}
+
+// تنظيف الرابط الملصق
+function cleanPastedUrl() {
+    let url = videoUrlInput.value.trim();
+    
+    // إزالة أي نصوص إضافية قد تكون ملتصقة مع الرابط
+    // البحث عن أول رابط يوتيوب في النص
+    const youtubeRegex = /(https?:\/\/)?(www\.)?(youtube|youtu)\.(com|be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=\n?#]+)/;
+    const match = url.match(youtubeRegex);
+    
+    if (match) {
+        // إذا وجد رابط يوتيوب، استخدمه فقط
+        const videoId = match[6];
+        videoUrlInput.value = `https://www.youtube.com/watch?v=${videoId}`;
+        showNotification('تم تنظيف الرابط تلقائياً', 'success');
+    }
+}
+
+// دالة تحميل الفيديو
+function loadVideo() {
+    let videoUrl = videoUrlInput.value.trim();
+    
+    if (!videoUrl) {
+        showNotification('يرجى إدخال رابط الفيديو', 'error');
+        return;
+    }
+    
+    // تنظيف الرابط قبل التحقق منه
+    cleanPastedUrl();
+    videoUrl = videoUrlInput.value.trim();
+    
+    // إظهار مؤشر التحميل
+    loadingIndicator.style.display = 'block';
+    videoPlaceholder.style.display = 'none';
+    
+    // محاكاة عملية التحميل
+    setTimeout(() => {
+        // التحقق من أن الرابط صالح
+        const videoId = getYouTubeId(videoUrl);
+        if (videoId) {
+            let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            
+            // إضافة معلمات إضافية لتحسين الأداء
+            embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
+            
+            // إنشاء iframe جديد
+            const iframe = document.createElement('iframe');
+            iframe.src = embedUrl;
+            iframe.frameBorder = "0";
+            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+            iframe.allowFullscreen = true;
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.borderRadius = "15px";
+            
+            // مسح المحتوى القديم وإضافة iframe الجديد
+            videoPlayer.innerHTML = '';
+            videoPlayer.appendChild(iframe);
+            
+            // إخفاء مؤشر التحميل وإظهار الفيديو
+            loadingIndicator.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            
+            showNotification('تم تحميل الفيديو بنجاح!', 'success');
+        } else {
+            // إخفاء مؤشر التحميل وإظهار رسالة الخطأ
+            loadingIndicator.style.display = 'none';
+            videoPlaceholder.style.display = 'flex';
+            videoPlayer.style.display = 'none';
+            showNotification('رابط اليوتيوب غير صالح. تأكد من نسخ الرابط فقط', 'error');
+        }
+    }, 1500);
+}
+
+// استخراج معرف فيديو يوتيوب من أي نوع من الروابط
+function getYouTubeId(url) {
+    if (!url) return null;
+    
+    // التعامل مع روابط youtube.com
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[7].length === 11) ? match[7] : null;
+}
+
+// إظهار الإشعارات
+function showNotification(message, type) {
+    notification.textContent = message;
+    
+    // تغيير لون الإشعار بناءً على النوع
+    if (type === 'error') {
+        notification.style.background = 'var(--accent-color)';
+        notification.classList.add('error');
+    } else {
+        notification.style.background = 'var(--success-color)';
+        notification.classList.remove('error');
+    }
+    
+    notification.classList.add('show');
+    
+    // إخفاء الإشعار بعد 3 ثوان
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
 
 // إدارة الثيم
 function initTheme() {
@@ -1086,586 +1048,54 @@ function updateThemeIcon(theme) {
     }
 }
 
-// إنشاء مربعات المواد مع تحسين الأداء
-function renderSubjects() {
-    // مسح المحتوى الحالي
-    subjectsDiv.innerHTML = '';
-
-    let html = '';
-    Object.keys(subjectsData).forEach(sub => {
-        html += `<div class="card will-animate" data-subject="${sub}">${sub}</div>`;
-    });
-    
-    subjectsDiv.innerHTML = html;
-    cache.set('subjects', html);
-    attachSubjectEvents();
-    updateConnectionStatus(true);
-}
-
-function attachSubjectEvents() {
-    document.querySelectorAll('.card[data-subject]').forEach(card => {
-        card.addEventListener('click', () => {
-            openSubject(card.dataset.subject);
-        });
-    });
-}
-
-function openSubject(sub){
-    currentSubject = sub;
-    subjectTitle.textContent = `المادة: ${sub}`;
-    chaptersDiv.innerHTML = "";
-    
-    subjectsData[sub].forEach(chap => {
-        const btn = document.createElement('button');
-        btn.textContent = chap;
-        btn.className = 'will-animate';
-        btn.addEventListener('click', () => openChapter(chap));
-        chaptersDiv.appendChild(btn);
-    });
-    
-    subjectsDiv.classList.add('hidden');
-    chaptersPage.classList.remove('hidden');
-    
-    // حفظ حالة التصفح
-    saveNavigationState();
-}
-
-function openChapter(chap){
-    currentChapter = chap;
-    chapterTitle.textContent = `${currentSubject} - ${chap}`;
-    
-    // إظهار مؤشر التحميل
-    loadingIndicator.style.display = 'block';
-    savedLinks.innerHTML = '';
-    
-    // محاولة تحميل من الذاكرة المؤقتة أولاً
-    const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
-    const cached = cache.get(cacheKey);
-    
-    if (cached) {
-        renderLinksList(cached);
-        loadingIndicator.style.display = 'none';
-    }
-    
-    // ثم تحميل من Firebase
-    loadLinksForAll();
-    
-    chaptersPage.classList.add('hidden');
-    linksPage.classList.remove('hidden');
-    
-    // حفظ حالة التصفح
-    saveNavigationState();
-}
-
-// دالة محسنة لتحميل المحاضرات من Firebase للجميع
-function loadLinksForAll() {
-    // إلغاء أي اشتراك سابق
-    if (unsubscribeLectures) {
-        unsubscribeLectures();
-    }
-    
-    try {
-        unsubscribeLectures = db.collection('lectures')
-            .where('subject', '==', currentSubject)
-            .where('chapter', '==', currentChapter)
-            .orderBy('timestamp', 'desc')
-            .onSnapshot((snapshot) => {
-                const links = [];
-                
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    // حساب الوقت المتبقي
-                    let timeRemaining = "غير محدد";
-                    let statusClass = "forever";
-                    
-                    if (data.expiry) {
-                        const now = Date.now();
-                        const expiryTime = data.expiry.toDate().getTime();
-                        const remainingTime = expiryTime - now;
-                        
-                        if (remainingTime > 0) {
-                            const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                            const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            
-                            if (days > 0) {
-                                timeRemaining = `متبقي ${days} يوم و${hours} ساعة`;
-                            } else {
-                                timeRemaining = `متبقي ${hours} ساعة`;
-                            }
-                            
-                            statusClass = days < 2 ? "warning" : "normal";
-                        } else {
-                            timeRemaining = "انتهت المدة";
-                            statusClass = "expired";
-                        }
-                    }
-                    
-                    links.push({
-                        id: doc.id,
-                        name: data.name,
-                        topic: data.topic,
-                        link: data.link,
-                        timestamp: data.timestamp,
-                        expiry: data.expiry,
-                        timeRemaining: timeRemaining,
-                        statusClass: statusClass
-                    });
-                });
-                
-                // حفظ في الذاكرة المؤقتة
-                const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
-                cache.set(cacheKey, links);
-                
-                // إخفاء مؤشر التحميل وعرض المحاضرات
-                loadingIndicator.style.display = 'none';
-                renderLinksList(links);
-                updateConnectionStatus(true);
-            }, (error) => {
-                console.error('Error loading videos:', error);
-                loadingIndicator.style.display = 'none';
-                savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">حدث خطأ في تحميل المحاضرات</p>';
-                updateConnectionStatus(false);
-            });
-    } catch (error) {
-        console.error('Error setting up listener:', error);
-        loadingIndicator.style.display = 'none';
-        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">حدث خطأ في تحميل المحاضرات</p>';
-        updateConnectionStatus(false);
-    }
-}
-
-// دالة حفظ المحاضرات للجميع بدون تسجيل دخول
-async function saveLinkForAll() {
-    const name = document.getElementById('lectureName').value.trim();
-    const topic = document.getElementById('topicName').value.trim();
-    const link = document.getElementById('lectureLink').value.trim();
-    const duration = document.getElementById('saveDuration').value;
-    
-    if(!name || !topic || !link) {
-        alert('املأ جميع الحقول!');
-        return;
-    }
-    
-    // التحقق من صحة رابط اليوتيوب
-    const videoId = getYouTubeId(link);
-    if (!videoId) {
-        alert('رابط اليوتيوب غير صحيح! يرجى إدخال رابط يوتيوب صالح.');
-        return;
-    }
-    
-    // حساب وقت الانتهاء
-    let expiryDate = null;
-    if (duration !== 'forever') {
-        const days = parseInt(duration);
-        expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + days);
-    }
-    
-    try {
-        const lectureData = {
-            subject: currentSubject,
-            chapter: currentChapter,
-            name: name,
-            topic: topic,
-            link: link,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            createdBy: 'public'
-        };
-        
-        if (expiryDate) {
-            lectureData.expiry = firebase.firestore.Timestamp.fromDate(expiryDate);
-        }
-        
-        await db.collection('lectures').add(lectureData);
-        
-        alert('تم رفع المحاضرة للجميع بنجاح!');
-        document.getElementById('lectureName').value = "";
-        document.getElementById('topicName').value = "";
-        document.getElementById('lectureLink').value = "";
-        
-        updateConnectionStatus(true);
-    } catch (error) {
-        console.error('Error saving video:', error);
-        alert('حدث خطأ أثناء حفظ المحاضرة: ' + error.message);
-        updateConnectionStatus(false);
-    }
-}
-
-// حفظ رابط سريع محلياً
-function saveQuickLink() {
-    const link = quickLinkInput.value.trim();
-    const duration = quickSaveDurationSelect.value;
-    
-    if (!link) return alert('أدخل رابط اليوتيوب أولاً');
-    
-    const videoId = getYouTubeId(link);
-    if (!videoId) return alert('رابط اليوتيوب غير صحيح');
-    
-    // حساب وقت الانتهاء
-    let expiryDate = null;
-    if (duration !== 'forever') {
-        const days = parseInt(duration);
-        expiryDate = new Date();
-        expiryDate.setDate(expiryDate.getDate() + days);
-    }
-    
-    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
-    quickSaves.push({
-        link: link,
-        timestamp: Date.now(),
-        expiry: expiryDate ? expiryDate.getTime() : null,
-        duration: duration
-    });
-    
-    localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
-    alert('تم حفظ الرابط محلياً بنجاح!');
-}
-
-// دالة حذف المحاضرة من Firebase
-async function deleteLink(id) {
-    if(confirm('هل أنت متأكد من أنك تريد حذف هذه المحاضرة؟')) {
-        try {
-            await db.collection('lectures').doc(id).delete();
-            
-            // تحديث الذاكرة المؤقتة
-            const cacheKey = `lectures-${currentSubject}-${currentChapter}`;
-            const cached = cache.get(cacheKey);
-            if (cached) {
-                const updated = cached.filter(item => item.id !== id);
-                cache.set(cacheKey, updated);
-            }
-            
-            updateConnectionStatus(true);
-        } catch (error) {
-            console.error('Error deleting video:', error);
-            alert('حدث خطأ أثناء حذف المحاضرة: ' + error.message);
-            updateConnectionStatus(false);
-        }
-    }
-}
-
-// دالة محسنة لاستخراج معرف فيديو يوتيوب من أي نوع من الروابط
-function getYouTubeId(url) {
-    if (!url) return null;
-    
-    // التعامل مع روابط youtube.com
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    }
-    
-    // إذا كان الرابط يحتوي على 11 حرفاً (مثل معرف مباشر)
-    if (url.length === 11 && !url.includes('/') && !url.includes('.')) {
-        return url;
-    }
-    
-    return null;
-}
-
-// عرض قائمة المحاضرات
-function renderLinksList(links) {
-    savedLinks.innerHTML = '';
-    
-    if (links.length === 0) {
-        savedLinks.innerHTML = '<p style="text-align: center; color: #aaa; padding: 20px;">لا توجد محاضرات محفوظة بعد</p>';
-        return;
-    }
-    
-    links.forEach((l) => {
-        const videoId = getYouTubeId(l.link);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
-        
-        const li = document.createElement('li');
-        li.className = 'video-item will-animate';
-        
-        li.innerHTML = `
-            <div class="video-thumbnail optimized-image" style="background-image: url('${thumbnailUrl}')" 
-                 onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')"></div>
-            <div class="video-info">
-                <div class="video-title">
-                    <strong>${l.name}</strong> - ${l.topic}
-                    ${l.timeRemaining ? `<div class="time-remaining ${l.statusClass}">${l.timeRemaining}</div>` : ''}
-                </div>
-                <div class="video-actions">
-                    <button onclick="playVideo('${l.link.replace(/'/g, "\\'")}', '${videoQualitySelect.value}')">▶ تشغيل</button>
-                    <button onclick="deleteLink('${l.id}')">🗑 حذف</button>
-                </div>
-            </div>
-        `;
-        
-        savedLinks.appendChild(li);
-    });
-}
-
-// دالة محسنة لتشغيل الفيديو مع إمكانية اختيار الجودة
-function playVideo(link, quality = 'default'){
-    if(!link) return;
-    
-    const videoId = getYouTubeId(link);
-    if (!videoId) {
-        alert('رابط اليوتيوب غير صحيح');
-        return;
-    }
-    
-    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    
-    // إضافة معامل الجودة إذا تم اختيارها
-    if (quality !== 'default') {
-        embedUrl += `&vq=${quality}`;
-    }
-    
-    // إضافة معلمات إضافية لتحسين الأداء
-    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
-    
-    videoContainer.innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    
-    // التمرير إلى الفيديو
-    videoContainer.scrollIntoView({ behavior: 'smooth' });
-}
-
-function playNewLink(){
-    const link = document.getElementById('lectureLink').value.trim();
-    const quality = videoQualitySelect.value;
-    if(!link) return alert('أدخل رابط لتشغيله');
-    playVideo(link, quality);
-}
-
-function backToSubjects(){
-    chaptersPage.classList.add('hidden');
-    subjectsDiv.classList.remove('hidden');
-    
-    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
-    if (unsubscribeLectures) {
-        unsubscribeLectures();
-        unsubscribeLectures = null;
-    }
-    
-    saveNavigationState();
-}
-
-function backToChapters(){
-    linksPage.classList.add('hidden');
-    chaptersPage.classList.remove('hidden');
-    
-    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
-    if (unsubscribeLectures) {
-        unsubscribeLectures();
-        unsubscribeLectures = null;
-    }
-    
-    saveNavigationState();
-}
-
-function backToMain(){
-    localSavesPage.classList.add('hidden');
-    subjectsDiv.classList.remove('hidden');
-}
-
-// حفظ حالة التصفح
-function saveNavigationState() {
-    const state = {
-        currentSubject: currentSubject,
-        currentChapter: currentChapter,
-        timestamp: Date.now()
-    };
-    localStorage.setItem('navigationState', JSON.stringify(state));
-}
-
-// استعادة حالة التصفح
-function restoreNavigationState() {
-    const stateStr = localStorage.getItem('navigationState');
-    if (!stateStr) return;
-    
-    const state = JSON.parse(stateStr);
-    // إذا مر أقل من 30 دقيقة على حفظ الحالة
-    if (Date.now() - state.timestamp < 1800000) {
-        if (state.currentSubject && state.currentChapter) {
-            openSubject(state.currentSubject);
-            setTimeout(() => openChapter(state.currentChapter), 100);
-        } else if (state.currentSubject) {
-            openSubject(state.currentSubject);
-        }
-    }
-}
-
-// تشغيل سريع
-quickPlayBtn.addEventListener('click', ()=>{
-    const link = quickLinkInput.value.trim();
-    const quality = quickQualitySelect.value;
-    if(!link) return;
-    
-    const videoId = getYouTubeId(link);
-    if (!videoId) {
-        alert('رابط اليوتيوب غير صحيح');
-        return;
-    }
-    
-    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    
-    // إضافة معامل الجودة إذا تم اختيارها
-    if (quality !== 'default') {
-        embedUrl += `&vq=${quality}`;
-    }
-    
-    // إضافة معلمات إضافية لتحسين الأداء
-    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
-    
-    document.getElementById('quickContainer').innerHTML=`<iframe src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-});
-
-// عرض العروض المحفوظة محلياً
-function showLocalSaves() {
-    subjectsDiv.classList.add('hidden');
-    chaptersPage.classList.add('hidden');
-    linksPage.classList.add('hidden');
-    localSavesPage.classList.remove('hidden');
-    
-    // إلغاء الاشتراك في التحديثات الفورية عند الخروج
-    if (unsubscribeLectures) {
-        unsubscribeLectures();
-        unsubscribeLectures = null;
-    }
-    
-    loadLocalSaves();
-}
-
-// تحميل العروض المحفوظة محلياً
-function loadLocalSaves() {
-    const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
-    
-    if (quickSaves.length === 0) {
-        localSavesList.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-inbox"></i>
-                <h3>لا توجد عروض محفوظة</h3>
-                <p>لم تقم بحفظ أي عروض محلياً بعد</p>
-            </div>
-        `;
-        return;
-    }
-    
-    let html = '';
-    quickSaves.forEach((save, index) => {
-        const videoId = getYouTubeId(save.link);
-        const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
-        const saveDate = new Date(save.timestamp).toLocaleDateString('ar-SA');
-        
-        // حساب الوقت المتبقي إن وجد
-        let timeInfo = '';
-        if (save.expiry) {
-            const now = Date.now();
-            const remainingTime = save.expiry - now;
-            
-            if (remainingTime > 0) {
-                const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                timeInfo = `<div class="local-save-details">تنتهي بعد: ${days} يوم و${hours} ساعة</div>`;
-            } else {
-                timeInfo = '<div class="local-save-details" style="color:#ff4757">انتهت مدة الحفظ</div>';
-            }
-        } else if (save.duration === 'forever') {
-            timeInfo = '<div class="local-save-details">محفوظ إلى الأبد</div>';
-        }
-        
-        html += `
-            <div class="local-save-item">
-                <div class="local-save-header">
-                    <div class="local-save-link">${save.link}</div>
-                    <div class="local-save-actions">
-                        <button onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')">▶ تشغيل</button>
-                        <button onclick="deleteLocalSave(${index})">🗑 حذف</button>
-                    </div>
-                </div>
-                ${thumbnailUrl ? `<div class="video-thumbnail" style="background-image: url('${thumbnailUrl}')" onclick="playVideo('${save.link.replace(/'/g, "\\'")}', 'default')"></div>` : ''}
-                <div class="local-save-details">
-                    تم الحفظ في: ${saveDate} 
-                    ${save.duration && save.duration !== 'forever' ? `• المدة: ${save.duration} يوم` : ''}
-                </div>
-                ${timeInfo}
-            </div>
-        `;
-    });
-    
-    localSavesList.innerHTML = html;
-}
-
-// حذف عرض محلي
-function deleteLocalSave(index) {
-    if (confirm('هل أنت متأكد من أنك تريد حذف هذا العرض المحفوظ؟')) {
-        const quickSaves = JSON.parse(localStorage.getItem('quickSaves') || '[]');
-        quickSaves.splice(index, 1);
-        localStorage.setItem('quickSaves', JSON.stringify(quickSaves));
-        loadLocalSaves();
-    }
-}
-
-// تحديث حالة الاتصال
-function updateConnectionStatus(connected) {
-    const statusElement = document.getElementById('connectionStatus');
-    statusElement.classList.remove('hidden');
-    
-    if (connected) {
-        statusElement.innerHTML = '<i class="fas fa-wifi"></i> متصل بقاعدة البيانات';
-        statusElement.className = 'connection-status status-connected';
-    } else {
-        statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> غير متصل بقاعدة البيانات';
-        statusElement.className = 'connection-status status-disconnected';
-    }
-    
-    setTimeout(() => {
-        statusElement.classList.add('hidden');
-    }, 3000);
-}
-
-// ربط الأحداث
-playNewBtn.addEventListener('click', playNewLink);
-saveBtn.addEventListener('click', saveLinkForAll);
-quickSaveBtn.addEventListener('click', saveQuickLink);
+// إضافة مستمع الحدث للثيم
 themeToggle.addEventListener('click', toggleTheme);
-  
-// تهيئة التطبيق عند التحميل
-document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    renderSubjects();
-    restoreNavigationState();
-    
-    // تنظيف المحاضرات المنتهية الصلاحية كل ساعة
-    setInterval(cleanExpiredLectures, 3600000);
-});
 
-// تنظيف المحاضرات المنتهية الصلاحية
-async function cleanExpiredLectures() {
-    try {
-        const now = firebase.firestore.Timestamp.now();
-        const expiredLectures = await db.collection('lectures')
-            .where('expiry', '<=', now)
-            .get();
-        
-        const deletePromises = [];
-        expiredLectures.forEach(doc => {
-            deletePromises.push(doc.ref.delete());
-        });
-        
-        await Promise.all(deletePromises);
-        console.log(`تم حذف ${deletePromises.length} محاضرة منتهية الصلاحية`);
-        updateConnectionStatus(true);
-    } catch (error) {
-        console.error('Error cleaning expired lectures:', error);
-        updateConnectionStatus(false);
+// تحسينات الأداء مع الإنترنت الضعيف
+let videoLoadAttempts = 0;
+const maxLoadAttempts = 3;
+
+function loadVideoWithRetry(videoId) {
+    if (videoLoadAttempts >= maxLoadAttempts) {
+        showNotification('فشل تحميل الفيديو بعد عدة محاولات. يرجى التحقق من اتصال الإنترنت', 'error');
+        return;
     }
+    
+    videoLoadAttempts++;
+    
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    iframe.frameBorder = "0";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.borderRadius = "15px";
+    
+    iframe.onload = function() {
+        videoLoadAttempts = 0;
+        loadingIndicator.style.display = 'none';
+        showNotification('تم تحميل الفيديو بنجاح!', 'success');
+    };
+    
+    iframe.onerror = function() {
+        if (videoLoadAttempts < maxLoadAttempts) {
+            showNotification(`محاولة تحميل الفيديو مرة أخرى (${videoLoadAttempts}/${maxLoadAttempts})`, 'error');
+            setTimeout(() => {
+                loadVideoWithRetry(videoId);
+            }, 2000);
+        } else {
+            loadingIndicator.style.display = 'none';
+            videoPlaceholder.style.display = 'flex';
+            videoPlayer.style.display = 'none';
+            showNotification('فشل تحميل الفيديو. يرجى المحاولة لاحقاً', 'error');
+        }
+    };
+    
+    videoPlayer.innerHTML = '';
+    videoPlayer.appendChild(iframe);
+    videoPlayer.style.display = 'block';
 }
-
-// إضافة معالجة أخطاء الشبكة
-window.addEventListener('online', () => {
-    console.log("أصبح التطبيق متصلاً بالإنترنت");
-    updateConnectionStatus(true);
-});
-
-window.addEventListener('offline', () => {
-    console.log("فقد التطبيق الاتصال بالإنترنت");
-    updateConnectionStatus(false);
-});
 </script>
 </body>
 </html>
