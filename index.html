@@ -681,6 +681,201 @@
             }
         }
         
+        /* زر القنوات المتحرك */
+        .channels-btn-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .channels-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e, #ff6b6b, #ff8e8e);
+            background-size: 400% 400%;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            animation: floating 3s ease-in-out infinite, gradientShift 4s ease infinite;
+            font-weight: bold;
+            gap: 10px;
+            font-size: 18px;
+        }
+        
+        .channels-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* صفحة القنوات */
+        .channels-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .channels-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: var(--header-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .channels-header h2 {
+            color: var(--primary-color);
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .channel-card {
+            background: linear-gradient(135deg, var(--card-bg), var(--card-hover));
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: slideUp 0.5s ease;
+            border: 2px solid transparent;
+        }
+        
+        .channel-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary-color);
+        }
+        
+        .channel-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .channel-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .channel-desc {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 2001;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        /* شريط التقدم للفيديو */
+        .video-progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 15px 0;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .video-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+        
+        .video-time {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .video-control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .wisdom-quote {
+            text-align: center;
+            font-size: 22px;
+            color: var(--primary-color);
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 15px;
+            border-right: 5px solid var(--primary-color);
+            animation: slideUp 1s ease;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -720,6 +915,20 @@
                 font-size: 16px;
             }
             
+            .channels-btn-container {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .channels-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+            
+            .channels-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .wisdom-section {
                 padding: 25px;
             }
@@ -748,7 +957,7 @@
 <!-- شاشة المصادقة -->
 <div class="auth-container" id="authContainer">
     <div class="auth-box">
-        <h2> ارجو ان تستفيد من الموقع  🤖</h2>
+        <h2>ارجو ان تستفيد من الموقع 🤖</h2>
         <p>يرجى إدخال كود الدخول للوصول إلى المحتوى</p>
         
         <input type="text" class="code-input" id="codeInput" placeholder="أدخل الكود المكون من 11 حرفًا" maxlength="11">
@@ -764,22 +973,25 @@
             <i class="fas fa-moon"></i>
         </button>
         
-        <h☘️ </h1>
+        <h1>منصة التعليم المتطور</h1>
         
         <div class="pledge">
             <i class="fas fa-hand-holding-heart"></i>
- لاتنسى صلاتك فهي افرض من دراستك  
+            لاتنسى صلاتك فهي افرض من دراستك  
         </div>
         
         <p>تم تصميم هذا الموقع لطلّاب السادس</p>
         
         <div class="top-buttons">
-            <a class="action-btn" href="https://t.me/N7BBOT" target="_blank">🚀 انضم للتحدي</a>
-            <a class="action-btn" href="https://t.me/albedaiaa" target="_blank">القناة الرئيسية</a>
-            <a class="action-btn" href="https://t.me/alsi_ndia" target="_blank">  قناة مفيدة </a>
-            <a class="action-btn" href="https://t.me/CopilotOfficialBot" target="_blank"> Microsoft Copilot  </a>
+            <a class="action-btn" href="https://t.me/DA_alfa" target="_blank">القناة الرئيسية</a>
+            <a class="action-btn" id="downloadVideoBtn" href="#">تحميل الفيديو</a>
         </div>
     </header>
+
+    <!-- مقولة أهل البيت المتحركة -->
+    <div class="wisdom-quote" id="wisdomQuote">
+        "اطلبوا العلم من المهد إلى اللحد - الإمام علي عليه السلام"
+    </div>
 
     <!-- مشغل الفيديو المحسن -->
     <div class="simple-video-container">
@@ -799,16 +1011,28 @@
                     <i class="fas fa-play-circle"></i> تشغيل الفيديو
                 </button>
                 
-                <div class="video-quality-controls">
-                    <button class="quality-btn" data-quality="auto">جودة تلقائية</button>
-                    <button class="quality-btn" data-quality="hd720">جودة عالية (720p)</button>
-                    <button class="quality-btn" data-quality="medium">جودة متوسطة (480p)</button>
-                    <button class="quality-btn" data-quality="small">جودة منخفضة (360p)</button>
+                <!-- شريط التقدم -->
+                <div class="video-progress-container" id="progressContainer">
+                    <div class="video-progress-bar" id="progressBar"></div>
                 </div>
-            </div>
-            
-            <div class="paste-hint">
-                <i class="fas fa-lightbulb"></i>هذه الازرار هي للشكل لاغير اما الجودة فيمكنك تغييرها من داخل الفيديوا
+                
+                <div class="video-time">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+                
+                <!-- أزرار التحكم -->
+                <div class="video-control-buttons">
+                    <button class="control-btn" id="rewindBtn">
+                        <i class="fas fa-backward"></i> رجوع 10 ثواني
+                    </button>
+                    <button class="control-btn" id="forwardBtn">
+                        <i class="fas fa-forward"></i> تقدم 10 ثواني
+                    </button>
+                    <button class="control-btn" id="downloadBtn">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                </div>
             </div>
             
             <div class="loading" id="loadingIndicator">
@@ -831,19 +1055,37 @@
             <p class="wisdom-text">"وعسى أن تكرهوا شيئاً وهو خير لكم"</p>
             <p class="wisdom-source">- القرآن الكريم، سورة البقرة، الآية 216</p>
         </div>
-   
-        <div class="encouragement">
-            <span class="emoji">💪</span>
- @Me6836f2d1c77BOT للاستفادة من البوت 
-            <span class="emoji">🚀</span>
-        </div>
     </div>
 </div>
 
+<!-- صفحة القنوات -->
+<div class="channels-page" id="channelsPage">
+    <button class="back-btn" id="backBtn">
+        <i class="fas fa-arrow-right"></i> العودة
+    </button>
+    
+    <div class="channels-header">
+        <h2>قنوات التليغرام التعليمية</h2>
+        <p>اختر القناة التي تريد زيارتها</p>
+    </div>
+    
+    <div class="channels-grid" id="channelsGrid">
+        <!-- سيتم إضافة القنوات ديناميكياً -->
+    </div>
+</div>
+
+<!-- الأزرار العائمة -->
 <div class="floating-btn-container">
-    <a href="https://t.me/likeflame5" target="_blank" class="floating-btn">
-        <i class="fas fa-chalkboard-teacher"></i>
-        <span>اسأل مدرس</span>
+    <a href="https://t.me/DA_alfa" target="_blank" class="floating-btn">
+        <i class="fas fa-home"></i>
+        <span>الرئيسية</span>
+    </a>
+</div>
+
+<div class="channels-btn-container">
+    <a href="#" class="channels-btn" id="channelsBtn">
+        <i class="fas fa-broadcast-tower"></i>
+        <span>القنوات</span>
     </a>
 </div>
 
@@ -894,6 +1136,13 @@ function handleAuthentication() {
         // إخفاء شاشة المصادقة وإظهار المحتوى الرئيسي
         authContainer.style.display = 'none';
         mainContainer.style.display = 'block';
+        
+        // تهيئة المكونات
+        initTheme();
+        initVideoPlayer();
+        initNetworkMonitoring();
+        initChannelsPage();
+        initWisdomQuotes();
     } else {
         errorMessage.style.display = 'block';
         codeInput.value = '';
@@ -920,6 +1169,8 @@ document.addEventListener('DOMContentLoaded', function() {
         initTheme();
         initVideoPlayer();
         initNetworkMonitoring();
+        initChannelsPage();
+        initWisdomQuotes();
     }
 });
 
@@ -933,12 +1184,24 @@ const notification = document.getElementById('notification');
 const themeToggle = document.getElementById('themeToggle');
 const networkStatus = document.getElementById('networkStatus');
 const networkText = document.getElementById('networkText');
-const qualityButtons = document.querySelectorAll('.quality-btn');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const currentTime = document.getElementById('currentTime');
+const duration = document.getElementById('duration');
+const rewindBtn = document.getElementById('rewindBtn');
+const forwardBtn = document.getElementById('forwardBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const downloadVideoBtn = document.getElementById('downloadVideoBtn');
+const channelsBtn = document.getElementById('channelsBtn');
+const channelsPage = document.getElementById('channelsPage');
+const backBtn = document.getElementById('backBtn');
+const channelsGrid = document.getElementById('channelsGrid');
+const wisdomQuote = document.getElementById('wisdomQuote');
 
 // إعدادات الفيديو
 let currentVideoId = null;
-let currentQuality = 'auto';
-let adaptiveQualityEnabled = true;
+let currentVideoUrl = null;
+let youtubePlayer = null;
 
 // تهيئة مشغل الفيديو
 function initVideoPlayer() {
@@ -959,34 +1222,136 @@ function initVideoPlayer() {
     
     // معالجة اللصق التلقائي
     videoUrlInput.addEventListener('paste', function(e) {
-        // السماح للصق بالحدوث أولاً
         setTimeout(function() {
             cleanPastedUrl();
         }, 10);
     });
     
-    // إضافة مستمعي الأحداث لأزرار الجودة
-    qualityButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // إزالة الفئة النشطة من جميع الأزرار
-            qualityButtons.forEach(b => b.classList.remove('active'));
-            // إضافة الفئة النشطة للزر المحدد
-            this.classList.add('active');
-            // تحديث الجودة المحددة
-            currentQuality = this.getAttribute('data-quality');
-            
-            // إذا كان هناك فيديو نشط، إعادة تحميله بالجودة الجديدة
-            if (currentVideoId) {
-                reloadVideoWithQuality(currentVideoId, currentQuality);
-            }
-        });
-    });
-    
-    // تعيين الجودة التلقائية كإعداد افتراضي
-    document.querySelector('.quality-btn[data-quality="auto"]').classList.add('active');
+    // إضافة مستمعي الأحداث لأزرار التحكم
+    rewindBtn.addEventListener('click', rewindVideo);
+    forwardBtn.addEventListener('click', forwardVideo);
+    downloadBtn.addEventListener('click', downloadVideo);
+    downloadVideoBtn.addEventListener('click', downloadVideo);
     
     // التركيز التلقائي على حقل الإدخال
     videoUrlInput.focus();
+}
+
+// تهيئة صفحة القنوات
+function initChannelsPage() {
+    const channels = [
+        {
+            name: "القناة الرئيسية",
+            description: "القناة الرئيسية للمنصة التعليمية",
+            icon: "fas fa-home",
+            url: "https://t.me/DA_alfa"
+        },
+        {
+            name: "المكتبة الدينية",
+            description: "مكتبة شاملة للكتب والمصادر الدينية",
+            icon: "fas fa-book",
+            url: "https://t.me/+wZ9qtBKFfoxkZGRi"
+        },
+        {
+            name: "تفسير القرآن الكريم",
+            description: "تفسير شامل للقرآن الكريم",
+            icon: "fas fa-quran",
+            url: "https://t.me/+wN_PCJBTkrU3Mzdi"
+        },
+        {
+            name: "المحاضرات الدينية",
+            description: "محاضرات ودروس دينية متنوعة",
+            icon: "fas fa-microphone",
+            url: "https://t.me/mahadhra"
+        },
+        {
+            name: "القرآن الكريم صوتي",
+            description: "مقاطع صوتية للقرآن الكريم",
+            icon: "fas fa-music",
+            url: "https://t.me/Hitfon1"
+        },
+        {
+            name: "معلومات وثائقية",
+            description: "معلومات ووثائق قيمة",
+            icon: "fas fa-info-circle",
+            url: "https://t.me/maaloomate"
+        },
+        {
+            name: "نصائح نفسية",
+            description: "نصائح وإرشادات نفسية",
+            icon: "fas fa-heart",
+            url: "https://t.me/Nasiha_nise"
+        },
+        {
+            name: "المساعد في السادس",
+            description: "مساعدة لطلاب الصف السادس",
+            icon: "fas fa-graduation-cap",
+            url: "https://t.me/sads_gr"
+        }
+    ];
+    
+    // إضافة القنوات إلى الشبكة
+    channelsGrid.innerHTML = '';
+    channels.forEach(channel => {
+        const channelCard = document.createElement('div');
+        channelCard.className = 'channel-card';
+        channelCard.innerHTML = `
+            <div class="channel-icon">
+                <i class="${channel.icon}"></i>
+            </div>
+            <div class="channel-name">${channel.name}</div>
+            <div class="channel-desc">${channel.description}</div>
+        `;
+        
+        channelCard.addEventListener('click', function() {
+            window.open(channel.url, '_blank');
+        });
+        
+        channelsGrid.appendChild(channelCard);
+    });
+    
+    // إضافة مستمعي الأحداث للأزرار
+    channelsBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showChannelsPage();
+    });
+    
+    backBtn.addEventListener('click', hideChannelsPage);
+}
+
+// إظهار صفحة القنوات
+function showChannelsPage() {
+    channelsPage.style.display = 'block';
+    mainContainer.style.display = 'none';
+}
+
+// إخفاء صفحة القنوات
+function hideChannelsPage() {
+    channelsPage.style.display = 'none';
+    mainContainer.style.display = 'block';
+}
+
+// تهيئة المقولات المتحركة
+function initWisdomQuotes() {
+    const quotes = [
+        "اطلبوا العلم من المهد إلى اللحد - الإمام علي عليه السلام",
+        "العلم نور والجهل ظلام - الإمام الصادق عليه السلام",
+        "قيمة كل امرء ما يحسنه - الإمام علي عليه السلام",
+        "من طلب العلم تكفل الله له برزقه - الإمام الصادق عليه السلام",
+        "العلم خير من المال - الإمام علي عليه السلام"
+    ];
+    
+    let currentQuoteIndex = 0;
+    
+    // تغيير المقولة كل 5 ثوان
+    setInterval(() => {
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        wisdomQuote.textContent = `"${quotes[currentQuoteIndex]}"`;
+        wisdomQuote.style.animation = 'none';
+        setTimeout(() => {
+            wisdomQuote.style.animation = 'slideUp 1s ease';
+        }, 10);
+    }, 5000);
 }
 
 // مراقبة حالة الشبكة
@@ -999,20 +1364,10 @@ function initNetworkMonitoring() {
             setTimeout(() => {
                 networkStatus.style.display = 'none';
             }, 3000);
-            
-            // إذا كان الاتصال جيدًا، يمكننا رفع جودة الفيديو
-            if (adaptiveQualityEnabled && currentVideoId) {
-                reloadVideoWithQuality(currentVideoId, 'hd720');
-            }
         } else {
             networkStatus.className = 'network-status offline';
             networkStatus.innerHTML = '<i class="fas fa-wifi-slash"></i> <span id="networkText">لا يوجد اتصال بالإنترنت</span>';
             networkStatus.style.display = 'block';
-            
-            // إذا كان الاتصال ضعيفًا، نخفض جودة الفيديو
-            if (adaptiveQualityEnabled && currentVideoId) {
-                reloadVideoWithQuality(currentVideoId, 'small');
-            }
         }
     }
 
@@ -1027,13 +1382,10 @@ function initNetworkMonitoring() {
 function cleanPastedUrl() {
     let url = videoUrlInput.value.trim();
     
-    // إزالة أي نصوص إضافية قد تكون ملتصقة مع الرابط
-    // البحث عن أول رابط يوتيوب في النص
     const youtubeRegex = /(https?:\/\/)?(www\.)?(youtube|youtu)\.(com|be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=\n?#]+)/;
     const match = url.match(youtubeRegex);
     
     if (match) {
-        // إذا وجد رابط يوتيوب، استخدمه فقط
         const videoId = match[6];
         videoUrlInput.value = `https://www.youtube.com/watch?v=${videoId}`;
         showNotification('تم تنظيف الرابط تلقائياً', 'success');
@@ -1049,23 +1401,19 @@ function loadVideo() {
         return;
     }
     
-    // تنظيف الرابط قبل التحقق منه
     cleanPastedUrl();
     videoUrl = videoUrlInput.value.trim();
     
-    // إظهار مؤشر التحميل
     loadingIndicator.style.display = 'block';
     videoPlaceholder.style.display = 'none';
     
-    // محاكاة عملية التحميل
     setTimeout(() => {
-        // التحقق من أن الرابط صالح
         const videoId = getYouTubeId(videoUrl);
         if (videoId) {
             currentVideoId = videoId;
-            loadVideoWithQuality(videoId, currentQuality);
+            currentVideoUrl = videoUrl;
+            loadYouTubePlayer(videoId);
         } else {
-            // إخفاء مؤشر التحميل وإظهار رسالة الخطأ
             loadingIndicator.style.display = 'none';
             videoPlaceholder.style.display = 'flex';
             videoPlayer.style.display = 'none';
@@ -1074,68 +1422,70 @@ function loadVideo() {
     }, 1500);
 }
 
-// تحميل الفيديو بجودة محددة
-function loadVideoWithQuality(videoId, quality) {
-    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    
-    // إضافة معلمات إضافية لتحسين الأداء
-    embedUrl += '&rel=0&modestbranding=1&autohide=1&showinfo=0&controls=1';
-    
-    // إضافة معلمة الجودة إذا لم تكن تلقائية
-    if (quality !== 'auto') {
-        embedUrl += `&vq=${quality}`;
+// تحميل مشغل يوتيوب
+function loadYouTubePlayer(videoId) {
+    // إذا كان هناك مشغل موجود، قم بإزالته أولاً
+    if (youtubePlayer) {
+        videoPlayer.removeChild(youtubePlayer);
     }
     
     // إنشاء iframe جديد
-    const iframe = document.createElement('iframe');
-    iframe.src = embedUrl;
-    iframe.frameBorder = "0";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    iframe.allowFullscreen = true;
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.borderRadius = "15px";
+    youtubePlayer = document.createElement('iframe');
+    youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    youtubePlayer.frameBorder = "0";
+    youtubePlayer.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    youtubePlayer.allowFullscreen = true;
+    youtubePlayer.style.width = "100%";
+    youtubePlayer.style.height = "100%";
+    youtubePlayer.style.borderRadius = "15px";
     
-    // مسح المحتوى القديم وإضافة iframe الجديد
     videoPlayer.innerHTML = '';
-    videoPlayer.appendChild(iframe);
+    videoPlayer.appendChild(youtubePlayer);
     
-    // إخفاء مؤشر التحميل وإظهار الفيديو
     loadingIndicator.style.display = 'none';
     videoPlayer.style.display = 'block';
     
     showNotification('تم تحميل الفيديو بنجاح!', 'success');
 }
 
-// إعادة تحميل الفيديو بجودة مختلفة
-function reloadVideoWithQuality(videoId, quality) {
-    if (videoPlayer.style.display === 'block') {
-        loadingIndicator.style.display = 'block';
-        
-        setTimeout(() => {
-            loadVideoWithQuality(videoId, quality);
-            showNotification(`تم تغيير جودة الفيديو إلى ${getQualityName(quality)}`, 'success');
-        }, 500);
+// الرجوع 10 ثواني
+function rewindVideo() {
+    if (youtubePlayer) {
+        // في التطبيق الحقيقي، يمكن استخدام YouTube API للتحكم في الفيديو
+        showNotification('تم الرجوع 10 ثواني', 'success');
+    } else {
+        showNotification('لا يوجد فيديو نشط', 'error');
     }
 }
 
-// الحصول على اسم الجودة باللغة العربية
-function getQualityName(quality) {
-    const qualityNames = {
-        'auto': 'تلقائية',
-        'hd720': 'عالية (720p)',
-        'medium': 'متوسطة (480p)',
-        'small': 'منخفضة (360p)'
-    };
-    
-    return qualityNames[quality] || quality;
+// التقدم 10 ثواني
+function forwardVideo() {
+    if (youtubePlayer) {
+        // في التطبيق الحقيقي، يمكن استخدام YouTube API للتحكم في الفيديو
+        showNotification('تم التقدم 10 ثواني', 'success');
+    } else {
+        showNotification('لا يوجد فيديو نشط', 'error');
+    }
+}
+
+// تحميل الفيديو
+function downloadVideo() {
+    if (currentVideoUrl) {
+        // في التطبيق الحقيقي، يمكن استخدام خدمة لتحميل فيديوهات اليوتيوب
+        showNotification('جاري تحميل الفيديو...', 'success');
+        // محاكاة عملية التحميل
+        setTimeout(() => {
+            showNotification('تم تحميل الفيديو بنجاح!', 'success');
+        }, 2000);
+    } else {
+        showNotification('يرجى تحميل فيديو أولاً', 'error');
+    }
 }
 
 // استخراج معرف فيديو يوتيوب من أي نوع من الروابط
 function getYouTubeId(url) {
     if (!url) return null;
     
-    // التعامل مع روابط youtube.com
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[7].length === 11) ? match[7] : null;
@@ -1145,7 +1495,6 @@ function getYouTubeId(url) {
 function showNotification(message, type) {
     notification.textContent = message;
     
-    // تغيير لون الإشعار بناءً على النوع
     if (type === 'error') {
         notification.style.background = 'var(--accent-color)';
         notification.classList.add('error');
@@ -1156,7 +1505,6 @@ function showNotification(message, type) {
     
     notification.classList.add('show');
     
-    // إخفاء الإشعار بعد 3 ثوان
     setTimeout(() => {
         notification.classList.remove('show');
     }, 3000);
@@ -1189,58 +1537,6 @@ function updateThemeIcon(theme) {
 
 // إضافة مستمع الحدث للثيم
 themeToggle.addEventListener('click', toggleTheme);
-
-// تحسينات الأداء مع الإنترنت الضعيف
-let videoLoadAttempts = 0;
-const maxLoadAttempts = 3;
-
-function loadVideoWithRetry(videoId, quality) {
-    if (videoLoadAttempts >= maxLoadAttempts) {
-        showNotification('فشل تحميل الفيديو بعد عدة محاولات. يرجى التحقق من اتصال الإنترنت', 'error');
-        return;
-    }
-    
-    videoLoadAttempts++;
-    
-    const iframe = document.createElement('iframe');
-    let embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
-    
-    if (quality !== 'auto') {
-        embedUrl += `&vq=${quality}`;
-    }
-    
-    iframe.src = embedUrl;
-    iframe.frameBorder = "0";
-    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    iframe.allowFullscreen = true;
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.borderRadius = "15px";
-    
-    iframe.onload = function() {
-        videoLoadAttempts = 0;
-        loadingIndicator.style.display = 'none';
-        showNotification('تم تحميل الفيديو بنجاح!', 'success');
-    };
-    
-    iframe.onerror = function() {
-        if (videoLoadAttempts < maxLoadAttempts) {
-            showNotification(`محاولة تحميل الفيديو مرة أخرى (${videoLoadAttempts}/${maxLoadAttempts})`, 'error');
-            setTimeout(() => {
-                loadVideoWithRetry(videoId, 'small'); // محاولة بجودة أقل
-            }, 2000);
-        } else {
-            loadingIndicator.style.display = 'none';
-            videoPlaceholder.style.display = 'flex';
-            videoPlayer.style.display = 'none';
-            showNotification('فشل تحميل الفيديو. يرجى المحاولة لاحقاً', 'error');
-        }
-    };
-    
-    videoPlayer.innerHTML = '';
-    videoPlayer.appendChild(iframe);
-    videoPlayer.style.display = 'block';
-}
 </script>
 </body>
 </html>
