@@ -8,29 +8,29 @@
     <style>
         /* أنماط CSS الأساسية */
         :root {
-            --primary-color: #00ccff;
-            --secondary-color: #007bff;
-            --accent-color: #ff6b6b;
-            --success-color: #38ff5c;
-            --warning-color: #ffcc00;
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4ecdc4;
+            --warning-color: #ffeaa7;
             --dark-bg: #0b0b0b;
-            --card-bg: linear-gradient(135deg, #007bff, #00aaff);
-            --header-bg: linear-gradient(135deg, #001f4d 0%, #003580 100%);
+            --card-bg: linear-gradient(135deg, #667eea, #764ba2);
+            --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --text-color: #fff;
-            --card-hover: linear-gradient(135deg, #00aaff, #00ccff);
+            --card-hover: linear-gradient(135deg, #764ba2, #667eea);
         }
 
         [data-theme="light"] {
-            --primary-color: #007bff;
-            --secondary-color: #0056b3;
-            --accent-color: #e74c3c;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #4ecdc4;
+            --warning-color: #ffeaa7;
             --dark-bg: #f8f9fa;
-            --card-bg: linear-gradient(135deg, #4facfe, #00f2fe);
-            --header-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --card-bg: linear-gradient(135deg, #a8edea, #fed6e3);
+            --header-bg: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             --text-color: #333;
-            --card-hover: linear-gradient(135deg, #00f2fe, #4facfe);
+            --card-hover: linear-gradient(135deg, #fed6e3, #a8edea);
         }
         
         * {
@@ -107,7 +107,7 @@
         .code-input:focus {
             outline: none;
             border-color: #00ffdd;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
         }
         
         .auth-btn {
@@ -124,7 +124,7 @@
         
         .auth-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
         }
         
         .error-message {
@@ -152,29 +152,30 @@
         
         header {
             background: var(--header-bg);
-            padding: 35px;
+            padding: 40px;
             text-align: center;
-            border-radius: 18px;
-            margin-bottom: 35px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--primary-color);
+            border-radius: 25px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--primary-color);
             animation: float 6s ease-in-out infinite;
             position: relative;
         }
 
         [data-theme="light"] header {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
         }
         
         .pledge {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 30px 0;
             border-right: 5px solid var(--primary-color);
-            font-size: 22px;
-            line-height: 1.6;
+            font-size: 24px;
+            line-height: 1.8;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
         
         .pledge i {
@@ -184,20 +185,21 @@
         
         .theme-toggle {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 25px;
+            left: 25px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             color: white;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .theme-toggle:hover {
@@ -212,92 +214,106 @@
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
         }
         
         header h1 {
-            color: var(--primary-color);
-            font-size: 42px;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0, 204, 255, 0.5);
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #fff, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         [data-theme="light"] header h1 {
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(45deg, #333, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .action-btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        .main-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .main-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 35px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 300% 300%;
             color: white;
-            border-radius: 14px;
+            border-radius: 20px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 18px;
-            margin: 8px 5px;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            font-size: 20px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            animation: pulse 1.8s infinite alternate;
+            animation: gradientShift 4s ease infinite;
+            min-width: 200px;
+            gap: 15px;
         }
         
-        .action-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
+        .main-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
         }
         
-        @keyframes pulse {
-            from {
-                transform: scale(1);
-                box-shadow: 0 0 10px #ff6b6b;
-            }
-            to {
-                transform: scale(1.08);
-                box-shadow: 0 0 25px #ff6b6b;
-            }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         /* مشغل الفيديو المحسن */
-        .simple-video-container {
+        .video-section {
             position: relative;
             width: 100%;
-            margin: 20px 0 40px 0;
-            background: linear-gradient(135deg, #111 0%, #222 100%);
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            border-left: 8px solid var(--primary-color);
-            animation: float 5s ease-in-out infinite;
+            margin: 40px 0 60px 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            border-image: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-image-slice: 1;
+            animation: float 8s ease-in-out infinite;
+            backdrop-filter: blur(10px);
         }
 
-        [data-theme="light"] .simple-video-container {
-            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        [data-theme="light"] .video-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
         }
         
-        .simple-video-container h2 {
-            font-size: 36px;
-            color: var(--primary-color);
-            margin-bottom: 25px;
+        .video-section h2 {
+            font-size: 42px;
+            color: transparent;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 35px;
             text-align: center;
-            text-shadow: 0 2px 5px rgba(0, 204, 255, 0.3);
+            text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
             animation: float 6s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .simple-video-container h2 {
-            color: #007bff;
-            text-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
         }
         
         .video-player {
             width: 100%;
-            height: 500px;
-            border-radius: 15px;
+            height: 600px;
+            border-radius: 20px;
             border: none;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             background: #000;
             display: none;
             position: relative;
@@ -305,172 +321,163 @@
         
         .video-placeholder {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: rgba(255, 255, 255, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 500px;
-            background: #000;
-            border-radius: 15px;
+            height: 600px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 20px;
+            border: 3px dashed #667eea;
         }
 
         [data-theme="light"] .video-placeholder {
-            background: #f0f0f0;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
             color: #666;
         }
         
         .video-placeholder i {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 100px;
+            margin-bottom: 30px;
             display: block;
-            color: var(--primary-color);
+            color: #667eea;
+            animation: bounce 3s infinite;
         }
         
         .video-controls {
-            background: rgba(44, 62, 80, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            margin-bottom: 20px;
+            background: rgba(44, 62, 80, 0.7);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            margin: 30px 0 20px 0;
             animation: slideUp 0.5s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
         }
         
         .url-input-container {
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px;
-            gap: 15px;
+            margin-bottom: 30px;
+            gap: 20px;
         }
         
         .url-input {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             border: none;
-            border-radius: 12px;
-            background: #222;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
             font-size: 18px;
             transition: all 0.3s ease;
             font-family: monospace;
+            border: 2px solid transparent;
         }
 
         [data-theme="light"] .url-input {
-            background: #fff;
+            background: rgba(0, 0, 0, 0.05);
             color: #333;
-            border: 1px solid #ddd;
         }
         
         .url-input:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
-            background: #2a2a2a;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.15);
         }
 
-        [data-theme="light"] .url-input:focus {
-            background: #fff;
-        }
-        
         .load-btn {
-            padding: 18px 30px;
-            background: var(--primary-color);
+            padding: 20px 35px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             transition: all 0.3s ease;
             width: 100%;
             animation: bounce 2s infinite;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         
         .load-btn:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
-        }
-        
-        .load-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .load-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-        
-        .load-btn:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
         }
         
         .video-control-buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 25px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
         
         .control-btn {
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+            min-width: 180px;
         }
         
         .control-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.6);
+        }
+        
+        .control-btn.download-btn {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+        
+        .control-btn.download-btn:hover {
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.6);
         }
         
         .loading {
             display: none;
             text-align: center;
-            padding: 20px;
+            padding: 30px;
         }
         
         .spinner {
-            border: 5px solid rgba(255, 255, 255, 0.3);
+            border: 6px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top: 5px solid var(--primary-color);
-            width: 50px;
-            height: 50px;
+            border-top: 6px solid #667eea;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
         
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background: var(--success-color);
+            top: 30px;
+            right: 30px;
+            padding: 20px 30px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
             color: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             transform: translateX(150%);
             transition: transform 0.5s ease;
             z-index: 1000;
             font-weight: bold;
+            font-size: 18px;
         }
         
         .notification.show {
@@ -478,60 +485,67 @@
         }
         
         .notification.error {
-            background: var(--accent-color);
+            background: linear-gradient(45deg, #f5576c, #f093fb);
         }
         
         .wisdom-quote {
             text-align: center;
-            font-size: 22px;
-            color: var(--primary-color);
-            margin: 30px 0;
-            padding: 25px;
-            background: rgba(0, 123, 255, 0.1);
-            border-radius: 15px;
-            border-right: 5px solid var(--primary-color);
+            font-size: 26px;
+            color: transparent;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 50px 0;
+            padding: 35px;
+            background-color: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            border-right: 6px solid #667eea;
             animation: slideUp 1s ease;
-            min-height: 100px;
+            min-height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1.6;
+            line-height: 1.8;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.2);
         }
 
         [data-theme="light"] .wisdom-quote {
-            background: rgba(79, 172, 254, 0.2);
+            background-color: rgba(102, 126, 234, 0.05);
         }
         
         .network-status {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 15px;
-            border-radius: 20px;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 20px;
+            border-radius: 25px;
             font-weight: bold;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             background: rgba(0, 0, 0, 0.8);
             display: none;
+            backdrop-filter: blur(10px);
         }
 
         .network-status.online {
-            background: var(--success-color);
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
             color: #000;
         }
 
         .network-status.offline {
-            background: var(--accent-color);
+            background: linear-gradient(45deg, #f5576c, #f093fb);
             color: white;
         }
         
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-10px); }
         }
         
         @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
+            from { transform: translateY(30px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
         
@@ -540,26 +554,11 @@
             100% { transform: rotate(360deg); }
         }
         
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            20% {
-                transform: scale(25, 25);
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: scale(40, 40);
-            }
-        }
-        
         /* زر القنوات المتحرك */
         .channels-btn-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 40px;
+            right: 40px;
             z-index: 1000;
         }
         
@@ -567,31 +566,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e, #4ecdc4, #44a08d, #ff6b6b);
+            padding: 20px 35px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c, #4ecdc4);
             background-size: 400% 400%;
             color: white;
             text-decoration: none;
             border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
             animation: floating 3s ease-in-out infinite, gradientShift 6s ease infinite;
             font-weight: bold;
-            gap: 10px;
-            font-size: 18px;
+            gap: 15px;
+            font-size: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         
         .channels-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            25% { background-position: 50% 50%; }
-            50% { background-position: 100% 50%; }
-            75% { background-position: 50% 50%; }
-            100% { background-position: 0% 50%; }
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
         }
         
         /* صفحة القنوات */
@@ -604,45 +597,50 @@
             height: 100%;
             background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a1a 100%);
             z-index: 2000;
-            padding: 20px;
+            padding: 30px;
             overflow-y: auto;
         }
         
         .channels-header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
+            margin-bottom: 50px;
+            padding: 40px;
             background: var(--header-bg);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
         
         .channels-header h2 {
-            color: var(--primary-color);
-            font-size: 36px;
-            margin-bottom: 15px;
+            color: white;
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .channels-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
             max-width: 1200px;
             margin: 0 auto;
         }
         
         .channel-card {
             background: linear-gradient(135deg, var(--card-bg), var(--card-hover));
-            padding: 30px;
-            border-radius: 20px;
+            padding: 35px;
+            border-radius: 25px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
             animation: slideUp 0.5s ease;
             border: 2px solid transparent;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
         
         .channel-card::before {
@@ -662,50 +660,51 @@
         }
         
         .channel-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             border-color: var(--primary-color);
         }
         
         .channel-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
+            font-size: 60px;
+            margin-bottom: 25px;
             color: white;
         }
         
         .channel-name {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: white;
         }
         
         .channel-desc {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
         }
         
         .back-btn {
             position: fixed;
-            top: 30px;
-            left: 30px;
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            top: 40px;
+            left: 40px;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
             color: white;
             border: none;
-            padding: 15px 25px;
+            padding: 18px 30px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
             transition: all 0.3s ease;
             z-index: 2001;
+            backdrop-filter: blur(10px);
         }
         
         .back-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(240, 147, 251, 0.6);
         }
         
         /* ألوان متنوعة للقنوات */
@@ -725,62 +724,84 @@
                 transform: translateY(0); 
             }
             50% { 
-                transform: translateY(-10px); 
+                transform: translateY(-15px); 
             }
         }
         
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                padding: 20px;
             }
             
             header {
-                padding: 25px;
+                padding: 30px;
             }
             
             header h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
             
             .pledge {
-                font-size: 18px;
-                padding: 15px;
+                font-size: 20px;
+                padding: 20px;
             }
             
             .theme-toggle {
                 position: relative;
                 top: 0;
                 left: 0;
-                margin: 10px auto;
+                margin: 15px auto;
             }
             
             .video-player {
                 height: 400px;
             }
             
+            .video-placeholder {
+                height: 400px;
+                padding: 50px 20px;
+            }
+            
             .channels-btn-container {
-                bottom: 20px;
-                right: 20px;
+                bottom: 25px;
+                right: 25px;
             }
             
             .channels-btn {
-                padding: 12px 20px;
-                font-size: 16px;
+                padding: 15px 25px;
+                font-size: 18px;
             }
             
             .channels-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 25px;
             }
             
             .wisdom-quote {
-                font-size: 18px;
-                padding: 20px;
+                font-size: 20px;
+                padding: 25px;
+                margin: 30px 0;
             }
             
             .network-status {
-                bottom: 80px;
-                right: 20px;
+                bottom: 100px;
+                right: 25px;
+            }
+            
+            .main-buttons {
+                gap: 15px;
+            }
+            
+            .main-btn {
+                padding: 15px 25px;
+                font-size: 18px;
+                min-width: 160px;
+            }
+            
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+                min-width: 150px;
             }
         }
     </style>
@@ -813,8 +834,11 @@
             لاتنسى صلاتك فهي افرض من دراستك  
         </div>
         
-        <div class="top-buttons">
-            <a class="action-btn" id="downloadVideoBtn" href="#">تحميل الفيديو</a>
+        <div class="main-buttons">
+            <button class="main-btn" id="youtubeDownloadBtn">
+                <i class="fab fa-youtube"></i>
+                <span>تحميل من يوتيوب</span>
+            </button>
         </div>
     </header>
 
@@ -824,7 +848,7 @@
     </div>
 
     <!-- مشغل الفيديو المحسن -->
-    <div class="simple-video-container">
+    <div class="video-section">
         <h2>مشغل الفيديو المتقدم</h2>
         
         <div class="video-player" id="videoPlayer">
@@ -836,7 +860,7 @@
         
         <div class="video-controls">
             <div class="url-input-container">
-                <input type="text" class="url-input" id="videoUrl" placeholder="ضع رابط الفيديو هنا" autocomplete="off">
+                <input type="text" class="url-input" id="videoUrl" placeholder="ضع رابط الفيديو من يوتيوب هنا" autocomplete="off">
                 <button class="load-btn" id="loadVideo">
                     <i class="fas fa-play-circle"></i> تشغيل الفيديو
                 </button>
@@ -849,8 +873,8 @@
                     <button class="control-btn" id="forwardBtn">
                         <i class="fas fa-forward"></i> تقدم 10 ثواني
                     </button>
-                    <button class="control-btn" id="downloadBtn">
-                        <i class="fas fa-download"></i> تحميل
+                    <button class="control-btn download-btn" id="downloadYoutubeBtn">
+                        <i class="fas fa-download"></i> تحميل الفيديو
                     </button>
                 </div>
             </div>
@@ -970,8 +994,8 @@ const themeToggle = document.getElementById('themeToggle');
 const networkStatus = document.getElementById('networkStatus');
 const rewindBtn = document.getElementById('rewindBtn');
 const forwardBtn = document.getElementById('forwardBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const downloadVideoBtn = document.getElementById('downloadVideoBtn');
+const downloadYoutubeBtn = document.getElementById('downloadYoutubeBtn');
+const youtubeDownloadBtn = document.getElementById('youtubeDownloadBtn');
 const channelsBtn = document.getElementById('channelsBtn');
 const channelsPage = document.getElementById('channelsPage');
 const backBtn = document.getElementById('backBtn');
@@ -1000,10 +1024,28 @@ function initVideoPlayer() {
     
     rewindBtn.addEventListener('click', rewindVideo);
     forwardBtn.addEventListener('click', forwardVideo);
-    downloadBtn.addEventListener('click', downloadVideo);
-    downloadVideoBtn.addEventListener('click', downloadVideo);
+    downloadYoutubeBtn.addEventListener('click', downloadYoutubeVideo);
+    youtubeDownloadBtn.addEventListener('click', openYoutubeDownload);
     
     videoUrlInput.focus();
+}
+
+// فتح موقع تحميل اليوتيوب
+function openYoutubeDownload() {
+    window.open('https://en.savefrom.net/', '_blank');
+    showNotification('جاري فتح موقع تحميل اليوتيوب', 'success');
+}
+
+// تحميل فيديو يوتيوب
+function downloadYoutubeVideo() {
+    if (currentVideoUrl) {
+        // استخدام خدمة savefrom.net لتحميل فيديوهات اليوتيوب
+        const downloadUrl = `https://en.savefrom.net/#url=${encodeURIComponent(currentVideoUrl)}`;
+        window.open(downloadUrl, '_blank');
+        showNotification('جاري فتح موقع التحميل', 'success');
+    } else {
+        showNotification('يرجى تحميل فيديو أولاً', 'error');
+    }
 }
 
 // تهيئة صفحة القنوات
@@ -1224,7 +1266,7 @@ function loadYouTubePlayer(videoId) {
     youtubePlayer.allowFullscreen = true;
     youtubePlayer.style.width = "100%";
     youtubePlayer.style.height = "100%";
-    youtubePlayer.style.borderRadius = "15px";
+    youtubePlayer.style.borderRadius = "20px";
     
     videoPlayer.innerHTML = '';
     videoPlayer.appendChild(youtubePlayer);
@@ -1253,18 +1295,6 @@ function forwardVideo() {
     }
 }
 
-// تحميل الفيديو
-function downloadVideo() {
-    if (currentVideoUrl) {
-        showNotification('جاري تحميل الفيديو...', 'success');
-        setTimeout(() => {
-            showNotification('تم تحميل الفيديو بنجاح!', 'success');
-        }, 2000);
-    } else {
-        showNotification('يرجى تحميل فيديو أولاً', 'error');
-    }
-}
-
 // استخراج معرف فيديو يوتيوب
 function getYouTubeId(url) {
     if (!url) return null;
@@ -1278,10 +1308,10 @@ function showNotification(message, type) {
     notification.textContent = message;
     
     if (type === 'error') {
-        notification.style.background = 'var(--accent-color)';
+        notification.style.background = 'linear-gradient(45deg, #f5576c, #f093fb)';
         notification.classList.add('error');
     } else {
-        notification.style.background = 'var(--success-color)';
+        notification.style.background = 'linear-gradient(45deg, #4ecdc4, #44a08d)';
         notification.classList.remove('error');
     }
     
