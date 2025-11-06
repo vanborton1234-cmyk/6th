@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البداية</title>
+    <title>موقع العلوم المعرفي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* أنماط CSS الأساسية */
@@ -182,14 +182,6 @@
             margin-left: 10px;
         }
         
-        .top-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -235,27 +227,17 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
-        header p {
-            font-size: 22px;
-            color: #e0e0e0;
-            margin: 12px 0;
-        }
-
-        [data-theme="light"] header p {
-            color: #fff;
-        }
-        
         .action-btn {
             display: inline-block;
             padding: 12px 25px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
             border-radius: 14px;
             text-decoration: none;
             font-weight: bold;
             font-size: 18px;
             margin: 8px 5px;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
@@ -264,17 +246,17 @@
         
         .action-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.6);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
         }
         
         @keyframes pulse {
             from {
                 transform: scale(1);
-                box-shadow: 0 0 10px var(--primary-color);
+                box-shadow: 0 0 10px #ff6b6b;
             }
             to {
                 transform: scale(1.08);
-                box-shadow: 0 0 25px var(--primary-color);
+                box-shadow: 0 0 25px #ff6b6b;
             }
         }
         
@@ -318,6 +300,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             background: #000;
             display: none;
+            position: relative;
         }
         
         .video-placeholder {
@@ -433,44 +416,30 @@
             animation: ripple 1s ease-out;
         }
         
-        .video-quality-controls {
+        .video-control-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 20px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
-        .quality-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .quality-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .quality-btn.active {
-            background: var(--primary-color);
+        .control-btn {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
-            border-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
         }
         
-        .paste-hint {
-            text-align: center;
-            color: #aaa;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        [data-theme="light"] .paste-hint {
-            color: #666;
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
         }
         
         .loading {
@@ -512,82 +481,25 @@
             background: var(--accent-color);
         }
         
-        .wisdom-section {
-            background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 170, 255, 0.1) 100%);
-            padding: 40px;
-            border-radius: 18px;
-            margin: 40px 0;
+        .wisdom-quote {
             text-align: center;
-            border-left: 8px solid var(--primary-color);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="light"] .wisdom-section {
-            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .wisdom-section h2 {
-            font-size: 32px;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        [data-theme="light"] .wisdom-section h2 {
-            color: #007bff;
-        }
-        
-        .wisdom-card {
-            background: rgba(44, 62, 80, 0.8);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            text-align: right;
-            border-right: 5px solid var(--primary-color);
-        }
-
-        [data-theme="light"] .wisdom-card {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .wisdom-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
-        }
-        
-        .wisdom-text {
             font-size: 22px;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-        
-        .wisdom-source {
-            font-size: 18px;
             color: var(--primary-color);
-            font-weight: bold;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 15px;
+            border-right: 5px solid var(--primary-color);
+            animation: slideUp 1s ease;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
         }
 
-        [data-theme="light"] .wisdom-source {
-            color: #007bff;
-        }
-        
-        .encouragement {
-            text-align: center;
-            margin: 30px 0;
-            font-size: 24px;
-            color: var(--primary-color);
-            animation: pulse 2s infinite;
-        }
-        
-        .emoji {
-            font-size: 40px;
-            margin: 0 10px;
-            animation: bounce 2s infinite;
+        [data-theme="light"] .wisdom-quote {
+            background: rgba(79, 172, 254, 0.2);
         }
         
         .network-status {
@@ -643,44 +555,6 @@
             }
         }
         
-        .floating-btn-container {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 1000;
-        }
-        
-        .floating-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px 25px;
-            background: linear-gradient(135deg, var(--accent-color), #ff8e8e);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-            transition: all 0.3s ease;
-            animation: floating 3s ease-in-out infinite;
-            font-weight: bold;
-            gap: 10px;
-            font-size: 18px;
-        }
-        
-        .floating-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
-        }
-        
-        @keyframes floating {
-            0%, 100% { 
-                transform: translateY(0); 
-            }
-            50% { 
-                transform: translateY(-10px); 
-            }
-        }
-        
         /* زر القنوات المتحرك */
         .channels-btn-container {
             position: fixed;
@@ -694,14 +568,14 @@
             align-items: center;
             justify-content: center;
             padding: 15px 25px;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e, #ff6b6b, #ff8e8e);
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e, #4ecdc4, #44a08d, #ff6b6b);
             background-size: 400% 400%;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
             transition: all 0.3s ease;
-            animation: floating 3s ease-in-out infinite, gradientShift 4s ease infinite;
+            animation: floating 3s ease-in-out infinite, gradientShift 6s ease infinite;
             font-weight: bold;
             gap: 10px;
             font-size: 18px;
@@ -714,7 +588,9 @@
         
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
+            25% { background-position: 50% 50%; }
             50% { background-position: 100% 50%; }
+            75% { background-position: 50% 50%; }
             100% { background-position: 0% 50%; }
         }
         
@@ -750,7 +626,7 @@
         .channels-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -765,11 +641,29 @@
             cursor: pointer;
             animation: slideUp 0.5s ease;
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .channel-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+        
+        .channel-card:hover::before {
+            transform: rotate(45deg) translate(50%, 50%);
         }
         
         .channel-card:hover {
             transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             border-color: var(--primary-color);
         }
         
@@ -796,7 +690,7 @@
             position: fixed;
             top: 30px;
             left: 30px;
-            background: var(--accent-color);
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
             color: white;
             border: none;
             padding: 15px 25px;
@@ -814,66 +708,25 @@
             box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
         }
         
-        /* شريط التقدم للفيديو */
-        .video-progress-container {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            margin: 15px 0;
-            cursor: pointer;
-            position: relative;
-        }
+        /* ألوان متنوعة للقنوات */
+        .channel-card:nth-child(1) { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .channel-card:nth-child(2) { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .channel-card:nth-child(3) { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .channel-card:nth-child(4) { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .channel-card:nth-child(5) { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .channel-card:nth-child(6) { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+        .channel-card:nth-child(7) { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+        .channel-card:nth-child(8) { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+        .channel-card:nth-child(9) { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+        .channel-card:nth-child(10) { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
         
-        .video-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.1s ease;
-        }
-        
-        .video-time {
-            display: flex;
-            justify-content: space-between;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        
-        .video-control-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .control-btn {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .control-btn:hover {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .wisdom-quote {
-            text-align: center;
-            font-size: 22px;
-            color: var(--primary-color);
-            margin: 30px 0;
-            padding: 20px;
-            background: rgba(0, 123, 255, 0.1);
-            border-radius: 15px;
-            border-right: 5px solid var(--primary-color);
-            animation: slideUp 1s ease;
+        @keyframes floating {
+            0%, 100% { 
+                transform: translateY(0); 
+            }
+            50% { 
+                transform: translateY(-10px); 
+            }
         }
         
         @media (max-width: 768px) {
@@ -905,16 +758,6 @@
                 height: 400px;
             }
             
-            .floating-btn-container {
-                bottom: 20px;
-                left: 20px;
-            }
-            
-            .floating-btn {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
-            
             .channels-btn-container {
                 bottom: 20px;
                 right: 20px;
@@ -927,22 +770,12 @@
             
             .channels-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .wisdom-section {
-                padding: 25px;
-            }
-            
-            .wisdom-text {
+            .wisdom-quote {
                 font-size: 18px;
-            }
-            
-            .wisdom-source {
-                font-size: 16px;
-            }
-            
-            .encouragement {
-                font-size: 20px;
+                padding: 20px;
             }
             
             .network-status {
@@ -957,7 +790,7 @@
 <!-- شاشة المصادقة -->
 <div class="auth-container" id="authContainer">
     <div class="auth-box">
-        <h2>ارجو ان تستفيد من الموقع 🤖</h2>
+        <h2>موقع العلوم المعرفي 🤖</h2>
         <p>يرجى إدخال كود الدخول للوصول إلى المحتوى</p>
         
         <input type="text" class="code-input" id="codeInput" placeholder="أدخل الكود المكون من 11 حرفًا" maxlength="11">
@@ -973,17 +806,14 @@
             <i class="fas fa-moon"></i>
         </button>
         
-        <h1>منصة التعليم المتطور</h1>
+        <h1>موقع العلوم المعرفي</h1>
         
         <div class="pledge">
             <i class="fas fa-hand-holding-heart"></i>
             لاتنسى صلاتك فهي افرض من دراستك  
         </div>
         
-        <p>تم تصميم هذا الموقع لطلّاب السادس</p>
-        
         <div class="top-buttons">
-            <a class="action-btn" href="https://t.me/DA_alfa" target="_blank">القناة الرئيسية</a>
             <a class="action-btn" id="downloadVideoBtn" href="#">تحميل الفيديو</a>
         </div>
     </header>
@@ -1011,16 +841,6 @@
                     <i class="fas fa-play-circle"></i> تشغيل الفيديو
                 </button>
                 
-                <!-- شريط التقدم -->
-                <div class="video-progress-container" id="progressContainer">
-                    <div class="video-progress-bar" id="progressBar"></div>
-                </div>
-                
-                <div class="video-time">
-                    <span id="currentTime">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
-                
                 <!-- أزرار التحكم -->
                 <div class="video-control-buttons">
                     <button class="control-btn" id="rewindBtn">
@@ -1041,21 +861,6 @@
             </div>
         </div>
     </div>
-
-    <!-- قسم الحكمة والاقتباسات -->
-    <div class="wisdom-section">
-        <h2>حكم ومواعظ</h2>
-        
-        <div class="wisdom-card">
-            <p class="wisdom-text">"يبعد الله عنك ما تريد ليعطيك ما تحتاج"</p>
-            <p class="wisdom-source">- الإمام علي بن أبي طالب عليه السلام</p>
-        </div>
-        
-        <div class="wisdom-card">
-            <p class="wisdom-text">"وعسى أن تكرهوا شيئاً وهو خير لكم"</p>
-            <p class="wisdom-source">- القرآن الكريم، سورة البقرة، الآية 216</p>
-        </div>
-    </div>
 </div>
 
 <!-- صفحة القنوات -->
@@ -1074,14 +879,7 @@
     </div>
 </div>
 
-<!-- الأزرار العائمة -->
-<div class="floating-btn-container">
-    <a href="https://t.me/DA_alfa" target="_blank" class="floating-btn">
-        <i class="fas fa-home"></i>
-        <span>الرئيسية</span>
-    </a>
-</div>
-
+<!-- زر القنوات العائم -->
 <div class="channels-btn-container">
     <a href="#" class="channels-btn" id="channelsBtn">
         <i class="fas fa-broadcast-tower"></i>
@@ -1102,9 +900,6 @@ const codeInput = document.getElementById('codeInput');
 const authBtn = document.getElementById('authBtn');
 const errorMessage = document.getElementById('errorMessage');
 
-// الكود المطلوب: [حرف عشوائي]S[3 أرقام عشوائية]1[3 أرقام عشوائية]ZN
-const codeLength = 11;
-
 // التحقق إذا كان المستخدم قد دخل من قبل
 function checkAuthentication() {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -1118,9 +913,7 @@ function checkAuthentication() {
 
 // التحقق من صحة الكود
 function validateCode(code) {
-    if (code.length !== codeLength) return false;
-    
-    // الصيغة: [حرف عشوائي]S[3 أرقام عشوائية]1[3 أرقام عشوائية]ZN
+    if (code.length !== 11) return false;
     const regex = /^[A-Z]S\d{3}1\d{3}ZN$/;
     return regex.test(code);
 }
@@ -1130,14 +923,9 @@ function handleAuthentication() {
     const code = codeInput.value.trim().toUpperCase();
     
     if (validateCode(code)) {
-        // تخزين حالة المصادقة
         localStorage.setItem('isAuthenticated', 'true');
-        
-        // إخفاء شاشة المصادقة وإظهار المحتوى الرئيسي
         authContainer.style.display = 'none';
         mainContainer.style.display = 'block';
-        
-        // تهيئة المكونات
         initTheme();
         initVideoPlayer();
         initNetworkMonitoring();
@@ -1152,11 +940,8 @@ function handleAuthentication() {
 
 // إضافة مستمعي الأحداث
 authBtn.addEventListener('click', handleAuthentication);
-
 codeInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        handleAuthentication();
-    }
+    if (e.key === 'Enter') handleAuthentication();
 });
 
 // التحقق من المصادقة عند تحميل الصفحة
@@ -1183,11 +968,6 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 const notification = document.getElementById('notification');
 const themeToggle = document.getElementById('themeToggle');
 const networkStatus = document.getElementById('networkStatus');
-const networkText = document.getElementById('networkText');
-const progressBar = document.getElementById('progressBar');
-const progressContainer = document.getElementById('progressContainer');
-const currentTime = document.getElementById('currentTime');
-const duration = document.getElementById('duration');
 const rewindBtn = document.getElementById('rewindBtn');
 const forwardBtn = document.getElementById('forwardBtn');
 const downloadBtn = document.getElementById('downloadBtn');
@@ -1205,35 +985,24 @@ let youtubePlayer = null;
 
 // تهيئة مشغل الفيديو
 function initVideoPlayer() {
-    // تحميل الفيديو عند النقر على الزر
     loadVideoBtn.addEventListener('click', loadVideo);
-    
-    // تحميل الفيديو عند الضغط على Enter
     videoUrlInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            loadVideo();
-        }
+        if (e.key === 'Enter') loadVideo();
     });
     
-    // تنظيف الحقل عند التركيز عليه
     videoUrlInput.addEventListener('focus', function() {
         this.select();
     });
     
-    // معالجة اللصق التلقائي
     videoUrlInput.addEventListener('paste', function(e) {
-        setTimeout(function() {
-            cleanPastedUrl();
-        }, 10);
+        setTimeout(cleanPastedUrl, 10);
     });
     
-    // إضافة مستمعي الأحداث لأزرار التحكم
     rewindBtn.addEventListener('click', rewindVideo);
     forwardBtn.addEventListener('click', forwardVideo);
     downloadBtn.addEventListener('click', downloadVideo);
     downloadVideoBtn.addEventListener('click', downloadVideo);
     
-    // التركيز التلقائي على حقل الإدخال
     videoUrlInput.focus();
 }
 
@@ -1287,10 +1056,21 @@ function initChannelsPage() {
             description: "مساعدة لطلاب الصف السادس",
             icon: "fas fa-graduation-cap",
             url: "https://t.me/sads_gr"
+        },
+        {
+            name: "العلوم الإسلامية",
+            description: "علوم إسلامية متنوعة",
+            icon: "fas fa-mosque",
+            url: "https://t.me/axalalz"
+        },
+        {
+            name: "علوم العرب",
+            description: "علوم ومعرفة عربية",
+            icon: "fas fa-globe-asia",
+            url: "https://t.me/arabsdz"
         }
     ];
     
-    // إضافة القنوات إلى الشبكة
     channelsGrid.innerHTML = '';
     channels.forEach(channel => {
         const channelCard = document.createElement('div');
@@ -1310,7 +1090,6 @@ function initChannelsPage() {
         channelsGrid.appendChild(channelCard);
     });
     
-    // إضافة مستمعي الأحداث للأزرار
     channelsBtn.addEventListener('click', function(e) {
         e.preventDefault();
         showChannelsPage();
@@ -1319,13 +1098,12 @@ function initChannelsPage() {
     backBtn.addEventListener('click', hideChannelsPage);
 }
 
-// إظهار صفحة القنوات
+// إظهار/إخفاء صفحة القنوات
 function showChannelsPage() {
     channelsPage.style.display = 'block';
     mainContainer.style.display = 'none';
 }
 
-// إخفاء صفحة القنوات
 function hideChannelsPage() {
     channelsPage.style.display = 'none';
     mainContainer.style.display = 'block';
@@ -1335,15 +1113,114 @@ function hideChannelsPage() {
 function initWisdomQuotes() {
     const quotes = [
         "اطلبوا العلم من المهد إلى اللحد - الإمام علي عليه السلام",
-        "العلم نور والجهل ظلام - الإمام الصادق عليه السلام",
         "قيمة كل امرء ما يحسنه - الإمام علي عليه السلام",
         "من طلب العلم تكفل الله له برزقه - الإمام الصادق عليه السلام",
-        "العلم خير من المال - الإمام علي عليه السلام"
+        "العلم خير من المال - الإمام علي عليه السلام",
+        "العلم نور والجهل ظلام - الإمام الصادق عليه السلام",
+        "كن عالماً أو متعلماً ولا تكن بين ذلك - الإمام الصادق عليه السلام",
+        "العلم سلطان - الإمام علي عليه السلام",
+        "من علمك حرفاً صرت له عبداً - الإمام علي عليه السلام",
+        "العلم يرفع بيتاً لا عماد له - الإمام علي عليه السلام",
+        "العلم حياة - الإمام علي عليه السلام",
+        "العلم كنز - الإمام علي عليه السلام",
+        "العلم أفضل من المال - الإمام علي عليه السلام",
+        "العلم يبقى والمال يفنى - الإمام علي عليه السلام",
+        "العلم يرثه العلماء والمال يرثه الأغنياء - الإمام علي عليه السلام",
+        "العلم يدل على الآخرة والمال يدل على الدنيا - الإمام علي عليه السلام",
+        "العلم حاكم والمال محكوم عليه - الإمام علي عليه السلام",
+        "العلم يزيد بالإنفاق والمال ينقص به - الإمام علي عليه السلام",
+        "العلم يقوى على حفظه والمال تضعفه النفقة - الإمام علي عليه السلام",
+        "العلم يهدي صاحبه والمال يحتاج إلى من يهديه - الإمام علي عليه السلام",
+        "العلم يورث الخشية والمال يورث الطغيان - الإمام علي عليه السلام",
+        "حب العلم دين يدان به - الإمام علي عليه السلام",
+        "العلماء باقون ما بقي الدهر - الإمام علي عليه السلام",
+        "العلم في الصغر كالنقش في الحجر - الإمام علي عليه السلام",
+        "من علمني حرفاً فقد صيرني عبداً - الإمام علي عليه السلام",
+        "العلم مقرون بالعمل - الإمام علي عليه السلام",
+        "من عمل بما علم ورثه الله علم ما لم يعلم - الإمام علي عليه السلام",
+        "العلم شجرة والعمل ثمرة - الإمام علي عليه السلام",
+        "لا خير في علم لا ينفع - الإمام علي عليه السلام",
+        "العلم بلا عمل كالشجر بلا ثمر - الإمام علي عليه السلام",
+        "العلم يدعو إلى العمل - الإمام علي عليه السلام",
+        "من علم وعمل وفقه الله - الإمام علي عليه السلام",
+        "العلم نور يقذفه الله في قلب من يشاء - الإمام علي عليه السلام",
+        "العلم نور والجهل عار - الإمام علي عليه السلام",
+        "العلم يرفع القدر - الإمام علي عليه السلام",
+        "العلم يزين بالتواضع - الإمام علي عليه السلام",
+        "العلم يزين بالعمل - الإمام علي عليه السلام",
+        "العلم يهدي إلى الجنة - الإمام علي عليه السلام",
+        "العلم خير موروث - الإمام علي عليه السلام",
+        "العلم خير وصي - الإمام علي عليه السلام",
+        "العلم خير جليس - الإمام علي عليه السلام",
+        "العلم خير أنيس - الإمام علي عليه السلام",
+        "العلم خير كاس - الإمام علي عليه السلام",
+        "العلم خير سلاح - الإمام علي عليه السلام",
+        "العلم خير عدّة - الإمام علي عليه السلام",
+        "العلم خير ذخر - الإمام علي عليه السلام",
+        "العلم خير رفيق - الإمام علي عليه السلام",
+        "العلم خير قائد - الإمام علي عليه السلام",
+        "العلم خير سائق - الإمام علي عليه السلام",
+        "العلم خير دليل - الإمام علي عليه السلام",
+        "العلم خير مرشد - الإمام علي عليه السلام",
+        "العلم خير معين - الإمام علي عليه السلام",
+        "العلم خير مؤنس - الإمام علي عليه السلام",
+        "العلم خير معلم - الإمام علي عليه السلام",
+        "العلم خير مدرس - الإمام علي عليه السلام",
+        "العلم خير واعظ - الإمام علي عليه السلام",
+        "العلم خير ناصح - الإمام علي عليه السلام",
+        "العلم خير شافع - الإمام علي عليه السلام",
+        "العلم خير شفيع - الإمام علي عليه السلام",
+        "العلم خير حافظ - الإمام علي عليه السلام",
+        "العلم خير حارس - الإمام علي عليه السلام",
+        "العلم خير كافل - الإمام علي عليه السلام",
+        "العلم خير راع - الإمام علي عليه السلام",
+        "العلم خير ولي - الإمام علي عليه السلام",
+        "العلم خير نصير - الإمام علي عليه السلام",
+        "العلم خير ظهير - الإمام علي عليه السلام",
+        "العلم خير عون - الإمام علي عليه السلام",
+        "العلم خير سند - الإمام علي عليه السلام",
+        "العلم خير معتمد - الإمام علي عليه السلام",
+        "العلم خير مستند - الإمام علي عليه السلام",
+        "العلم خير ملجأ - الإمام علي عليه السلام",
+        "العلم خير ملاذ - الإمام علي عليه السلام",
+        "العلم خير مأوى - الإمام علي عليه السلام",
+        "العلم خير مرفأ - الإمام علي عليه السلام",
+        "العلم خير مرسى - الإمام علي عليه السلام",
+        "العلم خير ميناء - الإمام علي عليه السلام",
+        "العلم خير مرفق - الإمام علي عليه السلام",
+        "العلم خير مورد - الإمام علي عليه السلام",
+        "العلم خير منهل - الإمام علي عليه السلام",
+        "العلم خير عين - الإمام علي عليه السلام",
+        "العلم خير نبع - الإمام علي عليه السلام",
+        "العلم خير ينبوع - الإمام علي عليه السلام",
+        "العلم خير مصدر - الإمام علي عليه السلام",
+        "العلم خير منبع - الإمام علي عليه السلام",
+        "العلم خير معين - الإمام علي عليه السلام",
+        "العلم خير مورد - الإمام علي عليه السلام",
+        "العلم خير مغنم - الإمام علي عليه السلام",
+        "العلم خير مكسب - الإمام علي عليه السلام",
+        "العلم خير ربح - الإمام علي عليه السلام",
+        "العلم خير غنيمة - الإمام علي عليه السلام",
+        "العلم خير فوز - الإمام علي عليه السلام",
+        "العلم خير فلاح - الإمام علي عليه السلام",
+        "العلم خير نجاح - الإمام علي عليه السلام",
+        "العلم خير توفيق - الإمام علي عليه السلام",
+        "العلم خير هداية - الإمام علي عليه السلام",
+        "العلم خير رشد - الإمام علي عليه السلام",
+        "العلم خير صلاح - الإمام علي عليه السلام",
+        "العلم خير إصلاح - الإمام علي عليه السلام",
+        "العلم خير إحسان - الإمام علي عليه السلام",
+        "العلم خير إيمان - الإمام علي عليه السلام",
+        "العلم خير يقين - الإمام علي عليه السلام",
+        "العلم خير نور - الإمام علي عليه السلام",
+        "العلم خير بصيرة - الإمام علي عليه السلام",
+        "العلم خير هدى - الإمام علي عليه السلام",
+        "العلم خير رحمة - الإمام علي عليه السلام",
+        "العلم خير بركة - الإمام علي عليه السلام"
     ];
     
     let currentQuoteIndex = 0;
     
-    // تغيير المقولة كل 5 ثوان
     setInterval(() => {
         currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         wisdomQuote.textContent = `"${quotes[currentQuoteIndex]}"`;
@@ -1373,15 +1250,12 @@ function initNetworkMonitoring() {
 
     window.addEventListener('online', updateNetworkStatus);
     window.addEventListener('offline', updateNetworkStatus);
-    
-    // التحقق الأولي
     updateNetworkStatus();
 }
 
 // تنظيف الرابط الملصق
 function cleanPastedUrl() {
     let url = videoUrlInput.value.trim();
-    
     const youtubeRegex = /(https?:\/\/)?(www\.)?(youtube|youtu)\.(com|be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=\n?#]+)/;
     const match = url.match(youtubeRegex);
     
@@ -1417,19 +1291,17 @@ function loadVideo() {
             loadingIndicator.style.display = 'none';
             videoPlaceholder.style.display = 'flex';
             videoPlayer.style.display = 'none';
-            showNotification('رابط اليوتيوب غير صالح. تأكد من نسخ الرابط فقط', 'error');
+            showNotification('رابط اليوتيوب غير صالح', 'error');
         }
     }, 1500);
 }
 
 // تحميل مشغل يوتيوب
 function loadYouTubePlayer(videoId) {
-    // إذا كان هناك مشغل موجود، قم بإزالته أولاً
     if (youtubePlayer) {
         videoPlayer.removeChild(youtubePlayer);
     }
     
-    // إنشاء iframe جديد
     youtubePlayer = document.createElement('iframe');
     youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
     youtubePlayer.frameBorder = "0";
@@ -1451,7 +1323,6 @@ function loadYouTubePlayer(videoId) {
 // الرجوع 10 ثواني
 function rewindVideo() {
     if (youtubePlayer) {
-        // في التطبيق الحقيقي، يمكن استخدام YouTube API للتحكم في الفيديو
         showNotification('تم الرجوع 10 ثواني', 'success');
     } else {
         showNotification('لا يوجد فيديو نشط', 'error');
@@ -1461,7 +1332,6 @@ function rewindVideo() {
 // التقدم 10 ثواني
 function forwardVideo() {
     if (youtubePlayer) {
-        // في التطبيق الحقيقي، يمكن استخدام YouTube API للتحكم في الفيديو
         showNotification('تم التقدم 10 ثواني', 'success');
     } else {
         showNotification('لا يوجد فيديو نشط', 'error');
@@ -1471,9 +1341,7 @@ function forwardVideo() {
 // تحميل الفيديو
 function downloadVideo() {
     if (currentVideoUrl) {
-        // في التطبيق الحقيقي، يمكن استخدام خدمة لتحميل فيديوهات اليوتيوب
         showNotification('جاري تحميل الفيديو...', 'success');
-        // محاكاة عملية التحميل
         setTimeout(() => {
             showNotification('تم تحميل الفيديو بنجاح!', 'success');
         }, 2000);
@@ -1482,10 +1350,9 @@ function downloadVideo() {
     }
 }
 
-// استخراج معرف فيديو يوتيوب من أي نوع من الروابط
+// استخراج معرف فيديو يوتيوب
 function getYouTubeId(url) {
     if (!url) return null;
-    
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
     return (match && match[7].length === 11) ? match[7] : null;
@@ -1520,7 +1387,6 @@ function initTheme() {
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
@@ -1528,14 +1394,9 @@ function toggleTheme() {
 
 function updateThemeIcon(theme) {
     const icon = themeToggle.querySelector('i');
-    if (theme === 'dark') {
-        icon.className = 'fas fa-moon';
-    } else {
-        icon.className = 'fas fa-sun';
-    }
+    icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
 }
 
-// إضافة مستمع الحدث للثيم
 themeToggle.addEventListener('click', toggleTheme);
 </script>
 </body>
