@@ -3,35 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة اور التعليمية | My School</title>
+    <title>My School Pro -  المطور</title>
+    <!-- خط حديث يدعم العربية بشكل جميل -->
     <link href="fonts.googleapis.com" rel="stylesheet">
+    <!-- استيراد Firebase (نظام الموديول V10) -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "www.gstatic.com";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "www.gstatic.com";
+
+        // إعداداتك التي أرسلتها (استبدلها إذا لزم الأمر)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqnoaKY64UTer4P8COGrPRLV0g7Yn1Rt8",
+            authDomain: "my-school-e8118.firebaseapp.com",
+            projectId: "my-school-e8118",
+            storageBucket: "my-school-e8118.firebasestorage.app",
+            messagingSenderId: "543210628144",
+            appId: "1:543210628144:web:bcc0f47660fac2ac6939f5",
+            measurementId: "G-5G4ELFVDYL"
+        };
+
+        // تهيئة المشروع
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // وظيفة النشر
+        document.addEventListener('DOMContentLoaded', () => {
+            const publishBtn = document.getElementById('publishBtn');
+            publishBtn.addEventListener('click', async () => {
+                const titleInput = document.getElementById('lessonTitle');
+                const vidInput = document.getElementById('lessonId');
+                const title = titleInput.value;
+                const vid = vidInput.value;
+
+                if (title && vid) {
+                    publishBtn.disabled = true;
+                    publishBtn.textContent = 'جاري النشر...';
+                    try {
+                        await addDoc(collection(db, "lectures"), {
+                            title: title,
+                            youtubeId: vid,
+                            createdAt: Date.now()
+                        });
+                        titleInput.value = "";
+                        vidInput.value = "";
+                        // لا حاجة لتنبيه، onSnapshot سيحدث الواجهة
+                    } catch (e) {
+                        alert("خطأ في النشر: " + e.message);
+                    } finally {
+                        publishBtn.disabled = false;
+                        publishBtn.textContent = 'نشر الآن';
+                    }
+                } else {
+                    alert("يرجى تعبئة البيانات أولاً");
+                }
+            });
+        });
+
+        // وظيفة العرض المباشر (تحديث تلقائي)
+        const q = query(collection(db, "lectures"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const lesson = doc.data();
+                grid.innerHTML += `
+                    <div class="lecture-card animate__animated animate__fadeInUp">
+                        <div class="video-wrapper">
+                            <iframe src="www.youtube.com{lesson.youtubeId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="lecture-info">
+                            <h3>${lesson.title}</h3>
+                            <span class="badge">جديد</span>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+
+    <!-- إضافة مكتبة أنيميشن خارجية خفيفة لإضافة حركات دخول البطاقات -->
+    <link rel="stylesheet" href="cdnjs.cloudflare.com""")/>>
+
     <style>
-        :root { --primary: #00d2d3; --bg: #f7f9fc; --text: #2d3436; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; }
-        header { background: white; padding: 15px 8%; display: flex; justify-content: space-between; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        /* الألوان الجديدة والداكنة */
+        :root {
+            --primary: #54a0ff; /* أزرق نيون */
+            --bg: #1a1a2e;      /* خلفية داكنة جدا */
+            --card-bg: #2a2a3e; /* خلفية البطاقات */
+            --text: #e0e0e0;    /* لون النص الفاتح */
+            --shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--card-bg);
+            padding: 15px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
         .logo { font-size: 24px; font-weight: 700; color: var(--primary); }
-        .admin-box { background: white; margin: 30px 8%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border-right: 5px solid var(--primary); }
+
+        .admin-box {
+            background: var(--card-bg);
+            margin: 30px 8%;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary);
+            /* حركة دخول خفيفة */
+            animation: fadeInDown 0.5s ease-out; 
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+
         .input-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
-        input { padding: 12px; border: 2px solid #edf2f7; border-radius: 12px; flex: 1; outline: none; }
-        button { padding: 12px 30px; background: var(--primary); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; }
-        .lectures-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; padding: 20px 8%; }
-        .lecture-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+        input {
+            padding: 12px 15px;
+            border: 1px solid #444;
+            background: #1a1a2e;
+            color: white;
+            border-radius: 12px;
+            flex: 1;
+            font-family: inherit;
+            outline: none;
+            transition: 0.4s;
+        }
+        input:focus { border-color: var(--primary); background: #333; }
+        button {
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(84, 160, 255, 0.3);
+        }
+        button:hover { background: var(--secondary); transform: scale(1.05); }
+
+        .lectures-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 20px 8%;
+        }
+
+        .lecture-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease-in-out;
+            border: 1px solid #333;
+        }
+
+        .lecture-card:hover { transform: scale(1.03); }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-        .lecture-info { padding: 20px; }
-        .badge { display: inline-block; padding: 4px 12px; background: #e0fcf8; color: var(--primary); border-radius: 20px; font-size: 12px; margin-bottom: 10px; }
+
+        .lecture-info { padding: 20px; text-align: center; }
+        .lecture-info h3 { margin: 0; font-size: 18px; color: var(--text); }
+        .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: rgba(84, 160, 255, 0.2);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">My School - منصة اور </div>
-    <div style="font-size: 14px;">متصل بالسحابة ✅</div>
+    <div class="logo">My School Pro</div>
+    <div style="font-size: 14px; color: var(--primary);">متصل بالسحابة وقابل للتطوير ✅</div>
 </header>
 
 <div class="admin-box">
-    <span class="badge">لوحة المدرس</span>
-    <h3>إضافة محاضرة جديدة</h3>
+    <span class="badge">لوحة المدرس المتقدمة</span>
+    <h3>إضافة محاضرة ديناميكية جديدة</h3>
     <div class="input-row">
         <input type="text" id="lessonTitle" placeholder="اسم الدرس">
         <input type="text" id="lessonId" placeholder="كود فيديو اليوتيوب">
@@ -40,68 +213,8 @@
 </div>
 
 <div class="lectures-container" id="mainGrid">
-    <p style="text-align: center; grid-column: 1/-1;">جاري تحميل المحاضرات...</p>
+    <p style="text-align: center; grid-column: 1/-1; color: #aaa;">جاري تحميل أحدث المحاضرات...</p>
 </div>
 
-<script type="module">
-    // استيراد Firebase من الروابط التي أرسلتها
-    import { initializeApp } from "www.gstatic.com";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "www.gstatic.com";
-
-    // إعداداتك التي أرسلتها
-    const firebaseConfig = {
-        apiKey: "AIzaSyAqnoaKY64UTer4P8COGrPRLV0g7Yn1Rt8",
-        authDomain: "my-school-e8118.firebaseapp.com",
-        projectId: "my-school-e8118",
-        storageBucket: "my-school-e8118.firebasestorage.app",
-        messagingSenderId: "543210628144",
-        appId: "1:543210628144:web:bcc0f47660fac2ac6939f5",
-        measurementId: "G-5G4ELFVDYL"
-    };
-
-    // تهيئة المشروع
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // وظيفة النشر
-    document.getElementById('publishBtn').addEventListener('click', async () => {
-        const title = document.getElementById('lessonTitle').value;
-        const vid = document.getElementById('lessonId').value;
-
-        if (title && vid) {
-            try {
-                await addDoc(collection(db, "lectures"), {
-                    title: title,
-                    youtubeId: vid,
-                    createdAt: Date.now()
-                });
-                alert("تم النشر بنجاح!");
-                document.getElementById('lessonTitle').value = "";
-                document.getElementById('lessonId').value = "";
-            } catch (e) { console.error(e); }
-        }
-    });
-
-    // وظيفة العرض المباشر (تحديث تلقائي للطلاب)
-    const q = query(collection(db, "lectures"), orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-        const grid = document.getElementById('mainGrid');
-        grid.innerHTML = "";
-        snapshot.forEach((doc) => {
-            const lesson = doc.data();
-            grid.innerHTML += `
-                <div class="lecture-card">
-                    <div class="video-wrapper">
-                        <iframe src="www.youtube.com{lesson.youtubeId}" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="lecture-info">
-                        <span class="badge">محاضرة فيديو</span>
-                        <h3>${lesson.title}</h3>
-                    </div>
-                </div>
-            `;
-        });
-    });
-</script>
 </body>
 </html>
