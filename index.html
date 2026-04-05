@@ -3,218 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My School Pro -  المطور</title>
-    <!-- خط حديث يدعم العربية بشكل جميل -->
-    <link href="fonts.googleapis.com" rel="stylesheet">
-    <!-- استيراد Firebase (نظام الموديول V10) -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "www.gstatic.com";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "www.gstatic.com";
-
-        // إعداداتك التي أرسلتها (استبدلها إذا لزم الأمر)
-        const firebaseConfig = {
-            apiKey: "AIzaSyAqnoaKY64UTer4P8COGrPRLV0g7Yn1Rt8",
-            authDomain: "my-school-e8118.firebaseapp.com",
-            projectId: "my-school-e8118",
-            storageBucket: "my-school-e8118.firebasestorage.app",
-            messagingSenderId: "543210628144",
-            appId: "1:543210628144:web:bcc0f47660fac2ac6939f5",
-            measurementId: "G-5G4ELFVDYL"
-        };
-
-        // تهيئة المشروع
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // وظيفة النشر
-        document.addEventListener('DOMContentLoaded', () => {
-            const publishBtn = document.getElementById('publishBtn');
-            publishBtn.addEventListener('click', async () => {
-                const titleInput = document.getElementById('lessonTitle');
-                const vidInput = document.getElementById('lessonId');
-                const title = titleInput.value;
-                const vid = vidInput.value;
-
-                if (title && vid) {
-                    publishBtn.disabled = true;
-                    publishBtn.textContent = 'جاري النشر...';
-                    try {
-                        await addDoc(collection(db, "lectures"), {
-                            title: title,
-                            youtubeId: vid,
-                            createdAt: Date.now()
-                        });
-                        titleInput.value = "";
-                        vidInput.value = "";
-                        // لا حاجة لتنبيه، onSnapshot سيحدث الواجهة
-                    } catch (e) {
-                        alert("خطأ في النشر: " + e.message);
-                    } finally {
-                        publishBtn.disabled = false;
-                        publishBtn.textContent = 'نشر الآن';
-                    }
-                } else {
-                    alert("يرجى تعبئة البيانات أولاً");
-                }
-            });
-        });
-
-        // وظيفة العرض المباشر (تحديث تلقائي)
-        const q = query(collection(db, "lectures"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            const grid = document.getElementById('mainGrid');
-            grid.innerHTML = "";
-            snapshot.forEach((doc) => {
-                const lesson = doc.data();
-                grid.innerHTML += `
-                    <div class="lecture-card animate__animated animate__fadeInUp">
-                        <div class="video-wrapper">
-                            <iframe src="www.youtube.com{lesson.youtubeId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="lecture-info">
-                            <h3>${lesson.title}</h3>
-                            <span class="badge">جديد</span>
-                        </div>
-                    </div>
-                `;
-            });
-        });
-    </script>
-
-    <!-- إضافة مكتبة أنيميشن خارجية خفيفة لإضافة حركات دخول البطاقات -->
-    <link rel="stylesheet" href="cdnjs.cloudflare.com""")/>>
-
+    <title>منصة Snowstorm التعليمية</title>
     <style>
-        /* الألوان الجديدة والداكنة */
-        :root {
-            --primary: #54a0ff; /* أزرق نيون */
-            --bg: #1a1a2e;      /* خلفية داكنة جدا */
-            --card-bg: #2a2a3e; /* خلفية البطاقات */
-            --text: #e0e0e0;    /* لون النص الفاتح */
-            --shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            background: var(--card-bg);
-            padding: 15px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
-            position: sticky; top: 0; z-index: 1000;
-        }
-
-        .logo { font-size: 24px; font-weight: 700; color: var(--primary); }
-
-        .admin-box {
-            background: var(--card-bg);
-            margin: 30px 8%;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border-right: 5px solid var(--primary);
-            /* حركة دخول خفيفة */
-            animation: fadeInDown 0.5s ease-out; 
-        }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-
-        .input-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
-        input {
-            padding: 12px 15px;
-            border: 1px solid #444;
-            background: #1a1a2e;
-            color: white;
-            border-radius: 12px;
-            flex: 1;
-            font-family: inherit;
-            outline: none;
-            transition: 0.4s;
-        }
-        input:focus { border-color: var(--primary); background: #333; }
-        button {
-            padding: 12px 30px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(84, 160, 255, 0.3);
-        }
-        button:hover { background: var(--secondary); transform: scale(1.05); }
-
-        .lectures-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-            padding: 20px 8%;
-        }
-
-        .lecture-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease-in-out;
-            border: 1px solid #333;
-        }
-
-        .lecture-card:hover { transform: scale(1.03); }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            background: #000;
-        }
-
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        .lecture-info { padding: 20px; text-align: center; }
-        .lecture-info h3 { margin: 0; font-size: 18px; color: var(--text); }
-        .badge {
-            display: inline-block;
-            padding: 6px 15px;
-            background: rgba(84, 160, 255, 0.2);
-            color: var(--primary);
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; }
+        .video-card { border-bottom: 1px solid #ccc; padding: 10px 0; }
+        #comments-section { margin-top: 20px; background: #eee; padding: 10px; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">My School Pro</div>
-    <div style="font-size: 14px; color: var(--primary);">متصل بالسحابة وقابل للتطوير ✅</div>
-</header>
+<div class="container">
+    <h1>مرحباً بك في Snowstorm ❄️</h1>
 
-<div class="admin-box">
-    <span class="badge">لوحة المدرس المتقدمة</span>
-    <h3>إضافة محاضرة ديناميكية جديدة</h3>
-    <div class="input-row">
-        <input type="text" id="lessonTitle" placeholder="اسم الدرس">
-        <input type="text" id="lessonId" placeholder="كود فيديو اليوتيوب">
-        <button id="publishBtn">نشر الآن</button>
+    <div id="auth-section">
+        <h3>تسجيل الدخول / إنشاء حساب</h3>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button id="btnSignup">إنشاء حساب</button>
+        <button id="btnLogin">تسجيل دخول</button>
+    </div>
+
+    <hr>
+
+    <div id="admin-section">
+        <h3>إضافة فيديو جديد</h3>
+        <input type="text" id="videoTitle" placeholder="عنوان الفيديو">
+        <input type="text" id="videoLink" placeholder="رابط فيديو YouTube">
+        <button id="btnUpload">نشر الفيديو</button>
+    </div>
+
+    <hr>
+
+    <h3>الفيديوهات الدراسية</h3>
+    <div id="video-list"></div>
+
+    <hr>
+
+    <div id="comments-section">
+        <h3>التعليقات والاستفسارات</h3>
+        <div id="display-comments"></div>
+        <input type="text" id="userComment" placeholder="اكتب تعليقك هنا...">
+        <button id="btnComment">إرسال التعليق</button>
     </div>
 </div>
 
-<div class="lectures-container" id="mainGrid">
-    <p style="text-align: center; grid-column: 1/-1; color: #aaa;">جاري تحميل أحدث المحاضرات...</p>
-</div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
+    authDomain: "studyproject-1466b.firebaseapp.com",
+    projectId: "studyproject-1466b",
+    storageBucket: "studyproject-1466b.firebasestorage.app",
+    messagingSenderId: "589724771483",
+    appId: "1:589724771483:web:1c53636da586d2c787923e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth(app);
+
+  // --- وظيفة تسجيل الدخول ---
+  document.getElementById('btnSignup').onclick = () => {
+      createUserWithEmailAndPassword(auth, email.value, password.value).then(() => alert("تم إنشاء الحساب!"));
+  };
+  document.getElementById('btnLogin').onclick = () => {
+      signInWithEmailAndPassword(auth, email.value, password.value).then(() => alert("تم الدخول!"));
+  };
+
+  // --- وظيفة رفع الفيديوهات ---
+  document.getElementById('btnUpload').onclick = () => {
+      const vRef = ref(database, 'videos');
+      push(vRef, { title: videoTitle.value, url: videoLink.value });
+      alert("تم نشر الفيديو");
+  };
+
+  // --- وظيفة عرض الفيديوهات تلقائياً ---
+  onValue(ref(database, 'videos'), (snapshot) => {
+      const data = snapshot.val();
+      const list = document.getElementById('video-list');
+      list.innerHTML = "";
+      for (let id in data) {
+          list.innerHTML += `<div class="video-card"><h4>${data[id].title}</h4><a href="${data[id].url}" target="_blank">مشاهدة الفيديو</a></div>`;
+      }
+  });
+
+  // --- وظيفة التعليقات ---
+  document.getElementById('btnComment').onclick = () => {
+      const cRef = ref(database, 'comments');
+      push(cRef, { text: userComment.value });
+      userComment.value = "";
+  };
+
+  onValue(ref(database, 'comments'), (snapshot) => {
+      const data = snapshot.val();
+      const div = document.getElementById('display-comments');
+      div.innerHTML = "";
+      for (let id in data) {
+          div.innerHTML += `<p>💬 ${data[id].text}</p>`;
+      }
+  });
+
+</script>
 </body>
 </html>
