@@ -3,289 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة العلمية التفاعلية</title>
+    <title>المنصة العلمية الذكية</title>
     <style>
-        /* إعدادات الخط والخلفية العلمية */
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
         
+        :root {
+            --primary: #00ffcc;
+            --secondary: #0088ff;
+            --bg: #05060a;
+            --card-bg: rgba(20, 25, 35, 0.9);
+        }
+
         body {
             font-family: 'Tajawal', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #090a0f; /* لون ليلي عميق */
-            color: #e0e0e0;
-            min-height: 100vh;
+            margin: 0; background: var(--bg); color: #fff;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* --- تأثيرات الذرات والأيونات المتحركة بالخلفية --- */
-        .particles-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .atom {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, #00ffcc, #0088ff);
-            box-shadow: 0 0 15px #00ffcc, 0 0 30px #0088ff;
-            opacity: 0.6;
-            animation: moveAround 15s infinite alternate ease-in-out;
-        }
-        .atom:nth-child(1) { width: 20px; height: 20px; top: 20%; left: 10%; animation-duration: 12s; }
-        .atom:nth-child(2) { width: 15px; height: 15px; top: 60%; left: 80%; animation-duration: 18s; }
-        .atom:nth-child(3) { width: 25px; height: 25px; top: 80%; left: 30%; animation-duration: 10s; }
-        .atom:nth-child(4) { width: 10px; height: 10px; top: 30%; left: 70%; animation-duration: 14s; }
-
-        @keyframes moveAround {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            50% { transform: translate(150px, 100px) rotate(180deg) scale(1.5); }
-            100% { transform: translate(-100px, 200px) rotate(360deg) scale(1); }
+        /* ذرات متحركة */
+        .bg-animate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: radial-gradient(circle at center, #102030 0%, #05060a 100%);
         }
 
-        /* --- تصميم الحاوية الرئيسية --- */
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: rgba(15, 20, 30, 0.85);
-            border: 2px solid #00ffcc;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), inset 0 0 15px rgba(0, 136, 255, 0.2);
-            backdrop-filter: blur(10px);
+        .container { max-width: 850px; margin: auto; padding: 20px; }
+
+        /* تسجيل الدخول بالاسم */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .login-box {
+            background: var(--card-bg); padding: 30px; border-radius: 20px;
+            border: 2px solid var(--primary); text-align: center; width: 300px;
         }
 
-        h1 {
-            text-align: center;
-            color: #00ffcc;
-            text-shadow: 0 0 10px #00ffcc;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+        /* كروت الفيديوهات (ستايل فيسبوك) */
+        .video-card {
+            background: var(--card-bg); border-radius: 15px;
+            margin-bottom: 25px; border: 1px solid #333; overflow: hidden;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .video-header { padding: 15px; display: flex; align-items: center; gap: 10px; }
+        .user-img { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); }
+        
+        iframe { width: 100%; height: 450px; border: none; background: #000; }
+
+        /* الأزرار 3D */
+        .btn-3d {
+            background: linear-gradient(145deg, var(--secondary), #0055aa);
+            border: none; padding: 12px 25px; color: white; border-radius: 10px;
+            cursor: pointer; font-weight: bold; box-shadow: 0 5px 0 #004488;
+            transition: 0.1s; margin: 10px 0;
+        }
+        .btn-3d:active { transform: translateY(4px); box-shadow: 0 1px 0 #004488; }
+
+        /* الزر العائم للدردشة */
+        #chat-toggle {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: var(--primary); color: #000; font-size: 30px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 0 20px var(--primary); z-index: 999;
         }
 
-        /* --- تصميم قسم رفع الفيديوهات --- */
-        .upload-section {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid #ff0055;
-            margin-bottom: 30px;
+        #chat-window {
+            position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px;
+            background: var(--card-bg); border: 2px solid var(--primary);
+            border-radius: 15px; display: none; flex-direction: column; z-index: 999;
         }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 10px; }
+        .msg { background: rgba(255,255,255,0.1); padding: 8px; border-radius: 8px; margin-bottom: 5px; position: relative; }
+        .msg .author { font-size: 0.8em; color: var(--primary); font-weight: bold; }
 
         input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #0088ff;
-            border-radius: 8px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-        input:focus {
-            outline: none;
-            box-shadow: 0 0 15px #0088ff;
-            border-color: #00ffcc;
-        }
-
-        /* --- أزرار ثلاثية الأبعاد (3D) تفاعلية --- */
-        button {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(90deg, #ff0055, #ffaa00);
-            color: white;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #cc0044, 0 10px 15px rgba(0,0,0,0.5); /* تأثير 3D */
-            transition: all 0.1s ease;
-            text-transform: uppercase;
-        }
-        button:active {
-            transform: translateY(6px); /* الزر ينزل لجوه عند الضغط */
-            box-shadow: 0 0 0 #cc0044, 0 2px 5px rgba(0,0,0,0.5); /* اختفاء الظل السفلي */
-        }
-
-        /* --- تصميم كارت الفيديو --- */
-        .video-card {
-            background: rgba(20, 30, 45, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #334455;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: transform 0.3s;
-        }
-        .video-card:hover {
-            transform: scale(1.02);
-            border-color: #00ffcc;
-        }
-        .video-card h3 {
-            color: #ffaa00;
-            margin-top: 0;
-            border-bottom: 1px dashed #556677;
-            padding-bottom: 10px;
-        }
-        
-        /* مشغل الفيديو المدمج */
-        iframe {
-            width: 100%;
-            height: 400px;
-            border-radius: 10px;
-            border: 2px solid #0088ff;
-            margin-bottom: 15px;
-        }
-
-        /* --- قسم التعليقات داخل الكارت --- */
-        .comments-area {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        .comment-item {
-            background: rgba(0, 255, 204, 0.1);
-            border-right: 3px solid #00ffcc;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            font-size: 0.95em;
-        }
-        .comment-btn {
-            background: linear-gradient(90deg, #0088ff, #00ffcc);
-            box-shadow: 0 5px 0 #005f99;
-        }
-        .comment-btn:active {
-            box-shadow: 0 0 0 #005f99;
+            background: rgba(255,255,255,0.05); border: 1px solid #444;
+            color: #fff; padding: 10px; border-radius: 8px; width: 90%; margin: 5px auto; display: block;
         }
     </style>
 </head>
 <body>
 
-<div class="particles-container">
-    <div class="atom"></div>
-    <div class="atom"></div>
-    <div class="atom"></div>
-    <div class="atom"></div>
+<div class="bg-animate"></div>
+
+<div id="login-overlay">
+    <div class="login-box">
+        <h3>أهلاً بك يا بطل ⚛️</h3>
+        <p>اكتب اسمك للدخول للمنصة</p>
+        <input type="text" id="username-input" placeholder="اسمك الكريم...">
+        <button class="btn-3d" onclick="login()">دخول</button>
+    </div>
 </div>
 
 <div class="container">
-    <h1>المنصة العلمية التفاعلية ⚛️</h1>
-
-    <div class="upload-section">
-        <h2 style="color: #ff0055; margin-top: 0;">نشر محاضرة جديدة</h2>
-        <input type="text" id="videoTitle" placeholder="اكتب عنوان المحاضرة هنا...">
-        <input type="text" id="videoLink" placeholder="ضع رابط الفيديو من يوتيوب هنا...">
-        <button id="btnPublish">🚀 نشر المحاضرة</button>
+    <h1 style="text-align:center; color:var(--primary)">لوحة التحكم العلمية 🚀</h1>
+    
+    <div class="video-card" style="padding:20px;">
+        <input type="text" id="v-title" placeholder="عنوان المحاضرة...">
+        <input type="text" id="v-link" placeholder="رابط يوتيوب هنا...">
+        <button class="btn-3d" onclick="publishVideo()">نشر الآن</button>
     </div>
 
-    <div id="videos-feed">
-        </div>
+    <div id="feed"></div>
+</div>
+
+<div id="chat-toggle" onclick="toggleChat()">💬</div>
+<div id="chat-window">
+    <div style="padding:10px; background:var(--primary); color:#000; font-weight:bold; border-radius:12px 12px 0 0">مجموعة النقاش الطلابية 🎓</div>
+    <div class="chat-messages" id="chat-msgs"></div>
+    <input type="text" id="chat-input" placeholder="اكتب رسالة...">
+    <input type="datetime-local" id="msg-timer" title="توقيت الرسالة">
+    <button class="btn-3d" style="width:90%; margin:5px auto; display:block;" onclick="sendChatMessage()">إرسال</button>
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
-    authDomain: "studyproject-1466b.firebaseapp.com",
-    projectId: "studyproject-1466b",
-    storageBucket: "studyproject-1466b.firebasestorage.app",
-    messagingSenderId: "589724771483",
-    appId: "1:589724771483:web:1c53636da586d2c787923e"
-  };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
+        authDomain: "studyproject-1466b.firebaseapp.com",
+        projectId: "studyproject-1466b",
+        storageBucket: "studyproject-1466b.firebasestorage.app",
+        messagingSenderId: "589724771483",
+        appId: "1:589724771483:web:1c53636da586d2c787923e"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    let currentUser = localStorage.getItem('scientific_user') || "";
 
-  // دالة لتحويل رابط يوتيوب العادي إلى رابط تشغيل داخل الموقع (Embed)
-  function getEmbedUrl(url) {
-      let videoId = '';
-      if (url.includes('v=')) {
-          videoId = url.split('v=')[1].split('&')[0];
-      } else if (url.includes('youtu.be/')) {
-          videoId = url.split('youtu.be/')[1].split('?')[0];
-      }
-      return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
-  }
+    if(currentUser) document.getElementById('login-overlay').style.display = 'none';
 
-  // 1. برمجة زر النشر
-  document.getElementById('btnPublish').onclick = () => {
-      const title = document.getElementById('videoTitle').value;
-      const rawUrl = document.getElementById('videoLink').value;
-      const embedUrl = getEmbedUrl(rawUrl);
+    window.login = () => {
+        const name = document.getElementById('username-input').value;
+        if(name) {
+            localStorage.setItem('scientific_user', name);
+            location.reload();
+        }
+    };
 
-      if(title !== "" && embedUrl !== "") {
-          push(ref(database, 'posts'), { title: title, embedUrl: embedUrl });
-          alert("تم نشر المحاضرة بنجاح!");
-          document.getElementById('videoTitle').value = "";
-          document.getElementById('videoLink').value = "";
-      } else {
-          alert("يرجى التأكد من كتابة العنوان ووضع رابط يوتيوب صحيح.");
-      }
-  };
+    function getID(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length == 11) ? match[2] : null;
+    }
 
-  // 2. جلب الفيديوهات وعرضها مع تعليقاتها
-  onValue(ref(database, 'posts'), (snapshot) => {
-      const feed = document.getElementById('videos-feed');
-      feed.innerHTML = ""; // تنظيف الشاشة قبل إضافة الجديد
-      const data = snapshot.val();
+    window.publishVideo = () => {
+        const title = document.getElementById('v-title').value;
+        const link = document.getElementById('v-link').value;
+        const id = getID(link);
+        if(title && id) {
+            push(ref(db, 'posts'), { title, videoId: id, author: currentUser, time: Date.now() });
+            document.getElementById('v-title').value = "";
+            document.getElementById('v-link').value = "";
+        }
+    };
 
-      for (let videoId in data) {
-          const videoData = data[videoId];
-          
-          // إنشاء كارت الفيديو
-          const card = document.createElement('div');
-          card.className = 'video-card';
-          
-          // هيكل الكارت (العنوان، الفيديو، ومكان التعليقات)
-          card.innerHTML = `
-              <h3>🎬 ${videoData.title}</h3>
-              <iframe src="${videoData.embedUrl}" allowfullscreen></iframe>
-              
-              <div class="comments-area">
-                  <h4 style="color: #00ffcc; margin-top:0;">التعليقات:</h4>
-                  <div id="comments-list-${videoId}"></div>
-                  <input type="text" id="comment-input-${videoId}" placeholder="اكتب تعليقك على هذا الفيديو...">
-                  <button class="comment-btn" onclick="addComment('${videoId}')">إرسال التعليق</button>
-              </div>
-          `;
-          
-          // إضافة الكارت للشاشة
-          feed.prepend(card); // prepend لكي يظهر الجديد في الأعلى
+    onValue(ref(db, 'posts'), (snap) => {
+        const feed = document.getElementById('feed');
+        feed.innerHTML = "";
+        snap.forEach((child) => {
+            const post = child.val();
+            const key = child.key;
+            feed.innerHTML = `
+                <div class="video-card">
+                    <div class="video-header">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${post.author}" class="user-img">
+                        <b>${post.author}</b>
+                    </div>
+                    <iframe src="https://www.youtube.com/embed/${post.videoId}?rel=0&modestbranding=1" allowfullscreen></iframe>
+                    <div style="padding:15px">
+                        <h3>${post.title}</h3>
+                        <div id="comments-${key}"></div>
+                        <input type="text" id="in-${key}" placeholder="تعليقك كـ ${currentUser}...">
+                        <button class="btn-3d" onclick="addComm('${key}')">تعليق</button>
+                    </div>
+                </div>
+            ` + feed.innerHTML;
+            
+            onValue(ref(db, `posts/${key}/comments`), (cSnap) => {
+                const cBox = document.getElementById(`comments-${key}`);
+                if(cBox) {
+                    cBox.innerHTML = "";
+                    cSnap.forEach(c => {
+                        cBox.innerHTML += `<p><b>${c.val().user}:</b> ${c.val().text}</p>`;
+                    });
+                }
+            });
+        });
+    });
 
-          // جلب التعليقات الخاصة بهذا الفيديو تحديداً
-          onValue(ref(database, `posts/${videoId}/comments`), (commentSnapshot) => {
-              const commentsList = document.getElementById(`comments-list-${videoId}`);
-              if(commentsList) {
-                  commentsList.innerHTML = "";
-                  const commentsData = commentSnapshot.val();
-                  for (let commentId in commentsData) {
-                      commentsList.innerHTML += `<div class="comment-item">💬 ${commentsData[commentId].text}</div>`;
-                  }
-              }
-          });
-      }
-  });
+    window.addComm = (key) => {
+        const txt = document.getElementById(`in-${key}`).value;
+        if(txt) {
+            push(ref(db, `posts/${key}/comments`), { user: currentUser, text: txt });
+            document.getElementById(`in-${key}`).value = "";
+        }
+    };
 
-  // 3. دالة إضافة تعليق (مربوطة بزر التعليق داخل الكارت)
-  window.addComment = function(videoId) {
-      const inputField = document.getElementById(`comment-input-${videoId}`);
-      if (inputField.value !== "") {
-          push(ref(database, `posts/${videoId}/comments`), { text: inputField.value });
-          inputField.value = ""; // تفريغ الحقل بعد الإرسال
-      }
-  };
+    // نظام الدردشة
+    window.toggleChat = () => {
+        const win = document.getElementById('chat-window');
+        win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+    };
+
+    window.sendChatMessage = () => {
+        const text = document.getElementById('chat-input').value;
+        const timer = document.getElementById('msg-timer').value;
+        if(!text) return;
+
+        const send = () => {
+            push(ref(db, 'chat'), { user: currentUser, text, time: Date.now() });
+        };
+
+        if(timer) {
+            const wait = new Date(timer).getTime() - Date.now();
+            if(wait > 0) {
+                setTimeout(send, wait);
+                alert("تم توقيت الرسالة بنجاح!");
+            }
+        } else { send(); }
+        document.getElementById('chat-input').value = "";
+    };
+
+    onValue(ref(db, 'chat'), (snap) => {
+        const box = document.getElementById('chat-msgs');
+        box.innerHTML = "";
+        snap.forEach(m => {
+            const isMe = m.val().user === currentUser;
+            box.innerHTML += `
+                <div class="msg">
+                    <div class="author">${m.val().user}</div>
+                    <div>${m.val().text}</div>
+                    ${isMe ? `<button onclick="deleteMsg('${m.key}')" style="font-size:10px; background:none; border:none; color:red; cursor:pointer">حذف</button>` : ''}
+                </div>
+            `;
+        });
+        box.scrollTop = box.scrollHeight;
+    });
+
+    window.deleteMsg = (id) => remove(ref(db, `chat/${id}`));
+
 </script>
-
 </body>
 </html>
