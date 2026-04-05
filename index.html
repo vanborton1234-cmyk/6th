@@ -3,56 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة Snowstorm التعليمية</title>
+    <title>المنصة العلمية التفاعلية</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, button { padding: 10px; margin: 5px 0; width: 100%; }
-        .video-card { border-bottom: 1px solid #ccc; padding: 10px 0; }
-        #comments-section { margin-top: 20px; background: #eee; padding: 10px; }
+        /* إعدادات الخط والخلفية العلمية */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #090a0f; /* لون ليلي عميق */
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- تأثيرات الذرات والأيونات المتحركة بالخلفية --- */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .atom {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, #00ffcc, #0088ff);
+            box-shadow: 0 0 15px #00ffcc, 0 0 30px #0088ff;
+            opacity: 0.6;
+            animation: moveAround 15s infinite alternate ease-in-out;
+        }
+        .atom:nth-child(1) { width: 20px; height: 20px; top: 20%; left: 10%; animation-duration: 12s; }
+        .atom:nth-child(2) { width: 15px; height: 15px; top: 60%; left: 80%; animation-duration: 18s; }
+        .atom:nth-child(3) { width: 25px; height: 25px; top: 80%; left: 30%; animation-duration: 10s; }
+        .atom:nth-child(4) { width: 10px; height: 10px; top: 30%; left: 70%; animation-duration: 14s; }
+
+        @keyframes moveAround {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(150px, 100px) rotate(180deg) scale(1.5); }
+            100% { transform: translate(-100px, 200px) rotate(360deg) scale(1); }
+        }
+
+        /* --- تصميم الحاوية الرئيسية --- */
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(15, 20, 30, 0.85);
+            border: 2px solid #00ffcc;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), inset 0 0 15px rgba(0, 136, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        /* --- تصميم قسم رفع الفيديوهات --- */
+        .upload-section {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #ff0055;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #0088ff;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px #0088ff;
+            border-color: #00ffcc;
+        }
+
+        /* --- أزرار ثلاثية الأبعاد (3D) تفاعلية --- */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #ff0055, #ffaa00);
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #cc0044, 0 10px 15px rgba(0,0,0,0.5); /* تأثير 3D */
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+        }
+        button:active {
+            transform: translateY(6px); /* الزر ينزل لجوه عند الضغط */
+            box-shadow: 0 0 0 #cc0044, 0 2px 5px rgba(0,0,0,0.5); /* اختفاء الظل السفلي */
+        }
+
+        /* --- تصميم كارت الفيديو --- */
+        .video-card {
+            background: rgba(20, 30, 45, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #334455;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+        }
+        .video-card:hover {
+            transform: scale(1.02);
+            border-color: #00ffcc;
+        }
+        .video-card h3 {
+            color: #ffaa00;
+            margin-top: 0;
+            border-bottom: 1px dashed #556677;
+            padding-bottom: 10px;
+        }
+        
+        /* مشغل الفيديو المدمج */
+        iframe {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            border: 2px solid #0088ff;
+            margin-bottom: 15px;
+        }
+
+        /* --- قسم التعليقات داخل الكارت --- */
+        .comments-area {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .comment-item {
+            background: rgba(0, 255, 204, 0.1);
+            border-right: 3px solid #00ffcc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .comment-btn {
+            background: linear-gradient(90deg, #0088ff, #00ffcc);
+            box-shadow: 0 5px 0 #005f99;
+        }
+        .comment-btn:active {
+            box-shadow: 0 0 0 #005f99;
+        }
     </style>
 </head>
 <body>
 
+<div class="particles-container">
+    <div class="atom"></div>
+    <div class="atom"></div>
+    <div class="atom"></div>
+    <div class="atom"></div>
+</div>
+
 <div class="container">
-    <h1>مرحباً بك في Snowstorm ❄️</h1>
+    <h1>المنصة العلمية التفاعلية ⚛️</h1>
 
-    <div id="auth-section">
-        <h3>تسجيل الدخول / إنشاء حساب</h3>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button id="btnSignup">إنشاء حساب</button>
-        <button id="btnLogin">تسجيل دخول</button>
+    <div class="upload-section">
+        <h2 style="color: #ff0055; margin-top: 0;">نشر محاضرة جديدة</h2>
+        <input type="text" id="videoTitle" placeholder="اكتب عنوان المحاضرة هنا...">
+        <input type="text" id="videoLink" placeholder="ضع رابط الفيديو من يوتيوب هنا...">
+        <button id="btnPublish">🚀 نشر المحاضرة</button>
     </div>
 
-    <hr>
-
-    <div id="admin-section">
-        <h3>إضافة فيديو جديد</h3>
-        <input type="text" id="videoTitle" placeholder="عنوان الفيديو">
-        <input type="text" id="videoLink" placeholder="رابط فيديو YouTube">
-        <button id="btnUpload">نشر الفيديو</button>
-    </div>
-
-    <hr>
-
-    <h3>الفيديوهات الدراسية</h3>
-    <div id="video-list"></div>
-
-    <hr>
-
-    <div id="comments-section">
-        <h3>التعليقات والاستفسارات</h3>
-        <div id="display-comments"></div>
-        <input type="text" id="userComment" placeholder="اكتب تعليقك هنا...">
-        <button id="btnComment">إرسال التعليق</button>
-    </div>
+    <div id="videos-feed">
+        </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
@@ -65,49 +206,86 @@
 
   const app = initializeApp(firebaseConfig);
   const database = getDatabase(app);
-  const auth = getAuth(app);
 
-  // --- وظيفة تسجيل الدخول ---
-  document.getElementById('btnSignup').onclick = () => {
-      createUserWithEmailAndPassword(auth, email.value, password.value).then(() => alert("تم إنشاء الحساب!"));
-  };
-  document.getElementById('btnLogin').onclick = () => {
-      signInWithEmailAndPassword(auth, email.value, password.value).then(() => alert("تم الدخول!"));
+  // دالة لتحويل رابط يوتيوب العادي إلى رابط تشغيل داخل الموقع (Embed)
+  function getEmbedUrl(url) {
+      let videoId = '';
+      if (url.includes('v=')) {
+          videoId = url.split('v=')[1].split('&')[0];
+      } else if (url.includes('youtu.be/')) {
+          videoId = url.split('youtu.be/')[1].split('?')[0];
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+  }
+
+  // 1. برمجة زر النشر
+  document.getElementById('btnPublish').onclick = () => {
+      const title = document.getElementById('videoTitle').value;
+      const rawUrl = document.getElementById('videoLink').value;
+      const embedUrl = getEmbedUrl(rawUrl);
+
+      if(title !== "" && embedUrl !== "") {
+          push(ref(database, 'posts'), { title: title, embedUrl: embedUrl });
+          alert("تم نشر المحاضرة بنجاح!");
+          document.getElementById('videoTitle').value = "";
+          document.getElementById('videoLink').value = "";
+      } else {
+          alert("يرجى التأكد من كتابة العنوان ووضع رابط يوتيوب صحيح.");
+      }
   };
 
-  // --- وظيفة رفع الفيديوهات ---
-  document.getElementById('btnUpload').onclick = () => {
-      const vRef = ref(database, 'videos');
-      push(vRef, { title: videoTitle.value, url: videoLink.value });
-      alert("تم نشر الفيديو");
-  };
-
-  // --- وظيفة عرض الفيديوهات تلقائياً ---
-  onValue(ref(database, 'videos'), (snapshot) => {
+  // 2. جلب الفيديوهات وعرضها مع تعليقاتها
+  onValue(ref(database, 'posts'), (snapshot) => {
+      const feed = document.getElementById('videos-feed');
+      feed.innerHTML = ""; // تنظيف الشاشة قبل إضافة الجديد
       const data = snapshot.val();
-      const list = document.getElementById('video-list');
-      list.innerHTML = "";
-      for (let id in data) {
-          list.innerHTML += `<div class="video-card"><h4>${data[id].title}</h4><a href="${data[id].url}" target="_blank">مشاهدة الفيديو</a></div>`;
+
+      for (let videoId in data) {
+          const videoData = data[videoId];
+          
+          // إنشاء كارت الفيديو
+          const card = document.createElement('div');
+          card.className = 'video-card';
+          
+          // هيكل الكارت (العنوان، الفيديو، ومكان التعليقات)
+          card.innerHTML = `
+              <h3>🎬 ${videoData.title}</h3>
+              <iframe src="${videoData.embedUrl}" allowfullscreen></iframe>
+              
+              <div class="comments-area">
+                  <h4 style="color: #00ffcc; margin-top:0;">التعليقات:</h4>
+                  <div id="comments-list-${videoId}"></div>
+                  <input type="text" id="comment-input-${videoId}" placeholder="اكتب تعليقك على هذا الفيديو...">
+                  <button class="comment-btn" onclick="addComment('${videoId}')">إرسال التعليق</button>
+              </div>
+          `;
+          
+          // إضافة الكارت للشاشة
+          feed.prepend(card); // prepend لكي يظهر الجديد في الأعلى
+
+          // جلب التعليقات الخاصة بهذا الفيديو تحديداً
+          onValue(ref(database, `posts/${videoId}/comments`), (commentSnapshot) => {
+              const commentsList = document.getElementById(`comments-list-${videoId}`);
+              if(commentsList) {
+                  commentsList.innerHTML = "";
+                  const commentsData = commentSnapshot.val();
+                  for (let commentId in commentsData) {
+                      commentsList.innerHTML += `<div class="comment-item">💬 ${commentsData[commentId].text}</div>`;
+                  }
+              }
+          });
       }
   });
 
-  // --- وظيفة التعليقات ---
-  document.getElementById('btnComment').onclick = () => {
-      const cRef = ref(database, 'comments');
-      push(cRef, { text: userComment.value });
-      userComment.value = "";
-  };
-
-  onValue(ref(database, 'comments'), (snapshot) => {
-      const data = snapshot.val();
-      const div = document.getElementById('display-comments');
-      div.innerHTML = "";
-      for (let id in data) {
-          div.innerHTML += `<p>💬 ${data[id].text}</p>`;
+  // 3. دالة إضافة تعليق (مربوطة بزر التعليق داخل الكارت)
+  window.addComment = function(videoId) {
+      const inputField = document.getElementById(`comment-input-${videoId}`);
+      if (inputField.value !== "") {
+          push(ref(database, `posts/${videoId}/comments`), { text: inputField.value });
+          inputField.value = ""; // تفريغ الحقل بعد الإرسال
       }
-  });
-
+  };
 </script>
+
 </body>
 </html>
