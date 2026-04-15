@@ -3,240 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنجازاتي - Enjazati</title>
+    <title>إنجازاتي | Enjazati V2</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
         :root {
-            --fb-blue: #1877F2;
-            --dark-bg: #18191a;
-            --dark-card: #242526;
-            --primary-text: #e4e6eb;
-            --accent: #00ffcc;
+            --primary: #00f2ff;
+            --accent: #7000ff;
+            --dark: #080a12;
+            --card: rgba(23, 25, 35, 0.95);
+            --text: #e1e1e1;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            margin: 0; background-color: var(--dark-bg);
-            color: var(--primary-text);
+            margin: 0; background: var(--dark); color: var(--text);
+            overflow-x: hidden;
         }
 
-        .page { display: none; min-height: 100vh; padding-top: 70px; }
-        .page.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #canvas-atoms { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
         header {
-            background: var(--dark-card); padding: 10px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5); box-sizing: border-box;
+            background: rgba(8, 10, 18, 0.9); backdrop-filter: blur(10px);
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 1px solid rgba(0, 242, 255, 0.2);
         }
 
-        /* شاشة الدخول الجديدة */
-        #login-page {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            height: 100vh; background: #05060a; padding: 20px; text-align: center;
-        }
-        .login-box {
-            background: var(--dark-card); padding: 30px; border-radius: 15px;
-            border: 1px solid var(--accent); width: 100%; max-width: 400px;
-        }
-        .login-box input {
-            width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px;
-            border: 1px solid #444; background: #111; color: #fff; box-sizing: border-box;
-        }
+        .page { display: none; padding-top: 75px; min-height: 100vh; animation: fadeIn 0.4s; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-        /* تنسيقات المنشورات */
-        .container { max-width: 600px; margin: auto; padding: 15px; }
-        .post { background: var(--dark-card); border-radius: 12px; margin-bottom: 20px; padding: 15px; }
-        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .user-avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #333; }
+        .container { max-width: 600px; margin: auto; padding: 15px; padding-bottom: 90px; }
+
+        /* ستايل المنشورات */
+        .post-card {
+            background: var(--card); border-radius: 15px; margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.05); position: relative;
+        }
+        .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .delete-btn { position: absolute; left: 15px; top: 15px; color: #ff4d4d; cursor: pointer; opacity: 0.7; }
+        .delete-btn:hover { opacity: 1; }
+
+        .post-content { padding: 0 15px 12px 15px; font-size: 16px; line-height: 1.5; }
+        .media-container { width: 100%; background: #000; display: flex; justify-content: center; }
+        .post-media { width: 100%; max-height: 450px; object-fit: contain; }
         
-        .fab {
-            position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px;
-            background: var(--fb-blue); border-radius: 50%; display: flex;
-            justify-content: center; align-items: center; font-size: 24px; color: white;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999;
+        /* شاشة النشر */
+        .publish-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); z-index: 2000; display: none; flex-direction: column; padding: 20px;
         }
+        .publish-overlay.open { display: flex; }
 
-        .btn-main {
-            background: var(--fb-blue); color: white; border: none; padding: 12px;
-            width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        /* الأزرار */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; background: var(--card);
+            display: flex; justify-content: space-around; padding: 12px;
+            border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+        }
+        .btn-glow {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border: none; padding: 10px 20px; color: #fff; border-radius: 8px; font-weight: bold; cursor: pointer;
         }
 
         #toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #2ecc71; color: white; padding: 12px 30px; border-radius: 50px; transition: 0.5s; z-index: 3000;
+            background: var(--primary); color: #000; padding: 10px 25px; border-radius: 50px; z-index: 3000; transition: 0.5s;
         }
     </style>
 </head>
 <body>
 
-    <div id="toast">✅ تم النشر بنجاح!</div>
+<canvas id="canvas-atoms"></canvas>
+<div id="toast">✅ تم تنفيذ العملية</div>
 
-    <header id="main-header" style="display:none;">
-        <div style="font-size: 22px; font-weight: bold; color: var(--accent);">إنجازاتي</div>
-        <div style="display:flex; gap:20px; align-items: center;">
-            <i class="fas fa-home" onclick="showPage('home-page')" style="cursor:pointer;"></i>
-            <i class="fas fa-comment-dots" onclick="showPage('chat-page')" style="cursor:pointer;"></i>
-            <img id="header-avatar" class="user-avatar" style="width:35px; height:35px;">
-        </div>
-    </header>
-
-    <div id="login-page" class="page active">
-        <div class="login-box">
-            <h2 style="color:var(--accent)">إعداد ملفك الشخصي</h2>
-            <p>اختر اسماً وصورة للبدء في المنصة</p>
-            
-            <div onclick="document.getElementById('user-photo').click()" style="cursor:pointer;">
-                <img id="preview-img" src="https://via.placeholder.com/100" class="user-avatar" style="width:100px; height:100px; margin-bottom: 10px; border: 2px solid var(--accent);">
-                <p style="font-size: 12px; color: var(--accent);">اضغط لتغيير الصورة</p>
-            </div>
-            
-            <input type="file" id="user-photo" hidden accept="image/*" onchange="previewFile()">
-            <input type="text" id="display-name" placeholder="اكتب اسمك الكامل...">
-            
-            <button class="btn-main" onclick="registerUser()">دخول للمنصة</button>
-        </div>
+<div id="setup-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--dark); z-index:5000; display:flex; align-items:center; justify-content:center;">
+    <div style="background:var(--card); padding:30px; border-radius:20px; text-align:center; width:90%; max-width:350px; border:1px solid var(--primary);">
+        <h2 style="color:var(--primary)">إنجازاتي</h2>
+        <img id="setup-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:90px; height:90px; border-radius:50%; border:3px solid var(--primary); cursor:pointer;" onclick="document.getElementById('setup-file').click()">
+        <input type="file" id="setup-file" hidden accept="image/*" onchange="previewSetup(this)">
+        <input type="text" id="setup-name" placeholder="ما اسمك؟" style="width:100%; padding:12px; margin:20px 0; border-radius:8px; border:1px solid #444; background:#000; color:white;">
+        <button class="btn-glow" style="width:100%" onclick="finishSetup()">دخول</button>
     </div>
+</div>
 
-    <div id="home-page" class="page">
-        <div class="container" id="posts-feed"></div>
-        <div class="fab" onclick="showPage('publish-page')"><i class="fas fa-plus"></i></div>
-    </div>
+<header>
+    <div style="font-size:20px; font-weight:bold; color:var(--primary);">إنجازاتي</div>
+    <img id="header-avatar" class="avatar" style="width:32px; height:32px;">
+</header>
 
-    <div id="publish-page" class="page">
-        <div class="container">
-            <div style="background:var(--dark-card); padding:20px; border-radius:15px;">
-                <h3>إنشاء منشور جديد</h3>
-                <input type="text" id="p-title" placeholder="العنوان..." style="width:100%; padding:10px; background:#111; border:1px solid #444; color:white; border-radius:8px; margin-bottom:10px;">
-                <textarea id="p-text" rows="6" placeholder="بماذا تفكر؟" style="width:100%; background:#111; border:1px solid #444; color:white; border-radius:8px; padding:10px;"></textarea>
-                <button class="btn-main" onclick="publishNow()">نشر الآن</button>
-                <button onclick="showPage('home-page')" style="background:none; border:none; color:#888; width:100%; margin-top:10px;">إلغاء</button>
-            </div>
+<div id="page-feed" class="page active">
+    <div class="container" id="main-feed"></div>
+</div>
+
+<div id="page-chat" class="page">
+    <div class="container">
+        <div id="chat-box" style="height:70vh; overflow-y:auto; background:rgba(0,0,0,0.2); padding:15px; border-radius:10px; margin-bottom:10px;"></div>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="chat-input" placeholder="اكتب للطلاب..." style="flex:1; padding:12px; border-radius:25px; background:#222; border:none; color:white;">
+            <button onclick="sendMessage()" class="btn-glow"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
+</div>
 
-    <div id="chat-page" class="page">
-        <div class="container">
-            <h3>💬 غرف النقاش</h3>
-            <div id="chat-box" style="height:60vh; overflow-y:auto; background:rgba(0,0,0,0.3); padding:15px; border-radius:10px;"></div>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <input type="text" id="chat-msg" placeholder="اكتب رسالتك..." style="flex:1; padding:10px; border-radius:20px; border:none; background:#3a3b3c; color:white;">
-                <button onclick="sendMsg()" style="background:var(--fb-blue); border:none; color:white; padding:10px 20px; border-radius:20px;"><i class="fas fa-paper-plane"></i></button>
-            </div>
+<div id="publish-overlay" class="publish-overlay">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <i class="fas fa-times" onclick="closePublish()" style="font-size:24px; cursor:pointer;"></i>
+        <h3>منشور جديد</h3>
+        <button class="btn-glow" onclick="handlePublish()">نشر الآن</button>
+    </div>
+    
+    <div style="margin-top:20px;">
+        <textarea id="post-text" placeholder="اكتب سؤالاً، مقالاً، أو ضع رابط فيديو..." style="width:100%; height:150px; background:none; border:none; color:white; font-size:18px; outline:none; resize:none;"></textarea>
+        
+        <div style="display:flex; gap:10px; margin:15px 0;">
+            <button class="btn-glow" style="background:#333; flex:1;" onclick="document.getElementById('post-file').click()"><i class="fas fa-photo-video"></i> صورة / فيديو</button>
+        </div>
+        <input type="file" id="post-file" hidden accept="image/*,video/*" onchange="previewMedia(this)">
+        
+        <div id="media-preview-container" style="display:none; position:relative;">
+            <video id="video-preview" style="width:100%; display:none; border-radius:10px;" controls></video>
+            <img id="img-preview" style="width:100%; display:none; border-radius:10px;">
         </div>
     </div>
+</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+<div class="nav-bar">
+    <div class="nav-item" onclick="switchPage('page-feed')"><i class="fas fa-home"></i></div>
+    <div class="nav-item" onclick="openPublish()"><i class="fas fa-plus-circle" style="font-size:32px; color:var(--primary);"></i></div>
+    <div class="nav-item" onclick="switchPage('page-chat')"><i class="fas fa-comments"></i></div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
-            authDomain: "studyproject-1466b.firebaseapp.com",
-            projectId: "studyproject-1466b",
-            storageBucket: "studyproject-1466b.firebasestorage.app",
-            messagingSenderId: "589724771483",
-            appId: "1:589724771483:web:1c53636da586d2c787923e"
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
+        authDomain: "studyproject-1466b.firebaseapp.com",
+        projectId: "studyproject-1466b",
+        storageBucket: "studyproject-1466b.firebasestorage.app",
+        messagingSenderId: "589724771483",
+        appId: "1:589724771483:web:1c53636da586d2c787923e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // --- نظام الذرات ---
+    const canvas = document.getElementById('canvas-atoms');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    let particles = [];
+    class P {
+        constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=Math.random()-0.5; this.vy=Math.random()-0.5; }
+        draw() { ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; }
+    }
+    for(let i=0;i<50;i++) particles.push(new P());
+    function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.draw()); requestAnimationFrame(anim); }
+    anim();
+
+    // --- إدارة المستخدم ---
+    let myData = JSON.parse(localStorage.getItem('enjaz_v2'));
+    if(myData) { document.getElementById('setup-overlay').style.display='none'; document.getElementById('header-avatar').src=myData.photo; }
+
+    window.previewSetup = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('setup-preview').src=e.target.result; r.readAsDataURL(i.files[0]); };
+    window.finishSetup = () => {
+        const name = document.getElementById('setup-name').value;
+        const photo = document.getElementById('setup-preview').src;
+        if(!name) return;
+        myData = { name, photo, id: Date.now() };
+        localStorage.setItem('enjaz_v2', JSON.stringify(myData));
+        location.reload();
+    };
+
+    // --- وظائف النشر والحذف ---
+    window.openPublish = () => document.getElementById('publish-overlay').classList.add('open');
+    window.closePublish = () => { document.getElementById('publish-overlay').classList.remove('open'); resetPublish(); };
+
+    let mediaData = "";
+    let mediaType = "";
+
+    window.previewMedia = (input) => {
+        const file = input.files[0];
+        const reader = new FileReader();
+        mediaType = file.type.startsWith('video') ? 'video' : 'image';
+        
+        reader.onload = (e) => {
+            mediaData = e.target.result;
+            document.getElementById('media-preview-container').style.display = 'block';
+            if(mediaType === 'video') {
+                document.getElementById('video-preview').src = mediaData;
+                document.getElementById('video-preview').style.display = 'block';
+                document.getElementById('img-preview').style.display = 'none';
+            } else {
+                document.getElementById('img-preview').src = mediaData;
+                document.getElementById('img-preview').style.display = 'block';
+                document.getElementById('video-preview').style.display = 'none';
+            }
         };
+        reader.readAsDataURL(file);
+    };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+    function resetPublish() {
+        document.getElementById('post-text').value = "";
+        document.getElementById('media-preview-container').style.display = 'none';
+        mediaData = ""; mediaType = "";
+    }
 
-        let userProfile = JSON.parse(localStorage.getItem('enjazati_user'));
+    // الكشف عن روابط يوتيوب
+    function getYouTubeID(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
 
-        // فحص الدخول
-        if (userProfile) {
-            setupUI();
+    window.handlePublish = () => {
+        const text = document.getElementById('post-text').value;
+        let ytID = getYouTubeID(text);
+        
+        push(ref(db, 'posts_v2'), {
+            author: myData.name,
+            authorID: myData.id,
+            avatar: myData.photo,
+            text: text,
+            media: mediaData,
+            mType: mediaType,
+            youtube: ytID,
+            time: Date.now()
+        }).then(() => {
+            showToast("تم النشر بنجاح");
+            closePublish();
+        });
+    };
+
+    window.deletePost = (key) => {
+        if(confirm("هل أنت متأكد من حذف هذا المنشور؟")) {
+            remove(ref(db, 'posts_v2/' + key)).then(() => showToast("تم الحذف"));
         }
+    };
 
-        window.previewFile = () => {
-            const file = document.getElementById('user-photo').files[0];
-            const reader = new FileReader();
-            reader.onloadend = () => { document.getElementById('preview-img').src = reader.result; }
-            if (file) reader.readAsDataURL(file);
-        };
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg; t.style.top = '20px';
+        setTimeout(() => t.style.top = '-100px', 2500);
+    }
 
-        window.registerUser = () => {
-            const name = document.getElementById('display-name').value;
-            const photo = document.getElementById('preview-img').src;
-            if (!name) return alert("الرجاء كتابة اسمك");
-            
-            const profile = { name, photo };
-            localStorage.setItem('enjazati_user', JSON.stringify(profile));
-            userProfile = profile;
-            setupUI();
-        };
+    // --- عرض المنشورات ---
+    onValue(ref(db, 'posts_v2'), (snap) => {
+        const feed = document.getElementById('main-feed');
+        feed.innerHTML = "";
+        let list = []; snap.forEach(c => { let p=c.val(); p.key=c.key; list.unshift(p); });
 
-        function setupUI() {
-            document.getElementById('login-page').classList.remove('active');
-            document.getElementById('home-page').classList.add('active');
-            document.getElementById('main-header').style.display = 'flex';
-            document.getElementById('header-avatar').src = userProfile.photo;
-            loadPosts();
-            loadMessages();
-        }
+        list.forEach(p => {
+            let mediaHtml = "";
+            if(p.youtube) {
+                mediaHtml = `<div class="media-container"><iframe width="100%" height="315" src="https://www.youtube.com/embed/${p.youtube}" frameborder="0" allowfullscreen></iframe></div>`;
+            } else if(p.mType === 'image') {
+                mediaHtml = `<div class="media-container"><img src="${p.media}" class="post-media"></div>`;
+            } else if(p.mType === 'video') {
+                mediaHtml = `<div class="media-container"><video src="${p.media}" class="post-media" controls></video></div>`;
+            }
 
-        window.showPage = (id) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        };
+            const isOwner = p.authorID === myData.id;
 
-        window.publishNow = () => {
-            const title = document.getElementById('p-title').value;
-            const text = document.getElementById('p-text').value;
-            if (!text) return;
+            feed.innerHTML += `
+                <div class="post-card">
+                    ${isOwner ? `<i class="fas fa-trash delete-btn" onclick="deletePost('${p.key}')"></i>` : ''}
+                    <div class="post-header">
+                        <img src="${p.avatar}" class="avatar">
+                        <div><b>${p.author}</b><br><small style="color:#666">${new Date(p.time).toLocaleTimeString()}</small></div>
+                    </div>
+                    <div class="post-content">${p.text}</div>
+                    ${mediaHtml}
+                    <div style="padding:10px; border-top:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-around;">
+                        <span style="color:#888; font-size:14px;"><i class="far fa-thumbs-up"></i> إعجاب</span>
+                        <span style="color:#888; font-size:14px;"><i class="far fa-comment"></i> تعليق</span>
+                    </div>
+                </div>
+            `;
+        });
+    });
 
-            push(ref(db, 'posts'), {
-                author: userProfile.name,
-                avatar: userProfile.photo,
-                title, text, time: Date.now()
-            }).then(() => {
-                document.getElementById('toast').style.top = '20px';
-                setTimeout(() => document.getElementById('toast').style.top = '-100px', 2500);
-                showPage('home-page');
-            });
-        };
+    window.switchPage = (id) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    };
 
-        function loadPosts() {
-            onValue(ref(db, 'posts'), (snap) => {
-                const feed = document.getElementById('posts-feed');
-                feed.innerHTML = "";
-                let list = []; snap.forEach(c => list.unshift(c.val()));
-                list.forEach(p => {
-                    feed.innerHTML += `
-                        <div class="post">
-                            <div class="post-header">
-                                <img src="${p.avatar}" class="user-avatar">
-                                <div><b>${p.author}</b><br><small style="color:#888">${new Date(p.time).toLocaleTimeString()}</small></div>
-                            </div>
-                            <h3>${p.title}</h3>
-                            <p>${p.text}</p>
-                        </div>
-                    `;
-                });
-            });
-        }
+    // --- المراسلة الفورية ---
+    window.sendMessage = () => {
+        const m = document.getElementById('chat-input').value;
+        if(m) push(ref(db, 'chat_v2'), { user: myData.name, msg: m, time: Date.now() });
+        document.getElementById('chat-input').value = "";
+    };
 
-        window.sendMsg = () => {
-            const msg = document.getElementById('chat-msg').value;
-            if(msg) push(ref(db, 'chat'), { user: userProfile.name, msg, time: Date.now() });
-            document.getElementById('chat-msg').value = "";
-        };
+    onValue(ref(db, 'chat_v2'), (snap) => {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = "";
+        snap.forEach(c => {
+            const d = c.val();
+            box.innerHTML += `<div style="margin-bottom:8px;"><b>${d.user}:</b> ${d.msg}</div>`;
+        });
+        box.scrollTop = box.scrollHeight;
+    });
 
-        function loadMessages() {
-            onValue(ref(db, 'chat'), (snap) => {
-                const box = document.getElementById('chat-box');
-                box.innerHTML = "";
-                snap.forEach(c => {
-                    const d = c.val();
-                    box.innerHTML += `<div style="margin-bottom:8px;"><b>${d.user}:</b> ${d.msg}</div>`;
-                });
-                box.scrollTop = box.scrollHeight;
-            });
-        }
-    </script>
+</script>
 </body>
 </html>
