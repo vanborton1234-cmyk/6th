@@ -3,90 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إنجازاتي | الحماية القصوى</title>
+    <title>منصة إنجازاتي | الإصدار الذري</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        :root { --primary: #00f2ff; --accent: #7000ff; --bg: #05060a; --danger: #ff3333; }
-        body, html { margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
         
-        #canvas-bg { position: fixed; inset: 0; z-index: -1; }
-        #eagle-bg { position: fixed; inset: 0; z-index: -1; display: none; background: url('https://w0.peakpx.com/wallpaper/559/550/HD-wallpaper-blue-eagle-digital-art-birds-eagle-blue-animal.jpg') no-repeat center; background-size: cover; opacity: 0.2; }
-
-        /* إشعار البث المباشر النابض */
-        #live-notifier {
-            display: none; background: var(--danger); color: white; text-align: center;
-            padding: 8px; font-weight: bold; cursor: pointer; animation: pulse 1.5s infinite;
-            position: fixed; top: 100px; left: 0; right: 0; z-index: 1500; font-size: 13px;
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --bg-dark: #030407;
+            --glass: rgba(255, 255, 255, 0.05);
         }
-        @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
 
-        #status-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 25, 0.98); padding: 10px; border-bottom: 1px solid var(--primary); text-align: center; }
-        .chat-container { display: flex; flex-direction: column; height: 100vh; padding-top: 110px; padding-bottom: 80px; box-sizing: border-box; }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+        body, html {
+            margin: 0; padding: 0; font-family: 'Tajawal', sans-serif;
+            background: var(--bg-dark); color: #fff; height: 100vh; overflow: hidden;
+        }
 
-        .msg-wrapper { display: flex; gap: 10px; max-width: 85%; align-items: flex-start; }
-        .msg-wrapper.me { flex-direction: row-reverse; align-self: flex-end; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
-        .msg-body { background: #1a1c25; padding: 10px 15px; border-radius: 15px; position: relative; border: 1px solid #333; }
-        .me .msg-body { background: var(--accent); border: none; }
-        .user-name { font-size: 11px; color: var(--primary); margin-bottom: 4px; display: block; font-weight: bold; }
+        /* خلفية الذرات المتحركة */
+        #atom-canvas { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0a0c1a 0%, #030407 100%); }
 
-        #live-overlay { position: fixed; inset: 0; background: #000; z-index: 3000; display: none; }
-        .input-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #111; padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 1000; border-top: 1px solid #333; }
-        .input-bar input { flex: 1; background: #000; border: 1px solid #444; padding: 12px; border-radius: 25px; color: #fff; outline: none; }
-        .btn-icon { color: var(--primary); font-size: 24px; cursor: pointer; transition: 0.2s; }
-        .btn-icon:active { transform: scale(0.9); }
+        /* شريط الساعة والوقت (توقيت العراق) */
+        #top-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+            padding: 15px; text-align: center; border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+        }
+        #iraq-clock { font-size: 24px; font-weight: bold; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        #date-text { font-size: 12px; opacity: 0.7; letter-spacing: 1px; }
 
-        #login-screen { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: none; align-items: center; justify-content: center; }
+        /* شريط البث (أسلوب تليجرام) */
+        #telegram-live-bar {
+            display: none; position: fixed; top: 75px; left: 10px; right: 10px;
+            background: linear-gradient(90deg, #1d2b64, #f8cdda); /* شكل مميز */
+            background: var(--neon-purple);
+            padding: 10px 20px; border-radius: 50px; z-index: 1100;
+            box-shadow: 0 5px 20px rgba(188, 19, 254, 0.4);
+            cursor: pointer; animation: slideDown 0.5s ease-out;
+        }
+        @keyframes slideDown { from {transform: translateY(-50px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+
+        /* حاوية الشات */
+        .app-main { display: flex; flex-direction: column; height: 100vh; padding-top: 130px; padding-bottom: 80px; box-sizing: border-box; }
+        #chat-flow { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+
+        /* فقاعات الرسائل الزاهية */
+        .message-row { display: flex; gap: 12px; max-width: 85%; align-items: flex-end; animation: fadeIn 0.3s ease; }
+        .message-row.me { flex-direction: row-reverse; align-self: flex-end; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+        .message-content {
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 12px 18px; border-radius: 20px 20px 20px 5px;
+            border: 1px solid rgba(255,255,255,0.1); position: relative;
+        }
+        .me .message-content {
+            background: linear-gradient(135deg, var(--neon-purple), #7000ff);
+            border: none; border-radius: 20px 20px 5px 20px; color: white;
+        }
+        .user-tag { font-size: 11px; color: var(--neon-blue); font-weight: bold; margin-bottom: 5px; display: block; }
+
+        /* واجهة البث */
+        #live-view { position: fixed; inset: 0; background: #000; z-index: 2000; display: none; }
+
+        /* منطقة الإرسال */
+        .input-zone {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10, 10, 20, 0.9); padding: 15px;
+            display: flex; gap: 12px; align-items: center; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        #msg-input {
+            flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #333;
+            padding: 12px 20px; border-radius: 30px; color: #fff; outline: none;
+        }
+        .action-icon { color: var(--neon-blue); font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .action-icon:hover { transform: scale(1.1); text-shadow: 0 0 15px var(--neon-blue); }
+
+        /* شاشة الدخول */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg-dark); z-index: 5000; display: none; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<canvas id="canvas-bg"></canvas>
-<div id="eagle-bg"></div>
+<canvas id="atom-canvas"></canvas>
 
-<div id="live-notifier" onclick="toggleLive(true)">🔴 يوجد بث مباشر حالياً - اضغط للانضمام</div>
+<div id="top-header">
+    <div id="iraq-clock">00:00:00</div>
+    <div id="date-text">جارٍ تحميل التاريخ...</div>
+</div>
 
-<div id="login-screen">
-    <div style="background:#1a1c25; padding:30px; border-radius:20px; text-align:center; border:1px solid var(--primary); width:80%; max-width:320px;">
-        <h2 style="color:var(--primary)">دخول الطلاب ⚛️</h2>
-        <img id="p-prev" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); cursor:pointer;" onclick="document.getElementById('p-file').click()">
-        <input type="file" id="p-file" hidden onchange="previewImg(this)">
-        <input type="text" id="p-name" placeholder="اكتب اسمك الثلاثي" style="width:100%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid #444; background:#000; color:#fff; text-align:center;">
-        <button onclick="doSave()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">دخول للمنصة</button>
+<div id="telegram-live-bar" onclick="openLive()">
+    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+        <span><i class="fas fa-broadcast-tower"></i> هناك بث مباشر جارٍ الآن...</span>
+        <b style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:20px;">انضمام</b>
     </div>
 </div>
 
-<div id="status-bar">
-    <div id="sess-text" style="font-weight:bold; font-size:14px; color:#fff;">جاري المزامنة...</div>
-    <div style="display:flex; justify-content:center; gap:25px; margin-top:10px;">
-        <i class="fas fa-atom btn-icon" title="الثيم الذري" onclick="setTheme('atom')"></i>
-        <i class="fas fa-feather-alt btn-icon" title="ثيم النسر" onclick="setTheme('eagle')"></i>
-        <i class="fas fa-video btn-icon" style="color:var(--danger);" title="بدء بث مباشر" onclick="toggleLive(true)"></i>
+<div id="live-view">
+    <div style="padding:10px; display:flex; justify-content:space-between; align-items:center; background:#000;">
+        <span style="color:var(--neon-purple);"><i class="fas fa-video"></i> بث مباشر آمن</span>
+        <button onclick="closeLive()" style="background:red; border:none; color:#fff; padding:8px 15px; border-radius:10px; font-weight:bold;">مغادرة</button>
+    </div>
+    <iframe id="live-iframe" src="" style="width:100%; height:calc(100% - 60px); border:none;" allow="camera; microphone; fullscreen;"></iframe>
+</div>
+
+<div id="login-overlay">
+    <div style="background:rgba(20,25,40,0.9); padding:40px; border-radius:30px; text-align:center; border:1px solid var(--neon-blue); width:85%; max-width:350px;">
+        <h2 style="color:var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue);">مرحباً بك ⚛️</h2>
+        <img id="avatar-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--neon-blue); cursor:pointer;" onclick="document.getElementById('file-user').click()">
+        <input type="file" id="file-user" hidden onchange="previewProfile(this)">
+        <input type="text" id="user-name" placeholder="ادخل اسمك هنا" style="width:100%; padding:15px; margin:25px 0; border-radius:15px; border:1px solid #444; background:#000; color:#fff; text-align:center;">
+        <button onclick="saveUser()" style="width:100%; padding:15px; background:var(--neon-blue); border:none; border-radius:15px; color:#000; font-weight:bold; font-size:18px;">دخول للمنصة</button>
     </div>
 </div>
 
-<div id="live-overlay">
-    <div style="padding:10px; background:#111; display:flex; justify-content:space-between; align-items:center;">
-        <span style="color:var(--danger); font-weight:bold;">🔴 بث آمن مشفر</span>
-        <button onclick="toggleLive(false)" style="background:red; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">إغلاق البث</button>
-    </div>
-    <iframe id="live-frame" src="" style="width:100%; height:calc(100% - 50px); border:none;" allow="camera; microphone; fullscreen; display-capture"></iframe>
+<div class="app-main">
+    <div id="chat-flow"></div>
 </div>
 
-<div class="chat-container">
-    <div id="chat-box"></div>
+<div class="input-zone">
+    <i class="fas fa-paperclip action-icon" onclick="document.getElementById('file-msg').click()"></i>
+    <input type="file" id="file-msg" hidden accept="image/*,video/*" onchange="sendMedia(this)">
+    <input type="text" id="msg-input" placeholder="اكتب إنجازك اليومي...">
+    <i class="fas fa-video action-icon" style="color:var(--neon-purple)" onclick="startMyLive()" title="بدء بث"></i>
+    <i class="fas fa-paper-plane action-icon" onclick="sendText()"></i>
 </div>
-
-<div class="input-bar">
-    <i class="fas fa-camera btn-icon" onclick="document.getElementById('m-file').click()"></i>
-    <input type="file" id="m-file" hidden accept="image/*,video/*" onchange="uploadMedia(this)">
-    <input type="text" id="m-text" placeholder="اكتب إنجازك اليومي...">
-    <i class="fas fa-paper-plane btn-icon" onclick="doSend()"></i>
-</div>
-
-<audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
@@ -102,126 +144,133 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- إدارة المستخدم والبيانات ---
-    let me = JSON.parse(localStorage.getItem('enjaz_secure_v5'));
-    if(!me) document.getElementById('login-screen').style.display = 'flex';
+    // --- الساعة العراقية الذكية ---
+    function updateIraqTime() {
+        const now = new Date();
+        const options = { timeZone: 'Asia/Baghdad', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const timeStr = new Intl.DateTimeFormat('ar-IQ', options).format(now);
+        document.getElementById('iraq-clock').innerText = timeStr;
+        
+        const dateStr = new Intl.DateTimeFormat('ar-IQ', { dateStyle: 'full' }).format(now);
+        document.getElementById('date-text').innerText = dateStr;
+    }
+    setInterval(updateIraqTime, 1000);
 
-    window.previewImg = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('p-prev').src=e.target.result; r.readAsDataURL(i.files[0]); };
-    window.doSave = () => {
-        const n = document.getElementById('p-name').value;
-        const p = document.getElementById('p-prev').src;
-        if(!n || n.length < 3) return alert("يرجى كتابة اسمك الحقيقي");
-        me = { n, p, id: "U" + Math.floor(Math.random() * 1000000) };
-        localStorage.setItem('enjaz_secure_v5', JSON.stringify(me));
+    // --- إدارة المستخدم ---
+    let myInfo = JSON.parse(localStorage.getItem('enjaz_v6_ultra'));
+    if(!myInfo) document.getElementById('login-overlay').style.display = 'flex';
+
+    window.previewProfile = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('avatar-preview').src=e.target.result; r.readAsDataURL(i.files[0]); };
+    window.saveUser = () => {
+        const n = document.getElementById('user-name').value;
+        const p = document.getElementById('avatar-preview').src;
+        if(!n) return;
+        myInfo = { n, p, id: "ID_" + Math.floor(Math.random()*999999) };
+        localStorage.setItem('enjaz_v6_ultra', JSON.stringify(myInfo));
         location.reload();
     };
 
-    // --- نظام كاشف البث المباشر المطور ---
-    const liveStatusRef = ref(db, 'live_signal');
-    
-    window.toggleLive = (show) => {
-        const frame = document.getElementById('live-frame');
-        const overlay = document.getElementById('live-overlay');
-        overlay.style.display = show ? 'block' : 'none';
-        
-        // توليد اسم غرفة مشفر لا يمكن تخمينه
-        const secretRoomID = "Enjaz_Secure_Room_778899_Iraq";
-        
-        if(show) {
-            frame.src = `https://meet.jit.si/${secretRoomID}#config.startWithAudioMuted=true&config.prejoinPageEnabled=false`;
-            set(liveStatusRef, { active: true, starter: me.n, time: Date.now() });
-            // إذا انقطع الاتصال، يتم إغلاق إشارة البث تلقائياً
-            onDisconnect(liveStatusRef).remove();
-        } else {
-            frame.src = "";
-            remove(liveStatusRef);
-        }
+    // --- نظام البث المطور (تليجرام) ---
+    const liveRef = ref(db, 'live_v6');
+    const secretRoom = "Enjaz_Super_Secret_Room_Iraq_2024";
+
+    window.startMyLive = () => {
+        set(liveRef, { active: true, starter: myInfo.n, time: Date.now() });
+        onDisconnect(liveRef).remove();
+        openLive();
     };
 
-    // الاستماع لوجود بث عند الآخرين
-    onValue(liveStatusRef, (snap) => {
-        const notifier = document.getElementById('live-notifier');
+    window.openLive = () => {
+        document.getElementById('live-iframe').src = `https://meet.jit.si/${secretRoom}#config.prejoinPageEnabled=false`;
+        document.getElementById('live-view').style.display = 'block';
+    };
+
+    window.closeLive = () => {
+        document.getElementById('live-view').style.display = 'none';
+        document.getElementById('live-iframe').src = "";
+    };
+
+    onValue(liveRef, (snap) => {
+        const bar = document.getElementById('telegram-live-bar');
         if(snap.exists() && snap.val().active) {
-            notifier.style.display = 'block';
-            notifier.innerText = `🔴 بث مباشر بدأ بواسطة (${snap.val().starter}) - انضم الآن`;
+            bar.style.display = 'block';
         } else {
-            notifier.style.display = 'none';
+            bar.style.display = 'none';
         }
     });
 
-    // --- السشنات والجدول الزمني ---
-    const schedule = [
-        { n: "السشن الأول", h1: 6, m1: 0, h2: 8, m2: 0 },
-        { n: "السشن الثاني", h1: 8, m1: 15, h2: 10, m2: 15 },
-        { n: "السشن الثالث", h1: 10, m1: 30, h2: 12, m2: 0 },
-        { n: "السشن الثالث (ب)", h1: 13, m1: 0, h2: 15, m2: 0 },
-        { n: "السشن الرابع", h1: 15, m1: 15, h2: 17, m2: 15 },
-        { n: "السشن الخامس", h1: 17, m1: 30, h2: 18, m2: 30 },
-        { n: "السشن السادس", h1: 20, m1: 0, h2: 22, m2: 0 }
-    ];
-
-    function checkSess() {
-        const now = new Date();
-        const cur = now.getHours() * 60 + now.getMinutes();
-        let active = schedule.find(s => cur >= (s.h1*60+s.m1) && cur < (s.h2*60+s.m2));
-        const txt = document.getElementById('sess-text');
-        if(active) {
-            txt.innerHTML = `🌟 الآن: ${active.n} <small>(بقي ${ (active.h2*60+active.m2) - cur } دقيقة)</small>`;
-        } else { txt.innerText = "وقت استراحة ودراسة حرة ☕"; }
-    }
-    setInterval(checkSess, 5000);
-
-    // --- المراسلة والوسائط ---
-    window.doSend = () => {
-        const val = document.getElementById('m-text').value;
-        if(!val) return;
-        push(ref(db, 'messages_v5'), { uid: me.id, user: me.n, pic: me.p, msg: val, type: 'text', time: serverTimestamp() });
-        document.getElementById('m-text').value = "";
+    // --- المراسلة الفورية ---
+    window.sendText = () => {
+        const txt = document.getElementById('msg-input').value;
+        if(!txt) return;
+        push(ref(db, 'chats_v6'), { uid: myInfo.id, u: myInfo.n, p: myInfo.p, msg: txt, type: 'text', time: serverTimestamp() });
+        document.getElementById('msg-input').value = "";
     };
 
-    window.uploadMedia = (i) => {
+    window.sendMedia = (i) => {
         const r = new FileReader();
         const type = i.files[0].type.startsWith('image') ? 'img' : 'vid';
         r.onload = (e) => {
-            push(ref(db, 'messages_v5'), { uid: me.id, user: me.n, pic: me.p, media: e.target.result, type: type, time: serverTimestamp() });
+            push(ref(db, 'chats_v6'), { uid: myInfo.id, u: myInfo.n, p: myInfo.p, media: e.target.result, type: type, time: serverTimestamp() });
         };
         r.readAsDataURL(i.files[0]);
     };
 
-    onValue(ref(db, 'messages_v5'), (snap) => {
-        const box = document.getElementById('chat-box');
+    onValue(ref(db, 'chats_v6'), (snap) => {
+        const box = document.getElementById('chat-flow');
         box.innerHTML = "";
-        snap.forEach(child => {
-            const d = child.val();
-            const isMe = d.uid === me.id;
-            const content = d.type === 'text' ? d.msg : (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`);
+        snap.forEach(c => {
+            const d = c.val();
+            const isMe = d.uid === myInfo.id;
+            const content = d.type === 'text' ? d.msg : (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:15px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:15px;"></video>`);
             box.innerHTML += `
-                <div class="msg-wrapper ${isMe ? 'me' : ''}">
-                    <img src="${d.pic}" class="avatar">
-                    <div class="msg-body">
-                        <span class="user-name">${d.user}</span>
+                <div class="message-row ${isMe ? 'me' : ''}">
+                    <img src="${d.p}" class="user-avatar">
+                    <div class="message-content">
+                        <span class="user-tag">${d.u}</span>
                         ${content}
-                        <i class="fas fa-trash" style="font-size:10px; cursor:pointer; margin-right:10px; opacity:0.3;" onclick="remove(ref(db, 'messages_v5/${child.key}'))"></i>
+                        <i class="fas fa-trash" style="font-size:10px; cursor:pointer; margin-right:10px; opacity:0.3" onclick="remove(ref(db, 'chats_v6/${c.key}'))"></i>
                     </div>
                 </div>`;
         });
         box.scrollTop = box.scrollHeight;
     });
 
-    window.setTheme = (t) => {
-        document.getElementById('canvas-bg').style.display = t==='atom'?'block':'none';
-        document.getElementById('eagle-bg').style.display = t==='eagle'?'block':'none';
-    };
-
-    // ذرات الخلفية
-    const canvas = document.getElementById('canvas-bg');
+    // --- محرك الذرات المتحركة المتطور ---
+    const canvas = document.getElementById('atom-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     let particles = [];
-    class Particle { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=Math.random()-0.5; this.vy=Math.random()-0.5; } update() { this.x+=this.vx; this.y+=this.vy; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
-    for(let i=0;i<40;i++) particles.push(new Particle());
-    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(animate); }
-    animate();
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.8;
+            this.vy = (Math.random() - 0.5) * 0.8;
+            this.size = Math.random() * 2;
+        }
+        draw() {
+            ctx.fillStyle = Math.random() > 0.5 ? "#00f2ff" : "#bc13fe";
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            this.draw();
+        }
+    }
+    for(let i=0; i<60; i++) particles.push(new Particle());
+    function anim() {
+        ctx.fillStyle = "rgba(3, 4, 7, 0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => p.update());
+        requestAnimationFrame(anim);
+    }
+    anim();
+
 </script>
 </body>
 </html>
