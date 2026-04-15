@@ -3,77 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنجازاتي | Enjazati Live</title>
+    <title>إنجازاتي | الرادار الدراسي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
         :root {
-            --primary: #00f2ff; --accent: #7000ff; --bg: #05060a; --card: rgba(20, 25, 30, 0.9);
+            --primary: #00f2ff; --accent: #7000ff; --bg: #05060a; --card: rgba(20, 25, 30, 0.95);
         }
 
         body {
             font-family: 'Tajawal', sans-serif; margin: 0; background: var(--bg);
-            color: #fff; overflow: hidden; height: 100vh;
+            color: #fff; display: flex; height: 100vh; overflow: hidden;
         }
 
-        /* خلفية الذرات المتحركة */
         #atom-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* شريط السشن الحالي */
-        #session-bar {
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            padding: 10px; text-align: center; font-weight: bold; font-size: 14px;
-            box-shadow: 0 0 20px var(--primary); z-index: 1000; position: relative;
+        /* الشريط الجانبي الثابت */
+        .sidebar {
+            width: 250px; background: var(--card); border-left: 1px solid var(--primary);
+            display: flex; flex-direction: column; padding: 20px; box-sizing: border-box;
+            backdrop-filter: blur(10px); z-index: 1001;
         }
 
-        /* حاوية الشات */
-        .chat-container {
-            display: flex; flex-direction: column; height: calc(100vh - 120px);
-            max-width: 700px; margin: auto; position: relative;
+        .status-box {
+            background: rgba(0, 242, 255, 0.1); border: 1px solid var(--primary);
+            padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center;
+        }
+
+        /* حاوية الشات الرئيسية */
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
+
+        /* رسالة السشن المثبتة */
+        .sticky-announcement {
+            position: sticky; top: 0; background: rgba(112, 0, 255, 0.8);
+            padding: 10px; text-align: center; font-weight: bold; z-index: 1000;
+            border-bottom: 1px solid var(--primary); backdrop-filter: blur(5px);
+            display: none;
         }
 
         .messages-area {
-            flex: 1; overflow-y: auto; padding: 15px;
-            display: flex; flex-direction: column; gap: 12px;
-            scrollbar-width: none;
+            flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px;
         }
 
         /* فقاعات الرسائل */
-        .msg { max-width: 85%; position: relative; animation: pop 0.3s ease; }
-        @keyframes pop { from { transform: scale(0.8); opacity: 0; } }
+        .msg { max-width: 80%; align-self: flex-start; position: relative; }
+        .msg.me { align-self: flex-end; }
         
-        .msg-content { padding: 10px 15px; border-radius: 18px; position: relative; font-size: 15px; }
-        .msg-in { align-self: flex-start; background: #1e1f24; border: 1px solid #333; }
-        .msg-out { align-self: flex-end; background: var(--accent); }
+        .msg-bubble { 
+            padding: 12px; border-radius: 15px; background: #1e1f24; border: 1px solid #333;
+            position: relative;
+        }
+        .me .msg-bubble { background: var(--accent); border: none; }
         
-        .user-info { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 12px; }
-        .avatar-sm { width: 25px; height: 25px; border-radius: 50%; object-fit: cover; }
-        
-        .del-msg { color: #ff4d4d; font-size: 12px; cursor: pointer; margin-right: 8px; display: none; }
-        .msg-out:hover .del-msg { display: inline; }
-
-        /* رسالة السشن الآلية */
-        .system-msg {
-            align-self: center; background: rgba(0, 242, 255, 0.1);
-            border: 1px dashed var(--primary); padding: 5px 20px;
-            border-radius: 50px; font-size: 13px; color: var(--primary); margin: 10px 0;
+        .delete-icon {
+            position: absolute; top: -10px; left: -10px; background: #ff4d4d;
+            width: 20px; height: 20px; border-radius: 50%; font-size: 10px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* منطقة الإدخال */
-        .input-area {
-            padding: 15px; background: var(--card); backdrop-filter: blur(10px);
-            display: flex; gap: 10px; align-items: center;
+        .user-tag { font-size: 11px; margin-bottom: 5px; color: var(--primary); display: flex; align-items: center; gap: 5px; }
+
+        .input-bar {
+            padding: 20px; background: var(--card); display: flex; gap: 10px; align-items: center;
         }
-        .input-area input {
-            flex: 1; background: #000; border: 1px solid #444; padding: 12px;
-            border-radius: 25px; color: #fff; outline: none;
+        .input-bar input {
+            flex: 1; background: #000; border: 1px solid #444; padding: 12px 20px;
+            border-radius: 30px; color: #fff; outline: none;
         }
 
-        /* شاشة الدخول / الإعدادات */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 2000; display: flex; align-items: center; justify-content: center;
+        /* شاشة الدخول (تظهر فقط عند الحاجة) */
+        #login-screen {
+            position: fixed; inset: 0; background: var(--bg); z-index: 5000;
+            display: none; align-items: center; justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; border-left: none; border-bottom: 1px solid var(--primary); padding: 10px; }
+            .sidebar .status-box { margin-bottom: 5px; }
         }
     </style>
 </head>
@@ -81,35 +90,51 @@
 
 <canvas id="atom-canvas"></canvas>
 
-<div id="session-bar">جاري فحص الوقت...</div>
-
-<div class="chat-container">
-    <div class="messages-area" id="chat-box"></div>
-    
-    <div class="input-area">
-        <label for="file-input"><i class="fas fa-paperclip" style="cursor:pointer; font-size:20px;"></i></label>
-        <input type="file" id="file-input" hidden accept="image/*,video/*" onchange="uploadMedia(this)">
-        <input type="text" id="msg-input" placeholder="أرسل إنجازك الآن...">
-        <button onclick="sendText()" style="background:var(--primary); border:none; width:45px; height:45px; border-radius:50%; cursor:pointer;">
-            <i class="fas fa-paper-plane" style="color:#000;"></i>
-        </button>
-        <i class="fas fa-cog" onclick="showSettings()" style="cursor:pointer; font-size:20px;"></i>
+<div id="login-screen">
+    <div style="background:var(--card); padding:30px; border-radius:20px; text-align:center; width:350px; border:1px solid var(--primary);">
+        <h2 style="color:var(--primary)">إنجازاتي ⚛️</h2>
+        <p>سجل بياناتك لمرة واحدة فقط</p>
+        <img id="p-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); cursor:pointer;" onclick="document.getElementById('f-img').click()">
+        <input type="file" id="f-img" hidden onchange="preview(this)">
+        <input type="text" id="u-name" placeholder="اسمك الكامل" style="width:100%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid #444; background:#000; color:white;">
+        <button onclick="save()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; color:#000;">دخول</button>
     </div>
 </div>
 
-<div id="login-overlay" class="overlay" style="display:none;">
-    <div style="background:var(--card); padding:30px; border-radius:20px; text-align:center; width:90%; max-width:350px; border:1px solid var(--primary);">
-        <h2 style="color:var(--primary)">إنجازاتي ⚛️</h2>
-        <img id="preview" src="https://via.placeholder.com/100" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--primary); cursor:pointer;" onclick="document.getElementById('avatar-file').click()">
-        <input type="file" id="avatar-file" hidden accept="image/*" onchange="previewAvatar(this)">
-        <input type="text" id="user-name" placeholder="ما هو اسمك؟" style="width:100%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid #444; background:#000; color:white;">
-        <button onclick="saveUser()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold;">ابدأ الإنجاز</button>
+<div class="sidebar">
+    <h3 style="color:var(--primary); margin-top:0;">الجدول الزمني</h3>
+    <div class="status-box">
+        <small>السشن الحالي</small>
+        <div id="curr-sess-name" style="font-weight:bold; font-size:18px;">--</div>
+        <div id="curr-sess-time" style="color:var(--primary); font-size:14px;">00:00:00</div>
+    </div>
+    <div class="status-box" style="border-color:#777; opacity:0.8;">
+        <small>السشن القادم</small>
+        <div id="next-sess-name" style="font-size:14px;">--</div>
+        <div id="next-sess-countdown" style="font-size:14px;">--</div>
+    </div>
+    <div style="margin-top:auto; text-align:center;">
+        <img id="my-avatar" style="width:50px; height:50px; border-radius:50%; border:2px solid var(--primary);">
+        <p id="my-name" style="margin:5px 0; font-weight:bold;"></p>
+        <button onclick="logout()" style="background:none; border:none; color:#ff4d4d; font-size:12px; cursor:pointer;">تغيير الحساب</button>
+    </div>
+</div>
+
+<div class="main-content">
+    <div id="sticky-header" class="sticky-announcement">🚀 السشن الحالي بدأ.. بالتوفيق للجميع!</div>
+    <div class="messages-area" id="chat-box"></div>
+    
+    <div class="input-bar">
+        <i class="fas fa-image" style="cursor:pointer; font-size:22px; color:var(--primary);" onclick="document.getElementById('m-file').click()"></i>
+        <input type="file" id="m-file" hidden accept="image/*,video/*" onchange="upload(this)">
+        <input type="text" id="m-input" placeholder="اكتب رسالتك أو شارك إنجازك...">
+        <button onclick="send()" style="background:var(--primary); border:none; width:45px; height:45px; border-radius:50%; cursor:pointer;"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
@@ -128,147 +153,130 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     let particles = [];
-    class Particle {
-        constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5)*2; this.vy=(Math.random()-0.5)*2; }
-        update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; }
-        draw() { ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); }
-    }
-    for(let i=0; i<60; i++) particles.push(new Particle());
-    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(animate); }
-    animate();
+    class P { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5); this.vy=(Math.random()-0.5); } update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
+    for(let i=0;i<50;i++) particles.push(new P());
+    function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(anim); }
+    anim();
 
-    // --- بيانات المستخدم ---
-    let myProfile = JSON.parse(localStorage.getItem('enjaz_live_v1'));
-    if(!myProfile) { document.getElementById('login-overlay').style.display='flex'; }
+    // --- إدارة المستخدم ---
+    let user = JSON.parse(localStorage.getItem('enjaz_final_v1'));
+    if(!user) document.getElementById('login-screen').style.display='flex';
+    else loadApp();
 
-    window.previewAvatar = (input) => {
-        const r = new FileReader(); r.onload=(e)=>document.getElementById('preview').src=e.target.result; r.readAsDataURL(input.files[0]);
-    };
-
-    window.saveUser = () => {
-        const name = document.getElementById('user-name').value;
-        const photo = document.getElementById('preview').src;
-        if(!name) return;
-        myProfile = { name, photo, id: 'user_' + Math.random().toString(36).substr(2, 9) };
-        localStorage.setItem('enjaz_live_v1', JSON.stringify(myProfile));
+    window.preview = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('p-img').src=e.target.result; r.readAsDataURL(i.files[0]); };
+    window.save = () => {
+        const n=document.getElementById('u-name').value;
+        const p=document.getElementById('p-img').src;
+        if(!n) return;
+        user = { n, p, id: Date.now() };
+        localStorage.setItem('enjaz_final_v1', JSON.stringify(user));
         location.reload();
     };
+    window.logout = () => { localStorage.removeItem('enjaz_final_v1'); location.reload(); };
 
-    window.showSettings = () => { document.getElementById('login-overlay').style.display='flex'; };
+    function loadApp() {
+        document.getElementById('my-avatar').src = user.p;
+        document.getElementById('my-name').innerText = user.n;
+        checkSchedule();
+        setInterval(checkSchedule, 1000);
+    }
 
-    // --- نظام السشنات (حسب توقيت العراق) ---
+    // --- الجدول الزمني (نظام 12 ساعة) ---
     const schedule = [
-        { name: "السشن الأول", start: "06:00", end: "08:00" },
-        { name: "وقت راحة ☕", start: "08:00", end: "08:15" },
-        { name: "السشن الثاني", start: "08:15", end: "10:15" },
-        { name: "وقت راحة ☕", start: "10:15", end: "10:30" },
-        { name: "السشن الثالث", start: "10:30", end: "12:00" },
-        { name: "السشن الثالث (ب)", start: "13:00", end: "15:00" },
-        { name: "وقت راحة ☕", start: "15:00", end: "15:15" },
-        { name: "السشن الرابع", start: "15:15", end: "17:15" },
-        { name: "وقت راحة ☕", start: "17:15", end: "17:30" },
-        { name: "السشن الخامس", start: "17:30", end: "18:30" },
-        { name: "السشن السادس", start: "20:00", end: "22:00" }
+        { n: "السشن الأول", h1: 6, m1: 0, h2: 8, m2: 0 },
+        { n: "استراحة ☕", h1: 8, m1: 0, h2: 8, m2: 15 },
+        { n: "السشن الثاني", h1: 8, m1: 15, h2: 10, m2: 15 },
+        { n: "استراحة ☕", h1: 10, m1: 15, h2: 10, m2: 30 },
+        { n: "السشن الثالث", h1: 10, m1: 30, h2: 12, m2: 0 },
+        { n: "السشن الثالث (ب)", h1: 13, m1: 0, h2: 15, m2: 0 },
+        { n: "استراحة ☕", h1: 15, m1: 0, h2: 15, m2: 15 },
+        { n: "السشن الرابع", h1: 15, m1: 15, h2: 17, m2: 15 },
+        { n: "استراحة ☕", h1: 17, m1: 15, h2: 17, m2: 30 },
+        { n: "السشن الخامس", h1: 17, m1: 30, h2: 18, m2: 30 },
+        { n: "السشن السادس", h1: 20, m1: 0, h2: 22, m2: 0 }
     ];
 
-    let lastAnnouncedSession = "";
+    function format12(h, m) {
+        let ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
+    }
 
-    function checkTime() {
+    function checkSchedule() {
         const now = new Date();
-        const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-        let currentSess = null;
+        const curMin = now.getHours() * 60 + now.getMinutes();
+        let active = null;
+        let next = null;
 
-        for(let s of schedule) {
-            if(timeStr >= s.start && timeStr < s.end) {
-                currentSess = s; break;
-            }
-        }
-
-        const bar = document.getElementById('session-bar');
-        if(currentSess) {
-            bar.innerText = `⚡ ${currentSess.name} | ينتهي الساعة ${currentSess.end}`;
-            if(lastAnnouncedSession !== currentSess.name) {
-                sendSystemMsg(`🚀 بدأ الآن: ${currentSess.name} (${currentSess.start} - ${currentSess.end})`);
-                lastAnnouncedSession = currentSess.name;
-            }
-        } else {
-            bar.innerText = `⏳ لا يوجد سشن حالياً.. استعد للقادم!`;
-        }
-
-        // الحذف التلقائي اليومي (يفحص إذا تغير اليوم)
-        const today = now.toLocaleDateString();
-        if(localStorage.getItem('last_clear') !== today) {
-            set(ref(db, 'live_chat'), {}); // مسح الشات في فايربيس
-            localStorage.setItem('last_clear', today);
-        }
-    }
-    setInterval(checkTime, 1000);
-
-    // --- وظائف المراسلة ---
-    function sendSystemMsg(text) {
-        push(ref(db, 'live_chat'), { type: 'system', text, time: serverTimestamp() });
-    }
-
-    window.sendText = () => {
-        const txt = document.getElementById('msg-input').value;
-        if(!txt) return;
-        push(ref(db, 'live_chat'), {
-            uid: myProfile.id, user: myProfile.name, photo: myProfile.photo,
-            text: txt, type: 'text', time: serverTimestamp()
+        schedule.forEach((s, index) => {
+            const sMin = s.h1 * 60 + s.m1;
+            const eMin = s.h2 * 60 + s.m2;
+            if(curMin >= sMin && curMin < eMin) active = s;
+            else if(sMin > curMin && !next) next = s;
         });
-        document.getElementById('msg-input').value = "";
+
+        const stick = document.getElementById('sticky-header');
+        if(active) {
+            document.getElementById('curr-sess-name').innerText = active.n;
+            document.getElementById('curr-sess-time').innerText = `من ${format12(active.h1, active.m1)} إلى ${format12(active.h2, active.m2)}`;
+            stick.style.display = 'block';
+            stick.innerText = `📢 الآن: ${active.n} (ينتهي ${format12(active.h2, active.m2)})`;
+        } else {
+            document.getElementById('curr-sess-name').innerText = "خارج وقت العمل";
+            document.getElementById('curr-sess-time').innerText = "--:--";
+            stick.style.display = 'none';
+        }
+
+        if(next) {
+            document.getElementById('next-sess-name').innerText = next.n;
+            document.getElementById('next-sess-countdown').innerText = `يبدأ ${format12(next.h1, next.m1)}`;
+        }
+
+        // الحذف التلقائي اليومي
+        const d = now.toLocaleDateString();
+        if(localStorage.getItem('last_del') !== d) { remove(ref(db, 'chats')); localStorage.setItem('last_del', d); }
+    }
+
+    // --- نظام المراسلة ---
+    window.send = () => {
+        const val = document.getElementById('m-input').value;
+        if(!val) return;
+        push(ref(db, 'chats'), { u: user.n, p: user.p, uid: user.id, txt: val, type: 'text', time: serverTimestamp() });
+        document.getElementById('m-input').value = "";
     };
 
-    window.uploadMedia = (input) => {
-        const file = input.files[0];
-        const reader = new FileReader();
-        const type = file.type.startsWith('image') ? 'image' : 'video';
-        reader.onload = (e) => {
-            push(ref(db, 'live_chat'), {
-                uid: myProfile.id, user: myProfile.name, photo: myProfile.photo,
-                media: e.target.result, mType: type, type: 'media', time: serverTimestamp()
-            });
-        };
-        reader.readAsDataURL(file);
+    window.upload = (i) => {
+        const r=new FileReader();
+        const type = i.files[0].type.startsWith('image') ? 'img' : 'vid';
+        r.onload=(e)=> push(ref(db, 'chats'), { u: user.n, p: user.p, uid: user.id, media: e.target.result, type, time: serverTimestamp() });
+        r.readAsDataURL(i.files[0]);
     };
 
-    window.deleteMsg = (key) => {
-        if(confirm("حذف هذه الرسالة؟")) remove(ref(db, `live_chat/${key}`));
-    };
+    window.del = (k) => { if(confirm("حذف الرسالة؟")) remove(ref(db, `chats/${k}`)); };
 
-    // --- جلب الرسائل مباشرة ---
-    onValue(ref(db, 'live_chat'), (snap) => {
+    onValue(ref(db, 'chats'), (snap) => {
         const box = document.getElementById('chat-box');
         box.innerHTML = "";
-        snap.forEach(child => {
-            const d = child.val();
-            const key = child.key;
+        snap.forEach(c => {
+            const d = c.val();
+            const isMe = d.uid === user.id;
+            let timeStr = d.time ? format12(new Date(d.time).getHours(), new Date(d.time).getMinutes()) : '';
             
-            if(d.type === 'system') {
-                box.innerHTML += `<div class="system-msg">${d.text}</div>`;
-            } else {
-                const isMe = d.uid === myProfile.id;
-                let content = d.type === 'media' ? 
-                    (d.mType === 'image' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`)
-                    : d.text;
+            let content = d.type === 'text' ? d.txt : 
+                         (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`);
 
-                box.innerHTML += `
-                    <div class="msg ${isMe ? 'msg-out' : 'msg-in'}">
-                        <div class="user-info">
-                            <img src="${d.photo}" class="avatar-sm">
-                            <b style="color:var(--primary)">${d.user}</b>
-                        </div>
-                        <div class="msg-content">
-                            ${isMe ? `<i class="fas fa-trash del-msg" onclick="deleteMsg('${key}')"></i>` : ''}
-                            ${content}
-                        </div>
+            box.innerHTML += `
+                <div class="msg ${isMe ? 'me' : ''}">
+                    <div class="user-tag"><img src="${d.p}" style="width:18px; height:18px; border-radius:50%;"> ${d.u} <small style="color:#666">${timeStr}</small></div>
+                    <div class="msg-bubble">
+                        <i class="fas fa-times delete-icon" onclick="del('${c.key}')"></i>
+                        ${content}
                     </div>
-                `;
-            }
+                </div>
+            `;
         });
         box.scrollTop = box.scrollHeight;
     });
-
 </script>
 </body>
 </html>
