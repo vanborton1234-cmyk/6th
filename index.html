@@ -3,246 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة العلمية الاحترافية</title>
+    <title>إنجازاتي - Enjazati</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
         
         :root {
-            --neon-blue: #00d2ff;
-            --neon-purple: #9d50bb;
-            --energy: #00ffcc;
-            --delete: #ff4b2b;
-            --bg: #02050a;
+            --fb-blue: #1877F2;
+            --fb-bg: #f0f2f5;
+            --dark-bg: #18191a;
+            --dark-card: #242526;
+            --primary-text: #e4e6eb;
+            --accent: #00ffcc;
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            margin: 0; background: var(--bg); color: #fff;
+            margin: 0; padding: 0;
+            background-color: var(--dark-bg);
+            color: var(--primary-text);
             overflow-x: hidden;
         }
 
-        /* خلفية الذرات والإلكترونات المتحركة */
-        .energy-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: radial-gradient(circle at center, #0a192f 0%, #02050a 100%);
-            overflow: hidden;
-        }
-        .electron {
-            position: absolute; background: var(--energy);
-            border-radius: 50%; box-shadow: 0 0 15px var(--energy);
-            animation: flow 10s infinite linear; opacity: 0.4;
-        }
-        @keyframes flow {
-            from { transform: translateY(100vh) translateX(-50px) rotate(0deg); }
-            to { transform: translateY(-10vh) translateX(100px) rotate(360deg); }
+        /* نظام الانتقال بين الصفحات */
+        .page { display: none; min-height: 100vh; padding-top: 70px; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* الهيدر العلوي */
+        header {
+            background: var(--dark-card);
+            padding: 10px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-sizing: border-box;
         }
 
-        .container { max-width: 800px; margin: auto; padding: 20px; position: relative; z-index: 1; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--accent); }
 
-        /* نافذة التشغيل السريع */
-        .quick-play {
-            background: linear-gradient(45deg, #111, #222);
-            padding: 20px; border-radius: 20px; border: 2px solid var(--neon-blue);
-            margin-bottom: 30px; box-shadow: 0 0 20px var(--neon-blue);
+        /* شاشة الدخول */
+        #login-page {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: linear-gradient(45deg, #05060a, #1a2a3a);
         }
 
-        /* كروت المنشورات */
-        .post-card {
-            background: rgba(20, 30, 48, 0.9);
-            border-radius: 15px; margin-bottom: 25px;
-            border: 1px solid #333; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-        .post-card:hover { border-color: var(--energy); }
-
-        .delete-btn {
-            position: absolute; top: 15px; left: 15px;
-            background: var(--delete); color: white; border: none;
-            padding: 5px 10px; border-radius: 5px; cursor: pointer;
-            font-size: 12px; font-weight: bold;
+        .login-btn {
+            background: white; color: #000; padding: 12px 25px;
+            border-radius: 8px; border: none; font-weight: bold;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
         }
 
-        /* مشغل الفيديو المعدل */
-        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 0 0 15px 15px; overflow: hidden; }
-        iframe, video { width: 100%; height: 100%; border: none; }
+        /* تصميم المنشورات (ستايل فيسبوك) */
+        .container { max-width: 600px; margin: auto; padding: 15px; }
+        .post {
+            background: var(--dark-card); border-radius: 12px;
+            margin-bottom: 20px; padding: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #444; }
+        .post-content { margin-bottom: 15px; line-height: 1.6; }
+        .post-media { width: 100%; border-radius: 8px; margin-top: 10px; }
 
-        /* الأزرار 3D */
-        .btn-sci {
-            background: linear-gradient(to bottom, var(--neon-blue), var(--neon-purple));
-            border: none; padding: 15px; color: white; border-radius: 12px;
-            font-weight: bold; cursor: pointer; width: 100%; margin: 10px 0;
-            box-shadow: 0 5px 0 #0055aa; transition: 0.1s;
+        /* أزرار التفاعل */
+        .post-actions {
+            display: flex; border-top: 1px solid #3e4042;
+            padding-top: 10px; margin-top: 10px;
         }
-        .btn-sci:active { transform: translateY(4px); box-shadow: 0 0 0 #0055aa; }
+        .action-btn {
+            flex: 1; background: none; border: none; color: #b0b3b8;
+            padding: 8px; cursor: pointer; transition: 0.2s;
+            border-radius: 5px; font-weight: 500;
+        }
+        .action-btn:hover { background: rgba(255,255,255,0.05); }
 
-        /* الدردشة القوية */
-        #chat-box {
-            position: fixed; bottom: 20px; left: 20px; width: 350px; height: 450px;
-            background: #0f172a; border: 2px solid var(--energy);
-            border-radius: 15px; display: none; flex-direction: column; z-index: 1000;
+        /* صفحة النشر المنفصلة */
+        .publish-view {
+            padding: 20px; text-align: center;
         }
-        .chat-msgs { flex: 1; overflow-y: auto; padding: 15px; font-size: 14px; }
-        .msg-item { background: #1e293b; padding: 8px; border-radius: 8px; margin-bottom: 10px; border-right: 3px solid var(--energy); }
+        .post-input-box {
+            background: var(--dark-card); padding: 20px; border-radius: 15px;
+            text-align: right; margin-top: 20px;
+        }
 
-        input, textarea {
-            width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px;
-            border: 1px solid #334155; background: #020617; color: white; box-sizing: border-box;
+        /* زر الإضافة العائم */
+        .fab {
+            position: fixed; bottom: 25px; left: 25px;
+            width: 60px; height: 60px; background: var(--fb-blue);
+            border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; font-size: 24px; color: white;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 999;
         }
-        
-        #login-screen {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center;
+
+        /* واجهة الدردشة (تليجرام) */
+        .chat-container { display: flex; flex-direction: column; height: 80vh; }
+        .messages-area { flex: 1; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .chat-input { display: flex; gap: 10px; margin-top: 15px; }
+
+        /* رسالة النجاح */
+        #toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #2ecc71; color: white; padding: 12px 30px;
+            border-radius: 50px; transition: 0.5s; z-index: 3000;
         }
+
     </style>
 </head>
 <body>
 
-<div class="energy-bg" id="atoms"></div>
+    <div id="toast">✅ تم النشر بنجاح!</div>
 
-<div id="login-screen">
-    <div style="text-align:center; background:#111; padding:40px; border-radius:20px; border:2px solid var(--energy);">
-        <h2>مرحباً يا بطل ⚛️</h2>
-        <input type="text" id="join-name" placeholder="ادخل اسمك مرة واحدة فقط...">
-        <button class="btn-sci" onclick="startApp()">ابدأ الدراسة</button>
-    </div>
-</div>
-
-<div class="container">
-    <h1 style="text-align:center; color:var(--energy); text-shadow: 0 0 15px var(--energy);">المنصة العلمية الكبرى ⚡</h1>
-
-    <div class="quick-play">
-        <h3 style="margin-top:0">🔍 تشغيل سريع للمحاضرة</h3>
-        <input type="text" id="quick-url" placeholder="الصق رابط يوتيوب هنا للدراسة فوراً...">
-        <div id="quick-viewer"></div>
-    </div>
-
-    <div class="post-card" style="padding:20px">
-        <h3>📢 انشر محتوى جديد</h3>
-        <input type="text" id="p-title" placeholder="عنوان الموضوع...">
-        <textarea id="p-text" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-        <div style="display:flex; gap:10px">
-            <input type="text" id="p-yt" placeholder="رابط يوتيوب (اختياري)..." style="flex:2">
-            <input type="file" id="p-file" accept="video/*,image/*" style="flex:1; font-size:10px">
+    <header id="main-header" style="display:none;">
+        <div class="logo">إنجازاتي 🚀</div>
+        <div style="display:flex; gap:15px;">
+            <i class="fas fa-home" onclick="showPage('home-page')" style="cursor:pointer; font-size:20px;"></i>
+            <i class="fas fa-users" onclick="showPage('chat-page')" style="cursor:pointer; font-size:20px;"></i>
+            <img id="my-avatar" class="user-avatar" style="width:30px; height:30px;">
         </div>
-        <button class="btn-sci" onclick="publishNow()">نشر للعالم 🚀</button>
+    </header>
+
+    <div id="login-page" class="page active">
+        <h1 style="color:var(--accent)">مرحباً بك في إنجازاتي</h1>
+        <p>منصة الطلاب التعليمية الأولى</p>
+        <button class="login-btn" onclick="loginWithGoogle()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+            الدخول عبر جوجل
+        </button>
     </div>
 
-    <div id="main-feed"></div>
-</div>
-
-<div id="chat-box">
-    <div style="padding:10px; background:var(--energy); color:#000; font-weight:bold; border-radius:12px 12px 0 0">مجموعة النقاش المباشرة</div>
-    <div class="chat-msgs" id="chat-list"></div>
-    <div style="padding:10px">
-        <input type="text" id="chat-in" placeholder="اكتب رسالتك...">
-        <button class="btn-sci" style="padding:5px" onclick="sendChat()">إرسال</button>
+    <div id="home-page" class="page">
+        <div class="container" id="posts-feed">
+            </div>
+        <div class="fab" onclick="showPage('publish-page')"><i class="fas fa-plus"></i></div>
     </div>
-</div>
-<button onclick="toggleChat()" style="position:fixed; bottom:20px; left:20px; width:60px; height:60px; border-radius:50%; background:var(--energy); border:none; font-size:24px; cursor:pointer; z-index:1001">💬</button>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    <div id="publish-page" class="page">
+        <div class="container">
+            <div class="publish-view">
+                <button onclick="showPage('home-page')" style="float:right; background:none; border:none; color:white;"><i class="fas fa-times"></i> إغلاق</button>
+                <h2>ماذا تريد أن تشارك مع زملائك؟</h2>
+                <div class="post-input-box">
+                    <input type="text" id="p-title" placeholder="عنوان المنشور...">
+                    <textarea id="p-text" rows="5" placeholder="اكتب محتواك هنا..." style="width:100%; background:none; border:none; color:white; font-size:18px; outline:none;"></textarea>
+                    
+                    <div style="margin:20px 0; display:flex; gap:10px;">
+                        <button class="action-btn" onclick="document.getElementById('p-file').click()"><i class="fas fa-image"></i> صورة</button>
+                        <button class="action-btn"><i class="fas fa-video"></i> فيديو</button>
+                        <input type="file" id="p-file" hidden accept="image/*">
+                    </div>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
-        authDomain: "studyproject-1466b.firebaseapp.com",
-        projectId: "studyproject-1466b",
-        storageBucket: "studyproject-1466b.firebasestorage.app",
-        messagingSenderId: "589724771483",
-        appId: "1:589724771483:web:1c53636da586d2c787923e"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    let myName = localStorage.getItem('user_sci_name');
-
-    if(myName) document.getElementById('login-screen').style.display = 'none';
-
-    window.startApp = () => {
-        const n = document.getElementById('join-name').value;
-        if(n) { localStorage.setItem('user_sci_name', n); location.reload(); }
-    };
-
-    // وظيفة تحويل الروابط لتعمل 100%
-    function embedIt(url) {
-        if(!url) return null;
-        let id = "";
-        if(url.includes("v=")) id = url.split("v=")[1].split("&")[0];
-        else if(url.includes("youtu.be/")) id = url.split("youtu.be/")[1];
-        return id ? `https://www.youtube.com/embed/${id}` : url;
-    }
-
-    // التشغيل السريع
-    document.getElementById('quick-url').oninput = (e) => {
-        const link = embedIt(e.target.value);
-        if(link) document.getElementById('quick-viewer').innerHTML = `<div class="video-container"><iframe src="${link}" allowfullscreen></iframe></div>`;
-    };
-
-    window.publishNow = async () => {
-        const title = document.getElementById('p-title').value;
-        const text = document.getElementById('p-text').value;
-        const yt = embedIt(document.getElementById('p-yt').value);
-        const file = document.getElementById('p-file').files[0];
-
-        let data = { author: myName, title, text, yt, time: Date.now() };
-
-        if(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                data.fileData = e.target.result;
-                data.fileType = file.type.split('/')[0];
-                push(ref(db, 'posts'), data);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            push(ref(db, 'posts'), data);
-        }
-        alert("تم النشر!");
-    };
-
-    onValue(ref(db, 'posts'), (snap) => {
-        const feed = document.getElementById('main-feed');
-        feed.innerHTML = "";
-        snap.forEach(c => {
-            const p = c.val();
-            const id = c.key;
-            let media = "";
-            if(p.yt) media = `<div class="video-container"><iframe src="${p.yt}" allowfullscreen></iframe></div>`;
-            else if(p.fileType === 'video') media = `<div class="video-container"><video controls src="${p.fileData}"></video></div>`;
-            else if(p.fileType === 'image') media = `<img src="${p.fileData}" style="width:100%">`;
-
-            feed.innerHTML = `
-            <div class="post-card">
-                <button class="delete-btn" onclick="deletePost('${id}')">حذف 🗑️</button>
-                <div style="padding:15px">
-                    <b style="color:var(--energy)">${p.author}</b>
-                    <h2>${p.title}</h2>
-                    <p>${p.text}</p>
+                    <button class="login-btn" style="width:100%; justify-content:center; background:var(--fb-blue); color:white;" onclick="publishNow()">نشر في "إنجازاتي"</button>
                 </div>
-                ${media}
-            </div>` + feed.innerHTML;
+            </div>
+        </div>
+    </div>
+
+    <div id="chat-page" class="page">
+        <div class="container">
+            <h3>💬 غرف النقاش المباشرة</h3>
+            <div class="chat-container">
+                <div class="messages-area" id="chat-box">
+                    <p style="text-align:center; color:#888;">مرحباً بك في ساحة الحوار اللحظية</p>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chat-msg" placeholder="اكتب رسالة سريعة..." style="flex:1; padding:10px; border-radius:20px; border:none; background:#3a3b3c; color:white;">
+                    <button onclick="sendMsg()" style="background:var(--fb-blue); border:none; color:white; padding:10px 20px; border-radius:20px;"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
+            authDomain: "studyproject-1466b.firebaseapp.com",
+            projectId: "studyproject-1466b",
+            storageBucket: "studyproject-1466b.firebasestorage.app",
+            messagingSenderId: "589724771483",
+            appId: "1:589724771483:web:1c53636da586d2c787923e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        let currentUser = null;
+
+        // التحقق من حالة تسجيل الدخول
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('login-page').classList.remove('active');
+                document.getElementById('home-page').classList.add('active');
+                document.getElementById('main-header').style.display = 'flex';
+                document.getElementById('my-avatar').src = user.photoURL;
+                loadPosts();
+                loadMessages();
+            }
         });
-    });
 
-    window.deletePost = (id) => { if(confirm("هل تريد حذف المنشور نهائياً؟")) remove(ref(db, `posts/${id}`)); };
+        window.loginWithGoogle = () => {
+            signInWithPopup(auth, provider).catch(err => alert("حدث خطأ في تسجيل الدخول"));
+        };
 
-    // الدردشة
-    window.toggleChat = () => {
-        const c = document.getElementById('chat-box');
-        c.style.display = (c.style.display === 'flex') ? 'none' : 'flex';
-    };
+        window.showPage = (pageId) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        };
 
-    window.sendChat = () => {
-        const t = document.getElementById('chat-in').value;
-        if(t) { push(ref(db, 'chat'), { user: myName, text: t }); document.getElementById('chat-in').value = ""; }
-    };
+        // وظيفة النشر
+        window.publishNow = () => {
+            const title = document.getElementById('p-title').value;
+            const text = document.getElementById('p-text').value;
+            
+            if(!text) return alert("اكتب شيئاً أولاً");
 
-    onValue(ref(db, 'chat'), (snap) => {
-        const l = document.getElementById('chat-list');
-        l.innerHTML = "";
-        snap.forEach(m => {
-            l.innerHTML += `<div class="msg-item"><b>${m.val().user}:</b> ${m.val().text}</div>`;
-        });
-        l.scrollTop = l.scrollHeight;
+            const postData = {
+                uid: currentUser.uid,
+                author: currentUser.displayName,
+                avatar: currentUser.photoURL,
+                title: title,
+                text: text,
+                time: Date.now()
+            };
+
+            push(ref(db, 'posts'), postData).then(() => {
+                showToast();
+                document.getElementById('p-title').value = "";
+                document.getElementById('p-text').value = "";
+                showPage('home-page');
+            });
+        };
+
+        function showToast() {
+            const t = document.getElementById('toast');
+            t.style.top = '20px';
+            setTimeout(() => t.style.top = '-100px', 3000);
+        }
+
+        // تحميل المنشورات بتصميم فيسبوك
+        function loadPosts() {
+            onValue(ref(db, 'posts'), (snap) => {
+                const feed = document.getElementById('posts-feed');
+                feed.innerHTML = "";
+                let posts = [];
+                snap.forEach(child => { posts.unshift(child.val()); });
+
+                posts.forEach(p => {
+                    feed.innerHTML += `
+                        <div class="post">
+                            <div class="post-header">
+                                <img src="${p.avatar}" class="user-avatar">
+                                <div>
+                                    <div style="font-weight:bold">${p.author}</div>
+                                    <small style="color:#b0b3b8">${new Date(p.time).toLocaleString('ar-EG')}</small>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                <h3>${p.title}</h3>
+                                <p>${p.text}</p>
+                            </div>
+                            <div class="post-actions">
+                                <button class="action-btn"><i class="far fa-thumbs-up"></i> إعجاب</button>
+                                <button class="action-btn"><i class="far fa-comment"></i> تعليق</button>
+                                <button class="action-btn"><i class="fas fa-share"></i> مشاركة</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        // نظام الدردشة السريع
+        window.sendMsg = () => {
+            const m = document.getElementById('chat-msg').value;
+            if(!m) return;
+            push(ref(db, 'global_chat'), {
+                user: currentUser.displayName,
+                msg: m,
+                time: Date.now()
+            });
+            document.getElementById('chat-msg').value = "";
+        };
+
+        function loadMessages() {
+            onValue(ref(db, 'global_chat'), (snap) => {
+                const box = document.getElementById('chat-box');
+                box.innerHTML = "";
+                snap.forEach(child => {
+                    const d = child.val();
+                    box.innerHTML += `<div style="margin-bottom:10px;">
+                        <b style="color:var(--accent)">${d.user}:</b> ${d.msg}
+                    </div>`;
+                });
+                box.scrollTop = box.scrollHeight;
+            });
+        }
+
+    </script>
+</body>
+</html>
