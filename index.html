@@ -3,152 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إنجازاتي | الرادار الذري</title>
+    <title>إنجازاتي | الحماية القصوى</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-        :root { --primary: #00f2ff; --accent: #7000ff; --bg: #0a0b10; }
-        body, html { margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; background: var(--bg); color: #fff; height: 100%; overflow: hidden; }
+        :root { --primary: #00f2ff; --accent: #7000ff; --bg: #05060a; --danger: #ff3333; }
+        body, html { margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
         
-        /* الثيمات */
-        #bg-canvas { position: fixed; inset: 0; z-index: -1; }
-        .theme-eagle { background: url('https://img.freepik.com/free-vector/gradient-eagle-logo-design_23-2150193231.jpg') no-repeat center; background-size: contain; opacity: 0.15; position: fixed; inset: 0; z-index: -1; display: none; }
+        #canvas-bg { position: fixed; inset: 0; z-index: -1; }
+        #eagle-bg { position: fixed; inset: 0; z-index: -1; display: none; background: url('https://w0.peakpx.com/wallpaper/559/550/HD-wallpaper-blue-eagle-digital-art-birds-eagle-blue-animal.jpg') no-repeat center; background-size: cover; opacity: 0.2; }
 
-        /* رسالة الترحيب */
-        #welcome-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px; border-radius: 15px; border: 2px solid var(--primary); z-index: 10000; text-align: center; display: none; animation: fadeOut 4s forwards; }
-        @keyframes fadeOut { 0% {opacity:1} 80% {opacity:1} 100% {opacity:0; visibility:hidden} }
+        /* إشعار البث المباشر النابض */
+        #live-notifier {
+            display: none; background: var(--danger); color: white; text-align: center;
+            padding: 8px; font-weight: bold; cursor: pointer; animation: pulse 1.5s infinite;
+            position: fixed; top: 100px; left: 0; right: 0; z-index: 1500; font-size: 13px;
+        }
+        @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
 
-        /* البث المباشر */
-        #live-frame { position: fixed; inset: 0; background: #000; z-index: 9000; display: none; }
+        #status-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 25, 0.98); padding: 10px; border-bottom: 1px solid var(--primary); text-align: center; }
+        .chat-container { display: flex; flex-direction: column; height: 100vh; padding-top: 110px; padding-bottom: 80px; box-sizing: border-box; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
 
-        #floating-status { position: fixed; top: 10px; left: 10px; right: 10px; background: rgba(112, 0, 255, 0.9); padding: 12px; border-radius: 12px; text-align: center; z-index: 1000; border: 1px solid var(--primary); }
-        .chat-area { flex: 1; overflow-y: auto; padding: 100px 15px 80px 15px; display: flex; flex-direction: column; gap: 10px; height: 100vh; box-sizing: border-box; }
-        .msg-bubble { background: #1e2129; padding: 10px 15px; border-radius: 15px; border: 1px solid #333; }
-        .input-box { position: fixed; bottom: 0; left: 0; right: 0; background: #191c23; padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 1000; }
-        input[type="text"] { flex: 1; background: #000; border: 1px solid #444; padding: 12px; border-radius: 25px; color: #fff; outline: none; }
-        .icon-btn { color: var(--primary); font-size: 22px; cursor: pointer; transition: 0.3s; }
-        .icon-btn:hover { transform: scale(1.2); }
+        .msg-wrapper { display: flex; gap: 10px; max-width: 85%; align-items: flex-start; }
+        .msg-wrapper.me { flex-direction: row-reverse; align-self: flex-end; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; border: 1.5px solid var(--primary); object-fit: cover; }
+        .msg-body { background: #1a1c25; padding: 10px 15px; border-radius: 15px; position: relative; border: 1px solid #333; }
+        .me .msg-body { background: var(--accent); border: none; }
+        .user-name { font-size: 11px; color: var(--primary); margin-bottom: 4px; display: block; font-weight: bold; }
+
+        #live-overlay { position: fixed; inset: 0; background: #000; z-index: 3000; display: none; }
+        .input-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #111; padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 1000; border-top: 1px solid #333; }
+        .input-bar input { flex: 1; background: #000; border: 1px solid #444; padding: 12px; border-radius: 25px; color: #fff; outline: none; }
+        .btn-icon { color: var(--primary); font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .btn-icon:active { transform: scale(0.9); }
+
+        #login-screen { position: fixed; inset: 0; background: var(--bg); z-index: 5000; display: none; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-<div id="eagle-bg" class="theme-eagle"></div>
+<canvas id="canvas-bg"></canvas>
+<div id="eagle-bg"></div>
 
-<div id="welcome-msg"><h2>اللهم صل على محمد وآل محمد</h2></div>
+<div id="live-notifier" onclick="toggleLive(true)">🔴 يوجد بث مباشر حالياً - اضغط للانضمام</div>
 
-<div id="live-frame">
-    <button onclick="closeLive()" style="position:absolute; top:20px; right:20px; z-index:9001; padding:10px; background:red; border:none; color:#fff; border-radius:5px;">إغلاق البث</button>
-    <iframe id="jitsi-iframe" src="" style="width:100%; height:100%; border:none;"></iframe>
-</div>
-
-<div id="floating-status">
-    <div id="status-text">جاري فحص السشن...</div>
-    <div style="display:flex; justify-content:center; gap:15px; margin-top:5px;">
-        <i class="fas fa-atom icon-btn" title="ثيم الذرة" onclick="setTheme('atom')"></i>
-        <i class="fas fa-feather-alt icon-btn" title="ثيم النسر" onclick="setTheme('eagle')"></i>
-        <i class="fas fa-video icon-btn" style="color:#ff4d4d" title="بث مباشر" onclick="startLive()"></i>
+<div id="login-screen">
+    <div style="background:#1a1c25; padding:30px; border-radius:20px; text-align:center; border:1px solid var(--primary); width:80%; max-width:320px;">
+        <h2 style="color:var(--primary)">دخول الطلاب ⚛️</h2>
+        <img id="p-prev" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); cursor:pointer;" onclick="document.getElementById('p-file').click()">
+        <input type="file" id="p-file" hidden onchange="previewImg(this)">
+        <input type="text" id="p-name" placeholder="اكتب اسمك الثلاثي" style="width:100%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid #444; background:#000; color:#fff; text-align:center;">
+        <button onclick="doSave()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer;">دخول للمنصة</button>
     </div>
 </div>
 
-<div class="chat-area" id="chat-box"></div>
-
-<div class="input-box">
-    <i class="fas fa-image icon-btn" onclick="document.getElementById('f-in').click()"></i>
-    <input type="file" id="f-in" hidden onchange="upload(this)">
-    <input type="text" id="m-in" placeholder="اكتب رسالتك...">
-    <i class="fas fa-paper-plane icon-btn" onclick="send()"></i>
+<div id="status-bar">
+    <div id="sess-text" style="font-weight:bold; font-size:14px; color:#fff;">جاري المزامنة...</div>
+    <div style="display:flex; justify-content:center; gap:25px; margin-top:10px;">
+        <i class="fas fa-atom btn-icon" title="الثيم الذري" onclick="setTheme('atom')"></i>
+        <i class="fas fa-feather-alt btn-icon" title="ثيم النسر" onclick="setTheme('eagle')"></i>
+        <i class="fas fa-video btn-icon" style="color:var(--danger);" title="بدء بث مباشر" onclick="toggleLive(true)"></i>
+    </div>
 </div>
 
-<audio id="bell" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+<div id="live-overlay">
+    <div style="padding:10px; background:#111; display:flex; justify-content:space-between; align-items:center;">
+        <span style="color:var(--danger); font-weight:bold;">🔴 بث آمن مشفر</span>
+        <button onclick="toggleLive(false)" style="background:red; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">إغلاق البث</button>
+    </div>
+    <iframe id="live-frame" src="" style="width:100%; height:calc(100% - 50px); border:none;" allow="camera; microphone; fullscreen; display-capture"></iframe>
+</div>
+
+<div class="chat-container">
+    <div id="chat-box"></div>
+</div>
+
+<div class="input-bar">
+    <i class="fas fa-camera btn-icon" onclick="document.getElementById('m-file').click()"></i>
+    <input type="file" id="m-file" hidden accept="image/*,video/*" onchange="uploadMedia(this)">
+    <input type="text" id="m-text" placeholder="اكتب إنجازك اليومي...">
+    <i class="fas fa-paper-plane btn-icon" onclick="doSend()"></i>
+</div>
+
+<audio id="alert-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, serverTimestamp, onDisconnect, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, serverTimestamp, set, onDisconnect } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-    const firebaseConfig = { apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM", authDomain: "studyproject-1466b.firebaseapp.com", projectId: "studyproject-1466b", databaseURL: "https://studyproject-1466b-default-rtdb.firebaseio.com" };
+    const firebaseConfig = {
+        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
+        authDomain: "studyproject-1466b.firebaseapp.com",
+        projectId: "studyproject-1466b",
+        databaseURL: "https://studyproject-1466b-default-rtdb.firebaseio.com"
+    };
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v4')) || { n: "طالب إنجاز", p: "https://via.placeholder.com/50", id: Date.now() };
-    if(!localStorage.getItem('enjaz_user_v4')) {
-        let name = prompt("مرحباً بك.. اكتب اسمك الذي سيظهر للجميع:");
-        if(name) { myUser.n = name; localStorage.setItem('enjaz_user_v4', JSON.stringify(myUser)); }
-    }
+    // --- إدارة المستخدم والبيانات ---
+    let me = JSON.parse(localStorage.getItem('enjaz_secure_v5'));
+    if(!me) document.getElementById('login-screen').style.display = 'flex';
 
-    // عرض رسالة الصلاة على النبي
-    document.getElementById('welcome-msg').style.display = 'block';
+    window.previewImg = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('p-prev').src=e.target.result; r.readAsDataURL(i.files[0]); };
+    window.doSave = () => {
+        const n = document.getElementById('p-name').value;
+        const p = document.getElementById('p-prev').src;
+        if(!n || n.length < 3) return alert("يرجى كتابة اسمك الحقيقي");
+        me = { n, p, id: "U" + Math.floor(Math.random() * 1000000) };
+        localStorage.setItem('enjaz_secure_v5', JSON.stringify(me));
+        location.reload();
+    };
 
-    // نظام المتصلين
-    const myStatusRef = ref(db, 'status/' + myUser.id);
-    set(myStatusRef, { n: myUser.n, state: 'online' });
-    onDisconnect(myStatusRef).remove();
+    // --- نظام كاشف البث المباشر المطور ---
+    const liveStatusRef = ref(db, 'live_signal');
+    
+    window.toggleLive = (show) => {
+        const frame = document.getElementById('live-frame');
+        const overlay = document.getElementById('live-overlay');
+        overlay.style.display = show ? 'block' : 'none';
+        
+        // توليد اسم غرفة مشفر لا يمكن تخمينه
+        const secretRoomID = "Enjaz_Secure_Room_778899_Iraq";
+        
+        if(show) {
+            frame.src = `https://meet.jit.si/${secretRoomID}#config.startWithAudioMuted=true&config.prejoinPageEnabled=false`;
+            set(liveStatusRef, { active: true, starter: me.n, time: Date.now() });
+            // إذا انقطع الاتصال، يتم إغلاق إشارة البث تلقائياً
+            onDisconnect(liveStatusRef).remove();
+        } else {
+            frame.src = "";
+            remove(liveStatusRef);
+        }
+    };
 
-    onValue(ref(db, 'status'), (snap) => {
-        snap.forEach(child => {
-            // هنا يمكن إضافة تنبيه "فلان متصل الآن"
-        });
+    // الاستماع لوجود بث عند الآخرين
+    onValue(liveStatusRef, (snap) => {
+        const notifier = document.getElementById('live-notifier');
+        if(snap.exists() && snap.val().active) {
+            notifier.style.display = 'block';
+            notifier.innerText = `🔴 بث مباشر بدأ بواسطة (${snap.val().starter}) - انضم الآن`;
+        } else {
+            notifier.style.display = 'none';
+        }
     });
 
-    // الثيمات والذرات
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let particles = [];
-    class P { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5); this.vy=(Math.random()-0.5); } update() { this.x+=this.vx; this.y+=this.vy; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); } }
-    for(let i=0;i<50;i++) particles.push(new P());
-    function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(anim); }
-    anim();
+    // --- السشنات والجدول الزمني ---
+    const schedule = [
+        { n: "السشن الأول", h1: 6, m1: 0, h2: 8, m2: 0 },
+        { n: "السشن الثاني", h1: 8, m1: 15, h2: 10, m2: 15 },
+        { n: "السشن الثالث", h1: 10, m1: 30, h2: 12, m2: 0 },
+        { n: "السشن الثالث (ب)", h1: 13, m1: 0, h2: 15, m2: 0 },
+        { n: "السشن الرابع", h1: 15, m1: 15, h2: 17, m2: 15 },
+        { n: "السشن الخامس", h1: 17, m1: 30, h2: 18, m2: 30 },
+        { n: "السشن السادس", h1: 20, m1: 0, h2: 22, m2: 0 }
+    ];
 
-    window.setTheme = (t) => {
-        document.getElementById('bg-canvas').style.display = t === 'atom' ? 'block' : 'none';
-        document.getElementById('eagle-bg').style.display = t === 'eagle' ? 'block' : 'none';
-    };
-
-    // البث المباشر
-    window.startLive = () => {
-        const room = "Enjazati_Room_AbuHussein";
-        document.getElementById('jitsi-iframe').src = `https://meet.jit.si/${room}`;
-        document.getElementById('live-frame').style.display = 'block';
-    };
-    window.closeLive = () => { document.getElementById('live-frame').style.display = 'none'; document.getElementById('jitsi-iframe').src = ""; };
-
-    // الجدول الزمني والصوت 🛎️
-    const schedule = [{n:"السشن الأول", h1:6, m1:0, h2:8, m2:0}, {n:"السشن الثاني", h1:8, m1:15, h2:10, m2:15}, {n:"السشن الثالث", h1:10, m1:30, h2:12, m2:0}]; // أضف البقية هنا
-    let lastS = "";
-    function checkTime() {
+    function checkSess() {
         const now = new Date();
-        const cur = now.getHours()*60 + now.getMinutes();
-        let act = schedule.find(s => cur >= (s.h1*60+s.m1) && cur < (s.h2*60+s.m2));
-        if(act && act.n !== lastS) {
-            document.getElementById('bell').play();
-            push(ref(db, 'chat_v4'), { type: 'sys', txt: `🛎️ بدأ الآن: ${act.n}`, time: serverTimestamp() });
-            lastS = act.n;
-        }
-        document.getElementById('status-text').innerText = act ? `📢 الآن: ${act.n}` : "استراحة ☕";
+        const cur = now.getHours() * 60 + now.getMinutes();
+        let active = schedule.find(s => cur >= (s.h1*60+s.m1) && cur < (s.h2*60+s.m2));
+        const txt = document.getElementById('sess-text');
+        if(active) {
+            txt.innerHTML = `🌟 الآن: ${active.n} <small>(بقي ${ (active.h2*60+active.m2) - cur } دقيقة)</small>`;
+        } else { txt.innerText = "وقت استراحة ودراسة حرة ☕"; }
     }
-    setInterval(checkTime, 5000);
+    setInterval(checkSess, 5000);
 
-    // المراسلة
-    window.send = () => {
-        const txt = document.getElementById('m-in').value;
-        if(txt) push(ref(db, 'chat_v4'), { u: myUser.n, txt, uid: myUser.id, time: serverTimestamp() });
-        document.getElementById('m-in').value = "";
+    // --- المراسلة والوسائط ---
+    window.doSend = () => {
+        const val = document.getElementById('m-text').value;
+        if(!val) return;
+        push(ref(db, 'messages_v5'), { uid: me.id, user: me.n, pic: me.p, msg: val, type: 'text', time: serverTimestamp() });
+        document.getElementById('m-text').value = "";
     };
 
-    onValue(ref(db, 'chat_v4'), (snap) => {
-        const box = document.getElementById('chat-box'); box.innerHTML = "";
-        snap.forEach(c => {
-            const d = c.val();
-            const isMe = d.uid === myUser.id;
-            box.innerHTML += `<div style="align-self:${isMe?'flex-end':'flex-start'}; margin-bottom:10px;">
-                <small style="color:var(--primary)">${d.u}</small>
-                <div class="msg-bubble">${d.txt || "مرفق"}</div>
-                <i class="fas fa-trash" style="font-size:10px; cursor:pointer;" onclick="remove(ref(db,'chat_v4/${c.key}'))"></i>
-            </div>`;
+    window.uploadMedia = (i) => {
+        const r = new FileReader();
+        const type = i.files[0].type.startsWith('image') ? 'img' : 'vid';
+        r.onload = (e) => {
+            push(ref(db, 'messages_v5'), { uid: me.id, user: me.n, pic: me.p, media: e.target.result, type: type, time: serverTimestamp() });
+        };
+        r.readAsDataURL(i.files[0]);
+    };
+
+    onValue(ref(db, 'messages_v5'), (snap) => {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = "";
+        snap.forEach(child => {
+            const d = child.val();
+            const isMe = d.uid === me.id;
+            const content = d.type === 'text' ? d.msg : (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`);
+            box.innerHTML += `
+                <div class="msg-wrapper ${isMe ? 'me' : ''}">
+                    <img src="${d.pic}" class="avatar">
+                    <div class="msg-body">
+                        <span class="user-name">${d.user}</span>
+                        ${content}
+                        <i class="fas fa-trash" style="font-size:10px; cursor:pointer; margin-right:10px; opacity:0.3;" onclick="remove(ref(db, 'messages_v5/${child.key}'))"></i>
+                    </div>
+                </div>`;
         });
         box.scrollTop = box.scrollHeight;
     });
+
+    window.setTheme = (t) => {
+        document.getElementById('canvas-bg').style.display = t==='atom'?'block':'none';
+        document.getElementById('eagle-bg').style.display = t==='eagle'?'block':'none';
+    };
+
+    // ذرات الخلفية
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    let particles = [];
+    class Particle { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=Math.random()-0.5; this.vy=Math.random()-0.5; } update() { this.x+=this.vx; this.y+=this.vy; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
+    for(let i=0;i<40;i++) particles.push(new Particle());
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(animate); }
+    animate();
 </script>
 </body>
 </html>
