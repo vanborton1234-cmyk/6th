@@ -3,261 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>deep base</title>
+    <title>إنجازاتي | الرادار الذري</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
-
-        :root {
-            --primary: #00f2ff; --accent: #7000ff; --bg: #0a0b10; --card: rgba(25, 28, 35, 1);
-        }
-
-        body, html {
-            margin: 0; padding: 0; font-family: 'Tajawal', sans-serif;
-            background: var(--bg); color: #fff; height: 100%; overflow: hidden;
-        }
-
-        #atom-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-
-        /* الإشعار العائم العلوي */
-        #floating-status {
-            position: fixed; top: 10px; left: 10px; right: 10px;
-            background: linear-gradient(135deg, var(--accent), #4a00e0);
-            padding: 12px; border-radius: 12px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000;
-            border: 1px solid var(--primary); font-size: 14px;
-        }
-
-        /* حاوية الشات */
-        .app-container {
-            display: flex; flex-direction: column; height: 100vh;
-        }
-
-        .chat-area {
-            flex: 1; overflow-y: auto; padding: 80px 15px 80px 15px;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-
-        /* فقاعات الرسائل */
-        .msg { max-width: 85%; align-self: flex-start; }
-        .msg.me { align-self: flex-end; }
+        :root { --primary: #00f2ff; --accent: #7000ff; --bg: #0a0b10; }
+        body, html { margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; background: var(--bg); color: #fff; height: 100%; overflow: hidden; }
         
-        .msg-bubble {
-            background: #1e2129; padding: 10px 15px; border-radius: 15px;
-            position: relative; border: 1px solid #333; word-wrap: break-word;
-        }
-        .me .msg-bubble { background: var(--accent); border: none; }
+        /* الثيمات */
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; }
+        .theme-eagle { background: url('https://img.freepik.com/free-vector/gradient-eagle-logo-design_23-2150193231.jpg') no-repeat center; background-size: contain; opacity: 0.15; position: fixed; inset: 0; z-index: -1; display: none; }
 
-        .user-info { font-size: 11px; color: var(--primary); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
-        .avatar { width: 22px; height: 22px; border-radius: 50%; }
+        /* رسالة الترحيب */
+        #welcome-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px; border-radius: 15px; border: 2px solid var(--primary); z-index: 10000; text-align: center; display: none; animation: fadeOut 4s forwards; }
+        @keyframes fadeOut { 0% {opacity:1} 80% {opacity:1} 100% {opacity:0; visibility:hidden} }
 
-        .del-btn { color: #ff4d4d; font-size: 12px; margin-right: 10px; cursor: pointer; }
+        /* البث المباشر */
+        #live-frame { position: fixed; inset: 0; background: #000; z-index: 9000; display: none; }
 
-        /* منطقة الإرسال الثابتة */
-        .input-box {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--card); padding: 15px;
-            display: flex; gap: 10px; align-items: center;
-            border-top: 1px solid #333; z-index: 1000;
-        }
-
-        input[type="text"] {
-            flex: 1; background: #000; border: 1px solid #444;
-            padding: 12px 15px; border-radius: 25px; color: #fff; outline: none;
-        }
-
-        .icon-btn { color: var(--primary); font-size: 22px; cursor: pointer; }
-
-        /* شاشة الدخول */
-        .overlay {
-            position: fixed; inset: 0; background: var(--bg);
-            z-index: 5000; display: none; align-items: center; justify-content: center;
-        }
+        #floating-status { position: fixed; top: 10px; left: 10px; right: 10px; background: rgba(112, 0, 255, 0.9); padding: 12px; border-radius: 12px; text-align: center; z-index: 1000; border: 1px solid var(--primary); }
+        .chat-area { flex: 1; overflow-y: auto; padding: 100px 15px 80px 15px; display: flex; flex-direction: column; gap: 10px; height: 100vh; box-sizing: border-box; }
+        .msg-bubble { background: #1e2129; padding: 10px 15px; border-radius: 15px; border: 1px solid #333; }
+        .input-box { position: fixed; bottom: 0; left: 0; right: 0; background: #191c23; padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 1000; }
+        input[type="text"] { flex: 1; background: #000; border: 1px solid #444; padding: 12px; border-radius: 25px; color: #fff; outline: none; }
+        .icon-btn { color: var(--primary); font-size: 22px; cursor: pointer; transition: 0.3s; }
+        .icon-btn:hover { transform: scale(1.2); }
     </style>
 </head>
 <body>
 
-<canvas id="atom-canvas"></canvas>
+<canvas id="bg-canvas"></canvas>
+<div id="eagle-bg" class="theme-eagle"></div>
+
+<div id="welcome-msg"><h2>اللهم صل على محمد وآل محمد</h2></div>
+
+<div id="live-frame">
+    <button onclick="closeLive()" style="position:absolute; top:20px; right:20px; z-index:9001; padding:10px; background:red; border:none; color:#fff; border-radius:5px;">إغلاق البث</button>
+    <iframe id="jitsi-iframe" src="" style="width:100%; height:100%; border:none;"></iframe>
+</div>
 
 <div id="floating-status">
-    <div id="status-text">جاري فحص الوقت...</div>
-    <div id="countdown-text" style="font-size: 12px; opacity: 0.9;">--:--</div>
-</div>
-
-<div class="app-container">
-    <div class="chat-area" id="chat-box"></div>
-    
-    <div class="input-box">
-        <i class="fas fa-camera icon-btn" onclick="document.getElementById('file-in').click()"></i>
-        <input type="file" id="file-in" hidden accept="image/*,video/*" onchange="uploadFile(this)">
-        <input type="text" id="msg-in" placeholder="أرسل إنجازك الآن...">
-        <i class="fas fa-paper-plane icon-btn" onclick="sendMsg()"></i>
+    <div id="status-text">جاري فحص السشن...</div>
+    <div style="display:flex; justify-content:center; gap:15px; margin-top:5px;">
+        <i class="fas fa-atom icon-btn" title="ثيم الذرة" onclick="setTheme('atom')"></i>
+        <i class="fas fa-feather-alt icon-btn" title="ثيم النسر" onclick="setTheme('eagle')"></i>
+        <i class="fas fa-video icon-btn" style="color:#ff4d4d" title="بث مباشر" onclick="startLive()"></i>
     </div>
 </div>
 
-<div id="login-overlay" class="overlay">
-    <div style="background:var(--card); padding:25px; border-radius:15px; text-align:center; width:85%; max-width:320px; border:1px solid var(--primary);">
-        <h3 style="color:var(--primary); margin-top:0;">إنجازاتي</h3>
-        <img id="p-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:70px; height:70px; border-radius:50%; border:2px solid var(--primary);" onclick="document.getElementById('p-file').click()">
-        <input type="file" id="p-file" hidden onchange="previewProfile(this)">
-        <input type="text" id="p-name" placeholder="اكتب اسمك هنا" style="width:95%; padding:10px; margin:15px 0; border-radius:8px; border:1px solid #444; background:#000; color:#fff;">
-        <button onclick="saveProfile()" style="width:100%; padding:10px; background:var(--primary); border:none; border-radius:8px; font-weight:bold;">ابدأ الآن</button>
-    </div>
+<div class="chat-area" id="chat-box"></div>
+
+<div class="input-box">
+    <i class="fas fa-image icon-btn" onclick="document.getElementById('f-in').click()"></i>
+    <input type="file" id="f-in" hidden onchange="upload(this)">
+    <input type="text" id="m-in" placeholder="اكتب رسالتك...">
+    <i class="fas fa-paper-plane icon-btn" onclick="send()"></i>
 </div>
+
+<audio id="bell" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, serverTimestamp, onDisconnect, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
-        authDomain: "studyproject-1466b.firebaseapp.com",
-        projectId: "studyproject-1466b",
-        storageBucket: "studyproject-1466b.firebasestorage.app",
-        messagingSenderId: "589724771483",
-        appId: "1:589724771483:web:1c53636da586d2c787923e"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM", authDomain: "studyproject-1466b.firebaseapp.com", projectId: "studyproject-1466b", databaseURL: "https://studyproject-1466b-default-rtdb.firebaseio.com" };
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- نظام الذرات ---
-    const canvas = document.getElementById('atom-canvas');
+    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v4')) || { n: "طالب إنجاز", p: "https://via.placeholder.com/50", id: Date.now() };
+    if(!localStorage.getItem('enjaz_user_v4')) {
+        let name = prompt("مرحباً بك.. اكتب اسمك الذي سيظهر للجميع:");
+        if(name) { myUser.n = name; localStorage.setItem('enjaz_user_v4', JSON.stringify(myUser)); }
+    }
+
+    // عرض رسالة الصلاة على النبي
+    document.getElementById('welcome-msg').style.display = 'block';
+
+    // نظام المتصلين
+    const myStatusRef = ref(db, 'status/' + myUser.id);
+    set(myStatusRef, { n: myUser.n, state: 'online' });
+    onDisconnect(myStatusRef).remove();
+
+    onValue(ref(db, 'status'), (snap) => {
+        snap.forEach(child => {
+            // هنا يمكن إضافة تنبيه "فلان متصل الآن"
+        });
+    });
+
+    // الثيمات والذرات
+    const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     let particles = [];
-    class P { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5); this.vy=(Math.random()-0.5); } update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
-    for(let i=0;i<40;i++) particles.push(new P());
+    class P { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5); this.vy=(Math.random()-0.5); } update() { this.x+=this.vx; this.y+=this.vy; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1.5,0,Math.PI*2); ctx.fill(); } }
+    for(let i=0;i<50;i++) particles.push(new P());
     function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(anim); }
     anim();
 
-    // --- إدارة المستخدم ---
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v3'));
-    if(!myUser) document.getElementById('login-overlay').style.display = 'flex';
-
-    window.previewProfile = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('p-preview').src=e.target.result; r.readAsDataURL(i.files[0]); };
-    window.saveProfile = () => {
-        const n = document.getElementById('p-name').value;
-        const p = document.getElementById('p-preview').src;
-        if(!n) return;
-        myUser = { n, p, id: Date.now() };
-        localStorage.setItem('enjaz_user_v3', JSON.stringify(myUser));
-        location.reload();
+    window.setTheme = (t) => {
+        document.getElementById('bg-canvas').style.display = t === 'atom' ? 'block' : 'none';
+        document.getElementById('eagle-bg').style.display = t === 'eagle' ? 'block' : 'none';
     };
 
-    // --- نظام الوقت 12 ساعة وجدول السشنات ---
-    const schedule = [
-        { n: "السشن الأول", h1: 6, m1: 0, h2: 8, m2: 0 },
-        { n: "وقت استراحة ☕", h1: 8, m1: 0, h2: 8, m2: 15 },
-        { n: "السشن الثاني", h1: 8, m1: 15, h2: 10, m2: 15 },
-        { n: "وقت استراحة ☕", h1: 10, m1: 15, h2: 10, m2: 30 },
-        { n: "السشن الثالث", h1: 10, m1: 30, h2: 12, m2: 0 },
-        { n: "السشن الثالث (ب)", h1: 13, m1: 0, h2: 15, m2: 0 },
-        { n: "وقت استراحة ☕", h1: 15, m1: 0, h2: 15, m2: 15 },
-        { n: "السشن الرابع", h1: 15, m1: 15, h2: 17, m2: 15 },
-        { n: "وقت استراحة ☕", h1: 17, m1: 15, h2: 17, m2: 30 },
-        { n: "السشن الخامس", h1: 17, m1: 30, h2: 18, m2: 30 },
-        { n: "السشن السادس", h1: 20, m1: 0, h2: 22, m2: 0 }
-    ];
+    // البث المباشر
+    window.startLive = () => {
+        const room = "Enjazati_Room_AbuHussein";
+        document.getElementById('jitsi-iframe').src = `https://meet.jit.si/${room}`;
+        document.getElementById('live-frame').style.display = 'block';
+    };
+    window.closeLive = () => { document.getElementById('live-frame').style.display = 'none'; document.getElementById('jitsi-iframe').src = ""; };
 
-    function to12h(h, m) {
-        let ampm = h >= 12 ? 'م' : 'ص';
-        h = h % 12 || 12;
-        return `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
-    }
-
-    let currentActiveName = "";
-
-    function updateClock() {
+    // الجدول الزمني والصوت 🛎️
+    const schedule = [{n:"السشن الأول", h1:6, m1:0, h2:8, m2:0}, {n:"السشن الثاني", h1:8, m1:15, h2:10, m2:15}, {n:"السشن الثالث", h1:10, m1:30, h2:12, m2:0}]; // أضف البقية هنا
+    let lastS = "";
+    function checkTime() {
         const now = new Date();
-        const curMin = now.getHours() * 60 + now.getMinutes();
-        let active = null;
-
-        schedule.forEach(s => {
-            if(curMin >= (s.h1*60+s.m1) && curMin < (s.h2*60+s.m2)) active = s;
-        });
-
-        const status = document.getElementById('status-text');
-        const count = document.getElementById('countdown-text');
-
-        if(active) {
-            const remaining = (active.h2*60+active.m2) - curMin;
-            status.innerHTML = `⚠️ <b>${active.n}</b> (من ${to12h(active.h1, active.m1)} إلى ${to12h(active.h2, active.m2)})`;
-            count.innerText = `المدة المتبقية: ${remaining} دقيقة`;
-            
-            // إرسال رسالة آلية في الشات عند بداية السشن
-            if(currentActiveName !== active.n) {
-                push(ref(db, 'chat_v3'), { type: 'sys', txt: `📢 بدأ الآن: ${active.n}`, time: serverTimestamp() });
-                currentActiveName = active.n;
-            }
-        } else {
-            status.innerText = "لا يوجد سشن حالياً.. استعد للقادم!";
-            count.innerText = "--:--";
-            currentActiveName = "";
+        const cur = now.getHours()*60 + now.getMinutes();
+        let act = schedule.find(s => cur >= (s.h1*60+s.m1) && cur < (s.h2*60+s.m2));
+        if(act && act.n !== lastS) {
+            document.getElementById('bell').play();
+            push(ref(db, 'chat_v4'), { type: 'sys', txt: `🛎️ بدأ الآن: ${act.n}`, time: serverTimestamp() });
+            lastS = act.n;
         }
-
-        // الحذف اليومي
-        const d = now.toLocaleDateString();
-        if(localStorage.getItem('last_clear') !== d) {
-            remove(ref(db, 'chat_v3'));
-            localStorage.setItem('last_clear', d);
-        }
+        document.getElementById('status-text').innerText = act ? `📢 الآن: ${act.n}` : "استراحة ☕";
     }
-    setInterval(updateClock, 1000);
+    setInterval(checkTime, 5000);
 
-    // --- وظائف الشات ---
-    window.sendMsg = () => {
-        const txt = document.getElementById('msg-in').value;
-        if(!txt) return;
-        push(ref(db, 'chat_v3'), {
-            uid: myUser.id, u: myUser.n, p: myUser.p, txt, type: 'text', time: serverTimestamp()
-        });
-        document.getElementById('msg-in').value = "";
+    // المراسلة
+    window.send = () => {
+        const txt = document.getElementById('m-in').value;
+        if(txt) push(ref(db, 'chat_v4'), { u: myUser.n, txt, uid: myUser.id, time: serverTimestamp() });
+        document.getElementById('m-in').value = "";
     };
 
-    window.uploadFile = (i) => {
-        const r = new FileReader();
-        const type = i.files[0].type.startsWith('image') ? 'img' : 'vid';
-        r.onload = (e) => {
-            push(ref(db, 'chat_v3'), {
-                uid: myUser.id, u: myUser.n, p: myUser.p, media: e.target.result, type, time: serverTimestamp()
-            });
-        };
-        r.readAsDataURL(i.files[0]);
-    };
-
-    window.deleteMsg = (k) => {
-        if(confirm("حذف هذه الرسالة؟")) remove(ref(db, `chat_v3/${k}`));
-    };
-
-    onValue(ref(db, 'chat_v3'), (snap) => {
-        const box = document.getElementById('chat-box');
-        box.innerHTML = "";
+    onValue(ref(db, 'chat_v4'), (snap) => {
+        const box = document.getElementById('chat-box'); box.innerHTML = "";
         snap.forEach(c => {
             const d = c.val();
-            const k = c.key;
-            if(d.type === 'sys') {
-                box.innerHTML += `<div style="text-align:center; font-size:12px; color:var(--primary); margin:10px 0;">${d.txt}</div>`;
-            } else {
-                const isMe = d.uid === myUser.id;
-                let content = d.type === 'text' ? d.txt : 
-                             (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`);
-                
-                box.innerHTML += `
-                    <div class="msg ${isMe ? 'me' : ''}">
-                        <div class="user-info">
-                            <img src="${d.p}" class="avatar">
-                            <b>${d.u}</b>
-                            <span class="del-btn" onclick="deleteMsg('${k}')"><i class="fas fa-trash"></i></span>
-                        </div>
-                        <div class="msg-bubble">${content}</div>
-                    </div>
-                `;
-            }
+            const isMe = d.uid === myUser.id;
+            box.innerHTML += `<div style="align-self:${isMe?'flex-end':'flex-start'}; margin-bottom:10px;">
+                <small style="color:var(--primary)">${d.u}</small>
+                <div class="msg-bubble">${d.txt || "مرفق"}</div>
+                <i class="fas fa-trash" style="font-size:10px; cursor:pointer;" onclick="remove(ref(db,'chat_v4/${c.key}'))"></i>
+            </div>`;
         });
-        box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
+        box.scrollTop = box.scrollHeight;
     });
-
 </script>
 </body>
 </html>
