@@ -9,7 +9,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
         :root {
-            --primary: #00f2ff; --accent: #7000ff; --bg: #0a0b10; --card: rgba(25, 28, 35, 1);
+            --primary: #00f2ff; --accent: #7000ff; --bg: #050508; --card: rgba(20, 22, 30, 0.85);
+            --sidebar-width: 250px;
         }
 
         body, html {
@@ -19,59 +20,102 @@
 
         #atom-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        /* الإشعار العائم العلوي */
+        /* الشريط العلوي */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(10, 11, 16, 0.9); backdrop-filter: blur(10px);
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2); z-index: 1000;
+        }
+
+        .menu-btn { color: var(--primary); font-size: 24px; cursor: pointer; }
+        .channel-title { font-weight: bold; color: #fff; font-size: 18px; text-shadow: 0 0 10px var(--primary); }
+
+        /* القائمة الجانبية (القنوات) */
+        .sidebar {
+            position: fixed; top: 0; right: -300px; width: var(--sidebar-width); height: 100%;
+            background: var(--card); border-left: 1px solid rgba(112, 0, 255, 0.3);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; padding: 20px;
+            display: flex; flex-direction: column; backdrop-filter: blur(15px);
+        }
+        .sidebar.active { right: 0; }
+        
+        .close-sidebar { color: #ff4d4d; font-size: 24px; cursor: pointer; align-self: flex-end; }
+        
+        .channel-list { flex: 1; overflow-y: auto; margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .channel-item {
+            padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px;
+            cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .channel-item:hover, .channel-item.active {
+            background: rgba(0, 242, 255, 0.1); border-color: var(--primary);
+        }
+
+        .add-channel-btn {
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            border: none; padding: 12px; border-radius: 10px; color: #fff;
+            font-family: 'Tajawal', sans-serif; font-weight: bold; cursor: pointer; margin-top: 15px;
+        }
+
+        /* الإشعار العائم للوقت */
         #floating-status {
-            position: fixed; top: 10px; left: 10px; right: 10px;
-            background: linear-gradient(135deg, var(--accent), #4a00e0);
-            padding: 12px; border-radius: 12px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 1000;
-            border: 1px solid var(--primary); font-size: 14px;
+            margin-top: 60px; mx-width: 90%; margin-left: auto; margin-right: auto;
+            background: linear-gradient(135deg, rgba(112,0,255,0.8), rgba(74,0,224,0.8));
+            padding: 12px; border-radius: 15px; text-align: center;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); z-index: 900;
+            border: 1px solid var(--primary); font-size: 14px; position: relative;
+            backdrop-filter: blur(5px);
         }
 
         /* حاوية الشات */
-        .app-container {
-            display: flex; flex-direction: column; height: 100vh;
-        }
-
+        .app-container { display: flex; flex-direction: column; height: 100vh; }
         .chat-area {
-            flex: 1; overflow-y: auto; padding: 80px 15px 80px 15px;
+            flex: 1; overflow-y: auto; padding: 10px 15px 80px 15px;
             display: flex; flex-direction: column; gap: 10px;
         }
 
         /* فقاعات الرسائل */
-        .msg { max-width: 85%; align-self: flex-start; }
+        .msg { max-width: 85%; align-self: flex-start; animation: popIn 0.3s ease-out; }
         .msg.me { align-self: flex-end; }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .msg-bubble {
-            background: #1e2129; padding: 10px 15px; border-radius: 15px;
-            position: relative; border: 1px solid #333; word-wrap: break-word;
+            background: rgba(30, 33, 41, 0.9); padding: 10px 15px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1); word-wrap: break-word; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        .me .msg-bubble { background: var(--accent); border: none; }
+        .me .msg-bubble { background: linear-gradient(135deg, var(--accent), #4a00e0); border: none; }
 
-        .user-info { font-size: 11px; color: var(--primary); margin-bottom: 3px; display: flex; align-items: center; gap: 5px; }
-        .avatar { width: 22px; height: 22px; border-radius: 50%; }
+        .user-info { font-size: 11px; color: var(--primary); margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+        .avatar { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--primary); }
+        .del-btn { color: #ff4d4d; font-size: 12px; margin-right: auto; cursor: pointer; padding: 0 5px; }
 
-        .del-btn { color: #ff4d4d; font-size: 12px; margin-right: 10px; cursor: pointer; }
-
-        /* منطقة الإرسال الثابتة */
+        /* منطقة الإرسال */
         .input-box {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--card); padding: 15px;
+            background: rgba(10, 11, 16, 0.95); padding: 15px;
             display: flex; gap: 10px; align-items: center;
-            border-top: 1px solid #333; z-index: 1000;
+            border-top: 1px solid rgba(0, 242, 255, 0.2); z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         input[type="text"] {
-            flex: 1; background: #000; border: 1px solid #444;
-            padding: 12px 15px; border-radius: 25px; color: #fff; outline: none;
+            flex: 1; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            padding: 12px 15px; border-radius: 25px; color: #fff; outline: none; transition: 0.3s;
         }
+        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
 
-        .icon-btn { color: var(--primary); font-size: 22px; cursor: pointer; }
+        .icon-btn { color: var(--primary); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .icon-btn:active { transform: scale(0.9); }
 
-        /* شاشة الدخول */
+        /* شاشة الدخول والتراكبات */
         .overlay {
-            position: fixed; inset: 0; background: var(--bg);
-            z-index: 5000; display: none; align-items: center; justify-content: center;
+            position: fixed; inset: 0; background: rgba(5,5,8,0.95);
+            z-index: 5000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .modal-box {
+            background: var(--card); padding: 25px; border-radius: 20px; text-align: center;
+            width: 85%; max-width: 320px; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
     </style>
 </head>
@@ -79,35 +123,58 @@
 
 <canvas id="atom-canvas"></canvas>
 
-<div id="floating-status">
-    <div id="status-text">جاري فحص الوقت...</div>
-    <div id="countdown-text" style="font-size: 12px; opacity: 0.9;">--:--</div>
+<div class="top-bar">
+    <i class="fas fa-bars menu-btn" onclick="toggleSidebar()"></i>
+    <div class="channel-title" id="current-channel-title">الرئيسية 🔮</div>
+    <i class="fas fa-bell menu-btn" style="color:var(--accent)"></i>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <i class="fas fa-times close-sidebar" onclick="toggleSidebar()"></i>
+    <h3 style="color: var(--primary); margin-top: 0; text-align: center;">القنوات 🌌</h3>
+    <div class="channel-list" id="channels-container">
+        </div>
+    <button class="add-channel-btn" onclick="showNewChannelModal()"><i class="fas fa-plus"></i> إنشاء قناة جديدة</button>
 </div>
 
 <div class="app-container">
+    <div id="floating-status">
+        <div id="status-text">جاري فحص حالة الطاقة... ⚡</div>
+        <div id="countdown-text" style="font-size: 13px; opacity: 0.9; font-weight:bold; color: #00f2ff;">--:--</div>
+    </div>
+
     <div class="chat-area" id="chat-box"></div>
     
     <div class="input-box">
-        <i class="fas fa-camera icon-btn" onclick="document.getElementById('file-in').click()"></i>
+        <i class="fas fa-microchip icon-btn" onclick="document.getElementById('file-in').click()"></i>
         <input type="file" id="file-in" hidden accept="image/*,video/*" onchange="uploadFile(this)">
-        <input type="text" id="msg-in" placeholder="أرسل إنجازك الآن...">
-        <i class="fas fa-paper-plane icon-btn" onclick="sendMsg()"></i>
+        <input type="text" id="msg-in" placeholder="أرسل إنجازك أو فكرتك هنا... 🚀" onkeypress="if(event.key === 'Enter') sendMsg()">
+        <i class="fas fa-paper-plane icon-btn" onclick="sendMsg()" style="color: var(--accent);"></i>
     </div>
 </div>
 
 <div id="login-overlay" class="overlay">
-    <div style="background:var(--card); padding:25px; border-radius:15px; text-align:center; width:85%; max-width:320px; border:1px solid var(--primary);">
-        <h3 style="color:var(--primary); margin-top:0;">إنجازاتي</h3>
-        <img id="p-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:70px; height:70px; border-radius:50%; border:2px solid var(--primary);" onclick="document.getElementById('p-file').click()">
+    <div class="modal-box">
+        <h3 style="color:var(--primary); margin-top:0;">إنجازاتي ⚛️</h3>
+        <img id="p-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); cursor:pointer; object-fit:cover;" onclick="document.getElementById('p-file').click()">
         <input type="file" id="p-file" hidden onchange="previewProfile(this)">
-        <input type="text" id="p-name" placeholder="اكتب اسمك هنا" style="width:95%; padding:10px; margin:15px 0; border-radius:8px; border:1px solid #444; background:#000; color:#fff;">
-        <button onclick="saveProfile()" style="width:100%; padding:10px; background:var(--primary); border:none; border-radius:8px; font-weight:bold;">ابدأ الآن</button>
+        <input type="text" id="p-name" placeholder="اسمك العلمي / اللقب" style="width:90%; padding:12px; margin:20px 0; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.5); color:#fff; outline:none;">
+        <button onclick="saveProfile()" style="width:100%; padding:12px; background:linear-gradient(45deg, var(--primary), var(--accent)); border:none; border-radius:10px; font-weight:bold; color:#fff; cursor:pointer; font-size:16px;">بدء الانطلاق 🚀</button>
+    </div>
+</div>
+
+<div id="new-channel-overlay" class="overlay">
+    <div class="modal-box">
+        <h3 style="color:var(--primary); margin-top:0;">تأسيس قناة جديدة 🧬</h3>
+        <input type="text" id="channel-name-in" placeholder="اسم القناة (مثال: الفيزياء، نقاشات...)" style="width:90%; padding:12px; margin:15px 0; border-radius:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.5); color:#fff; outline:none;">
+        <button onclick="createNewChannel()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:bold; cursor:pointer; color:#000;">إنشاء ⚡</button>
+        <button onclick="document.getElementById('new-channel-overlay').style.display='none'" style="width:100%; padding:12px; background:transparent; border:1px solid #444; border-radius:10px; margin-top:10px; color:#fff; cursor:pointer;">إلغاء</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, remove, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
@@ -121,18 +188,77 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- نظام الذرات ---
+    // --- خلفية الذرات والانشطار (Canvas Animation) ---
     const canvas = document.getElementById('atom-canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let particles = [];
-    class P { constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vx=(Math.random()-0.5); this.vy=(Math.random()-0.5); } update() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; ctx.fillStyle="#00f2ff"; ctx.beginPath(); ctx.arc(this.x,this.y,1,0,Math.PI*2); ctx.fill(); } }
-    for(let i=0;i<40;i++) particles.push(new P());
-    function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>p.update()); requestAnimationFrame(anim); }
-    anim();
+    let width, height;
+    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    class Atom {
+        constructor() {
+            this.x = Math.random() * width; this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 1.5; this.vy = (Math.random() - 0.5) * 1.5;
+            this.radius = Math.random() * 2 + 1;
+            this.electrons = [];
+            let eCount = Math.floor(Math.random() * 3) + 1;
+            for(let i=0; i<eCount; i++) {
+                this.electrons.push({ angle: Math.random()*Math.PI*2, speed: 0.05 + Math.random()*0.05, dist: 15 + Math.random()*15 });
+            }
+            this.hue = Math.random() > 0.5 ? 190 : 260; // بين الأزرق والبنفسجي
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if(this.x < 0 || this.x > width) this.vx *= -1;
+            if(this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+            // النواة
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+            ctx.fillStyle = `hsl(${this.hue}, 100%, 60%)`;
+            ctx.shadowBlur = 10; ctx.shadowColor = ctx.fillStyle; ctx.fill(); ctx.shadowBlur = 0;
+            
+            // الإلكترونات
+            this.electrons.forEach(e => {
+                e.angle += e.speed;
+                let ex = this.x + Math.cos(e.angle) * e.dist;
+                let ey = this.y + Math.sin(e.angle) * (e.dist * 0.4); // مدار بيضوي
+                ctx.beginPath(); ctx.arc(ex, ey, 1, 0, Math.PI*2);
+                ctx.fillStyle = '#fff'; ctx.fill();
+            });
+        }
+    }
+    
+    let atoms = [];
+    for(let i=0; i<35; i++) atoms.push(new Atom());
+
+    function drawLines() {
+        for(let i=0; i<atoms.length; i++) {
+            for(let j=i+1; j<atoms.length; j++) {
+                let dx = atoms[i].x - atoms[j].x;
+                let dy = atoms[i].y - atoms[j].y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 100) {
+                    ctx.beginPath(); ctx.moveTo(atoms[i].x, atoms[i].y); ctx.lineTo(atoms[j].x, atoms[j].y);
+                    ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/100})`;
+                    ctx.lineWidth = 0.5; ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animateBg() {
+        // تأثير الذيل الحركي بدل مسح الشاشة بالكامل
+        ctx.fillStyle = 'rgba(5, 5, 8, 0.2)'; 
+        ctx.fillRect(0, 0, width, height);
+        atoms.forEach(a => { a.update(); a.draw(); });
+        drawLines();
+        requestAnimationFrame(animateBg);
+    }
+    animateBg();
 
     // --- إدارة المستخدم ---
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v3'));
+    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v4'));
     if(!myUser) document.getElementById('login-overlay').style.display = 'flex';
 
     window.previewProfile = (i) => { const r=new FileReader(); r.onload=(e)=>document.getElementById('p-preview').src=e.target.result; r.readAsDataURL(i.files[0]); };
@@ -141,85 +267,177 @@
         const p = document.getElementById('p-preview').src;
         if(!n) return;
         myUser = { n, p, id: Date.now() };
-        localStorage.setItem('enjaz_user_v3', JSON.stringify(myUser));
+        localStorage.setItem('enjaz_user_v4', JSON.stringify(myUser));
         location.reload();
     };
 
-    // --- نظام الوقت 12 ساعة وجدول السشنات ---
-    const schedule = [
-        { n: "السشن الأول", h1: 6, m1: 0, h2: 8, m2: 0 },
-        { n: "وقت استراحة ☕", h1: 8, m1: 0, h2: 8, m2: 15 },
-        { n: "السشن الثاني", h1: 8, m1: 15, h2: 10, m2: 15 },
-        { n: "وقت استراحة ☕", h1: 10, m1: 15, h2: 10, m2: 30 },
-        { n: "السشن الثالث", h1: 10, m1: 30, h2: 12, m2: 0 },
-        { n: "السشن الثالث (ب)", h1: 13, m1: 0, h2: 15, m2: 0 },
-        { n: "وقت استراحة ☕", h1: 15, m1: 0, h2: 15, m2: 15 },
-        { n: "السشن الرابع", h1: 15, m1: 15, h2: 17, m2: 15 },
-        { n: "وقت استراحة ☕", h1: 17, m1: 15, h2: 17, m2: 30 },
-        { n: "السشن الخامس", h1: 17, m1: 30, h2: 18, m2: 30 },
-        { n: "السشن السادس", h1: 20, m1: 0, h2: 22, m2: 0 }
-    ];
+    // --- نظام القنوات (Channels System) ---
+    let currentChannelId = 'main_channel';
+    window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
+    window.showNewChannelModal = () => { document.getElementById('new-channel-overlay').style.display = 'flex'; toggleSidebar(); };
+    
+    // إنشاء القنوات الافتراضية إذا لم تكن موجودة
+    const channelsRef = ref(db, 'enjaz_channels');
+    
+    window.createNewChannel = () => {
+        const name = document.getElementById('channel-name-in').value;
+        if(!name) return;
+        const newId = 'ch_' + Date.now();
+        set(ref(db, `enjaz_channels/${newId}`), { name: name, createdBy: myUser.n });
+        document.getElementById('new-channel-overlay').style.display = 'none';
+        document.getElementById('channel-name-in').value = '';
+        switchChannel(newId, name);
+    };
 
-    function to12h(h, m) {
+    window.switchChannel = (id, name) => {
+        currentChannelId = id;
+        document.getElementById('current-channel-title').innerText = name;
+        document.getElementById('sidebar').classList.remove('active');
+        loadMessages();
+        
+        // تحديث التصميم الجانبي
+        document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
+        const activeEl = document.getElementById(`ch_el_${id}`);
+        if(activeEl) activeEl.classList.add('active');
+    };
+
+    // استماع للقنوات
+    onValue(channelsRef, (snap) => {
+        const cont = document.getElementById('channels-container');
+        cont.innerHTML = `
+            <div class="channel-item ${currentChannelId === 'main_channel' ? 'active' : ''}" id="ch_el_main_channel" onclick="switchChannel('main_channel', 'الرئيسية 🔮')">
+                <span>الرئيسية 🔮</span>
+            </div>
+            <div class="channel-item ${currentChannelId === 'snowstorm' ? 'active' : ''}" id="ch_el_snowstorm" onclick="switchChannel('snowstorm', 'العاصفة الثلجية ❄️')">
+                <span>قناة الطلبة ❄️</span>
+            </div>
+        `;
+        if(snap.exists()){
+            snap.forEach(child => {
+                const c = child.val();
+                cont.innerHTML += `
+                    <div class="channel-item ${currentChannelId === child.key ? 'active' : ''}" id="ch_el_${child.key}" onclick="switchChannel('${child.key}', '${c.name}')">
+                        <span>${c.name} 💠</span>
+                    </div>
+                `;
+            });
+        }
+    });
+
+    // --- نظام السشنات الديناميكي 24 ساعة (ساعتين دراسة - 15د استراحة) ---
+    const schedule = [];
+    let startMin = 0;
+    let sNum = 1;
+    while(startMin < 24 * 60) {
+        let studyEnd = startMin + 120;
+        schedule.push({ n: `جلسة التركيز ${sNum} 🧬`, start: startMin, end: Math.min(studyEnd, 24*60), type: 'study' });
+        if(studyEnd >= 24 * 60) break;
+        
+        let breakEnd = studyEnd + 15;
+        schedule.push({ n: `استراحة التجديد ☕✨`, start: studyEnd, end: Math.min(breakEnd, 24*60), type: 'break' });
+        startMin = breakEnd;
+        sNum++;
+    }
+
+    function formatTime(totalMins) {
+        let h = Math.floor(totalMins / 60);
+        let m = totalMins % 60;
         let ampm = h >= 12 ? 'م' : 'ص';
         h = h % 12 || 12;
         return `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
     }
 
     let currentActiveName = "";
-
     function updateClock() {
         const now = new Date();
         const curMin = now.getHours() * 60 + now.getMinutes();
         let active = null;
 
         schedule.forEach(s => {
-            if(curMin >= (s.h1*60+s.m1) && curMin < (s.h2*60+s.m2)) active = s;
+            if(curMin >= s.start && curMin < s.end) active = s;
         });
 
         const status = document.getElementById('status-text');
         const count = document.getElementById('countdown-text');
 
         if(active) {
-            const remaining = (active.h2*60+active.m2) - curMin;
-            status.innerHTML = `⚠️ <b>${active.n}</b> (من ${to12h(active.h1, active.m1)} إلى ${to12h(active.h2, active.m2)})`;
-            count.innerText = `المدة المتبقية: ${remaining} دقيقة`;
+            const remaining = active.end - curMin;
+            status.innerHTML = `⏳ <b>${active.n}</b> (إلى ${formatTime(active.end)})`;
+            count.innerText = `المتبقي: ${remaining} دقيقة ⚡`;
             
-            // إرسال رسالة آلية في الشات عند بداية السشن
             if(currentActiveName !== active.n) {
-                push(ref(db, 'chat_v3'), { type: 'sys', txt: `📢 بدأ الآن: ${active.n}`, time: serverTimestamp() });
+                // رسالة آلية في القناة الرئيسية فقط
+                if(currentChannelId === 'main_channel') {
+                   push(ref(db, `enjaz_messages/main_channel`), { type: 'sys', txt: `📢 التحول الزمني: بدأ الآن ${active.n}`, time: serverTimestamp() });
+                }
                 currentActiveName = active.n;
             }
-        } else {
-            status.innerText = "لا يوجد سشن حالياً.. استعد للقادم!";
-            count.innerText = "--:--";
-            currentActiveName = "";
-        }
-
-        // الحذف اليومي
-        const d = now.toLocaleDateString();
-        if(localStorage.getItem('last_clear') !== d) {
-            remove(ref(db, 'chat_v3'));
-            localStorage.setItem('last_clear', d);
         }
     }
     setInterval(updateClock, 1000);
+    updateClock(); // تشغيل فوري
 
-    // --- وظائف الشات ---
+    // --- وظائف الشات للقناة المحددة ---
+    let currentChatListener = null;
+
+    function loadMessages() {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = "<div style='text-align:center; margin-top:20px;'><i class='fas fa-spinner fa-spin' style='color:var(--primary); font-size:24px;'></i></div>";
+        
+        if(currentChatListener) currentChatListener(); // إلغاء الاستماع القديم
+        
+        const messagesRef = ref(db, `enjaz_messages/${currentChannelId}`);
+        currentChatListener = onValue(messagesRef, (snap) => {
+            box.innerHTML = "";
+            if(!snap.exists()) {
+                box.innerHTML = `<div style="text-align:center; color:#888; margin-top:50px;">لا توجد رسائل بعد.. كن أول من يطلق شرارة البدء! ⚡</div>`;
+                return;
+            }
+            snap.forEach(c => {
+                const d = c.val();
+                const k = c.key;
+                if(d.type === 'sys') {
+                    box.innerHTML += `<div style="text-align:center; font-size:12px; color:var(--primary); margin:15px 0; background:rgba(0,242,255,0.1); padding:5px; border-radius:10px;">${d.txt}</div>`;
+                } else {
+                    const isMe = d.uid === myUser.id;
+                    let content = d.type === 'text' ? d.txt : 
+                                 (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px; margin-top:5px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px; margin-top:5px;"></video>`);
+                    
+                    box.innerHTML += `
+                        <div class="msg ${isMe ? 'me' : ''}">
+                            <div class="user-info">
+                                <img src="${d.p}" class="avatar">
+                                <b>${d.u}</b>
+                                ${isMe ? `<span class="del-btn" onclick="deleteMsg('${k}')"><i class="fas fa-trash"></i></span>` : ''}
+                            </div>
+                            <div class="msg-bubble">${content}</div>
+                        </div>
+                    `;
+                }
+            });
+            setTimeout(() => box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }), 100);
+        });
+    }
+
+    // تهيئة القناة الأولى
+    if(myUser) loadMessages();
+
     window.sendMsg = () => {
-        const txt = document.getElementById('msg-in').value;
+        const input = document.getElementById('msg-in');
+        const txt = input.value.trim();
         if(!txt) return;
-        push(ref(db, 'chat_v3'), {
+        push(ref(db, `enjaz_messages/${currentChannelId}`), {
             uid: myUser.id, u: myUser.n, p: myUser.p, txt, type: 'text', time: serverTimestamp()
         });
-        document.getElementById('msg-in').value = "";
+        input.value = "";
     };
 
     window.uploadFile = (i) => {
+        if(!i.files[0]) return;
         const r = new FileReader();
         const type = i.files[0].type.startsWith('image') ? 'img' : 'vid';
         r.onload = (e) => {
-            push(ref(db, 'chat_v3'), {
+            push(ref(db, `enjaz_messages/${currentChannelId}`), {
                 uid: myUser.id, u: myUser.n, p: myUser.p, media: e.target.result, type, time: serverTimestamp()
             });
         };
@@ -227,36 +445,10 @@
     };
 
     window.deleteMsg = (k) => {
-        if(confirm("حذف هذه الرسالة؟")) remove(ref(db, `chat_v3/${k}`));
+        if(confirm("هل تريد إزالة هذا الإنجاز من السجل؟ 🗑️")) {
+            remove(ref(db, `enjaz_messages/${currentChannelId}/${k}`));
+        }
     };
-
-    onValue(ref(db, 'chat_v3'), (snap) => {
-        const box = document.getElementById('chat-box');
-        box.innerHTML = "";
-        snap.forEach(c => {
-            const d = c.val();
-            const k = c.key;
-            if(d.type === 'sys') {
-                box.innerHTML += `<div style="text-align:center; font-size:12px; color:var(--primary); margin:10px 0;">${d.txt}</div>`;
-            } else {
-                const isMe = d.uid === myUser.id;
-                let content = d.type === 'text' ? d.txt : 
-                             (d.type === 'img' ? `<img src="${d.media}" style="width:100%; border-radius:10px;">` : `<video src="${d.media}" controls style="width:100%; border-radius:10px;"></video>`);
-                
-                box.innerHTML += `
-                    <div class="msg ${isMe ? 'me' : ''}">
-                        <div class="user-info">
-                            <img src="${d.p}" class="avatar">
-                            <b>${d.u}</b>
-                            <span class="del-btn" onclick="deleteMsg('${k}')"><i class="fas fa-trash"></i></span>
-                        </div>
-                        <div class="msg-bubble">${content}</div>
-                    </div>
-                `;
-            }
-        });
-        box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
-    });
 
 </script>
 </body>
