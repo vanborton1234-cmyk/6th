@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة إنجازاتي | Enjazati</title>
+    <title>إنجازاتي المطور | Enjazati</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
@@ -26,40 +26,36 @@
             --shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; font-family: 'Tajawal', sans-serif; }
+        * { box-sizing: border-box; transition: 0.3s ease; font-family: 'Tajawal', sans-serif; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); height: 100dvh; overflow: hidden; }
 
         /* شاشة الحماية */
         #gate-overlay {
             position: fixed; inset: 0; background: var(--bg); z-index: 10000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
         }
 
-        /* مربع السشنات 3D المطور */
-        .session-box-3d {
-            position: fixed; top: 15px; left: 15px; width: 110px; height: 70px;
+        /* شريط السشنات العلوي المتطور (3D) */
+        .top-session-bar {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px; transform-style: preserve-3d;
-            transform: perspective(800px) rotateY(-15deg) rotateX(10deg);
-            box-shadow: 8px 8px 15px rgba(0,0,0,0.15);
-            z-index: 1000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 5px;
-            color: white; border: 1px solid rgba(255,255,255,0.4);
-            pointer-events: none;
+            color: white; padding: 10px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: perspective(1000px) rotateX(2deg);
+            z-index: 2000; position: relative;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
         }
-        .session-box-3d span { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
-        .session-box-3d b { font-size: 11px; text-align: center; margin-top: 2px; }
+        .top-session-bar b { font-size: 16px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .top-session-bar span { font-size: 11px; display: block; opacity: 0.9; margin-top: 2px; }
 
         /* الحاوية الرئيسية */
         .app-shell { 
-            display: flex; flex-direction: column; height: 100dvh; 
+            display: flex; flex-direction: column; height: calc(100dvh - 60px); 
             max-width: 550px; margin: 0 auto; background: var(--card); 
-            position: relative; box-shadow: var(--shadow);
+            box-shadow: var(--shadow); position: relative;
         }
 
         header {
-            padding: 12px 20px; border-bottom: 1px solid var(--border);
+            padding: 10px 20px; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
         }
 
@@ -96,11 +92,7 @@
         }
         .me .bubble { background: var(--primary); color: white; border: none; }
 
-        .del-icon { 
-            font-size: 11px; color: #ff4b4b; margin: 0 5px; cursor: pointer; 
-            opacity: 0; transition: 0.2s; 
-        }
-        .msg-wrapper:hover .del-icon { opacity: 0.6; }
+        .del-icon { font-size: 11px; color: #ff4b4b; margin: 0 5px; cursor: pointer; opacity: 0.6; }
 
         /* منطقة الإدخال */
         .input-bar { 
@@ -113,8 +105,7 @@
             color: var(--text); outline: none; font-size: 14px;
         }
 
-        .icon-btn { font-size: 20px; color: var(--primary); cursor: pointer; transition: transform 0.2s; }
-        .icon-btn:active { transform: scale(0.9); }
+        .icon-btn { font-size: 20px; color: var(--primary); cursor: pointer; }
 
         /* المودالات */
         .modal-overlay { 
@@ -124,55 +115,48 @@
         }
         .modal-content { 
             background: var(--card); padding: 25px; border-radius: 20px; 
-            width: 85%; max-width: 320px; text-align: center; box-shadow: var(--shadow);
+            width: 85%; text-align: center; box-shadow: var(--shadow);
         }
-
-        /* الوضع الليلي/النهاري */
-        .theme-toggle { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--bg); cursor: pointer; }
     </style>
 </head>
 <body data-theme="light">
 
-<div id="gate-overlay">
-    <div style="text-align: center;">
-        <div style="font-size: 50px; margin-bottom: 10px;">🛡️</div>
-        <h2 style="color: var(--primary); margin-bottom: 20px;">دخول آمن</h2>
-        <input type="password" id="gate-pass" placeholder="أدخل رمز الدخول" 
-               style="padding:15px; border-radius:12px; border:2px solid var(--primary); text-align:center; font-size:18px; width: 220px; outline: none;">
-    </div>
+<div class="top-session-bar" id="session-container">
+    <b id="session-title">جاري الحساب...</b>
+    <span id="session-countdown">المتبقي: --:--</span>
 </div>
 
-<div class="session-box-3d">
-    <span>نظام السشنات</span>
-    <b id="session-display">فحص الوقت...</b>
+<div id="gate-overlay">
+    <h2 style="color: var(--primary);">قفل الحماية</h2>
+    <input type="password" id="gate-pass" placeholder="رمز الدخول" 
+           style="padding:15px; border-radius:12px; border:2px solid var(--primary); text-align:center; font-size:18px; outline: none;">
 </div>
 
 <div class="app-shell">
     <header>
-        <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-moon"></i></div>
-        <b style="font-size: 18px; color: var(--primary);">إنجازاتي</b>
+        <div onclick="toggleTheme()" style="cursor:pointer;"><i id="theme-icon" class="fas fa-moon"></i></div>
+        <b style="font-size: 18px; color: var(--primary);">إنجازاتي المطور</b>
         <div class="icon-btn" onclick="openChannelModal()"><i class="fas fa-plus-circle"></i></div>
     </header>
 
-    <div class="channels-bar" id="channels-container">
-        </div>
+    <div class="channels-bar" id="channels-container"></div>
 
     <main class="chat-area" id="chat-messages"></main>
 
     <div class="input-bar">
         <i class="fas fa-image icon-btn" onclick="document.getElementById('media-upload').click()"></i>
         <input type="file" id="media-upload" hidden accept="image/*,video/*">
-        <input type="text" id="msg-text" placeholder="اكتب رسالتك أو إنجازك...">
+        <input type="text" id="msg-text" placeholder="اكتب رسالتك...">
         <i class="fas fa-paper-plane icon-btn" id="send-trigger"></i>
     </div>
 </div>
 
 <div id="channel-modal" class="modal-overlay">
     <div class="modal-content">
-        <h3 style="margin-top: 0;">قناة جديدة</h3>
-        <input type="text" id="new-chan-input" placeholder="اسم القناة (مثلاً: رياضة)" 
+        <h3>إنشاء قناة جديدة</h3>
+        <input type="text" id="new-chan-input" placeholder="اسم القناة" 
                style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 15px; outline: none;">
-        <button onclick="confirmCreateChannel()" style="width: 100%; padding: 12px; border-radius: 10px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer;">إنشاء القناة</button>
+        <button onclick="confirmCreateChannel()" style="width: 100%; padding: 12px; border-radius: 10px; background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer;">إنشاء</button>
         <button onclick="closeChannelModal()" style="margin-top: 10px; background: none; border: none; color: #888; cursor: pointer;">إلغاء</button>
     </div>
 </div>
@@ -180,11 +164,9 @@
 <div id="profile-modal" class="modal-overlay">
     <div class="modal-content">
         <h3>مرحباً بك</h3>
-        <p style="font-size: 13px; color: #888;">أكمل ملفك الشخصي للبدء</p>
-        <img id="p-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); cursor:pointer;">
-        <input type="file" id="p-file" hidden accept="image/*">
-        <input type="text" id="p-name-input" placeholder="اسمك المستعار" style="width:100%; padding:12px; margin:15px 0; border-radius:10px; border:1px solid var(--border); outline: none;">
-        <button onclick="saveUserProfile()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">حفظ ودخول</button>
+        <p>أدخل اسمك المستعار للبدء</p>
+        <input type="text" id="p-name-input" placeholder="اسمك" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); outline: none;">
+        <button onclick="saveUserProfile()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:10px; margin-top:15px; font-weight:bold; cursor:pointer;">حفظ</button>
     </div>
 </div>
 
@@ -204,9 +186,8 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- إدارة المستخدم والحماية ---
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v5'));
-    const isVerified = localStorage.getItem('gate_verified') === 'true';
+    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v6'));
+    const isVerified = localStorage.getItem('gate_verified_v6') === 'true';
 
     if (isVerified) {
         document.getElementById('gate-overlay').style.display = 'none';
@@ -215,75 +196,67 @@
 
     document.getElementById('gate-pass').oninput = (e) => {
         if (e.target.value === '166277399') {
-            localStorage.setItem('gate_verified', 'true');
-            document.getElementById('gate-overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('gate-overlay').style.display = 'none';
-                if (!myUser) document.getElementById('profile-modal').style.display = 'flex';
-            }, 500);
+            localStorage.setItem('gate_verified_v6', 'true');
+            document.getElementById('gate-overlay').style.display = 'none';
+            if (!myUser) document.getElementById('profile-modal').style.display = 'flex';
         }
-    };
-
-    // --- إعداد الملف الشخصي ---
-    document.getElementById('p-preview').onclick = () => document.getElementById('p-file').click();
-    document.getElementById('p-file').onchange = (e) => {
-        const r = new FileReader();
-        r.onload = (ev) => document.getElementById('p-preview').src = ev.target.result;
-        r.readAsDataURL(e.target.files[0]);
     };
 
     window.saveUserProfile = () => {
         const name = document.getElementById('p-name-input').value;
-        const img = document.getElementById('p-preview').src;
-        if (!name) return alert("يرجى كتابة الاسم");
-        myUser = { id: 'u' + Date.now(), name, img };
-        localStorage.setItem('enjaz_user_v5', JSON.stringify(myUser));
+        if (!name) return;
+        myUser = { id: 'u' + Date.now(), name, img: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' };
+        localStorage.setItem('enjaz_user_v6', JSON.stringify(myUser));
         document.getElementById('profile-modal').style.display = 'none';
         location.reload();
     };
 
-    // --- نظام السشنات 3D ---
-    const sessionPlan = [
-        { h: 5, m: 0, n: "الفجر: بركة الإنجاز 🕋" },
-        { h: 8, m: 0, n: "الصباح: تركيز ذهني 📚" },
-        { h: 12, m: 0, n: "الظهيرة: قسط من الراحة ☕" },
-        { h: 15, m: 0, n: "المساء: استكمال المهام 🚀" },
-        { h: 20, m: 0, n: "الليل: مراجعة وشكر ✅" }
-    ];
-
-    function runClock() {
+    // --- نظام السشنات 2 ساعة عمل / 15 دقيقة استراحة ---
+    function updateSessions() {
         const now = new Date();
-        const mins = now.getHours() * 60 + now.getMinutes();
-        let current = "وقت حر وراحة ✨";
-        sessionPlan.forEach(s => { if (mins >= (s.h * 60 + s.m)) current = s.n; });
-        document.getElementById('session-display').innerText = current;
-    }
-    setInterval(runClock, 1000);
+        const totalMinutes = now.getHours() * 60 + now.getMinutes();
+        const cycle = 120 + 15; // 135 دقيقة لكل دورة كاملة
+        
+        const positionInCycle = totalMinutes % cycle;
+        
+        const titleEl = document.getElementById('session-title');
+        const countdownEl = document.getElementById('session-countdown');
+        const barEl = document.getElementById('session-container');
 
-    // --- إدارة القنوات ---
+        if (positionInCycle < 120) {
+            // سشن عمل
+            const remaining = 120 - positionInCycle;
+            titleEl.innerText = "⏳ سشن عمل وتركيز";
+            countdownEl.innerText = `المتبقي على الاستراحة: ${Math.floor(remaining/60)}س ${remaining%60}د`;
+            barEl.style.background = "linear-gradient(135deg, #00d2ff, #9d50bb)";
+        } else {
+            // استراحة
+            const remaining = cycle - positionInCycle;
+            titleEl.innerText = "☕ وقت الاستراحة المستحقة";
+            countdownEl.innerText = `العودة للعمل بعد: ${remaining} دقيقة`;
+            barEl.style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
+        }
+    }
+    setInterval(updateSessions, 1000);
+    updateSessions();
+
+    // --- إدارة القنوات (حذف علوم دينية وإبقاء دراستي) ---
     let activeChannelId = 'study_main';
     const defaultChans = {
-        'study_main': { name: '📚 دراستي', fixed: true },
-        'deen_main': { name: '🕌 علوم دينية', fixed: true }
+        'study_main': { name: '📚 دراستي', fixed: true }
     };
 
     function syncChannels() {
-        onValue(ref(db, 'channels_v5'), (snap) => {
+        onValue(ref(db, 'channels_v6'), (snap) => {
             const container = document.getElementById('channels-container');
             container.innerHTML = "";
             const allChans = { ...defaultChans, ...snap.val() };
-            
             Object.keys(allChans).forEach(id => {
                 const c = allChans[id];
                 const btn = document.createElement('div');
                 btn.className = `chan-btn ${activeChannelId === id ? 'active' : ''}`;
-                btn.innerHTML = `${c.name} ${!c.fixed ? `<i class="fas fa-times" onclick="removeChannel('${id}')" style="margin-right:8px; font-size:10px; opacity:0.6;"></i>` : ''}`;
-                btn.onclick = (e) => {
-                    if (e.target.classList.contains('fa-times')) return;
-                    activeChannelId = id;
-                    syncChannels();
-                    syncMessages();
-                };
+                btn.innerHTML = `${c.name} ${!c.fixed ? `<i class="fas fa-trash" onclick="removeChannel('${id}')" style="margin-right:8px; font-size:10px;"></i>` : ''}`;
+                btn.onclick = (e) => { if (!e.target.classList.contains('fa-trash')) { activeChannelId = id; syncChannels(); syncMessages(); } };
                 container.appendChild(btn);
             });
         });
@@ -296,82 +269,49 @@
         const name = document.getElementById('new-chan-input').value;
         if (!name) return;
         const newId = 'ch_' + Date.now();
-        set(ref(db, 'channels_v5/' + newId), { name: '# ' + name, fixed: false });
+        set(ref(db, 'channels_v6/' + newId), { name: '# ' + name, fixed: false });
         closeChannelModal();
     };
 
-    window.removeChannel = (id) => {
-        if (confirm("هل تريد حذف هذه القناة نهائياً؟")) {
-            remove(ref(db, 'channels_v5/' + id));
-            if (activeChannelId === id) activeChannelId = 'study_main';
-        }
-    };
+    window.removeChannel = (id) => { if (confirm("حذف القناة؟")) remove(ref(db, 'channels_v6/' + id)); };
 
-    // --- المحادثة والرسائل ---
+    // --- الرسائل ---
     function syncMessages() {
-        onValue(ref(db, 'msgs_v5/' + activeChannelId), (snap) => {
+        onValue(ref(db, 'msgs_v6/' + activeChannelId), (snap) => {
             const area = document.getElementById('chat-messages');
             area.innerHTML = "";
             snap.forEach(child => {
                 const m = child.val();
                 const isMe = myUser && m.uid === myUser.id;
-                const row = document.createElement('div');
-                row.className = `msg-wrapper ${isMe ? 'me' : ''}`;
-                
-                let content = m.type === 'text' ? m.txt : 
-                             (m.type === 'img' ? `<img src="${m.media}" style="width:100%; border-radius:10px; margin-top:5px;">` : `<video src="${m.media}" controls style="width:100%; border-radius:10px; margin-top:5px;"></video>`);
-
-                row.innerHTML = `
-                    <img src="${m.p}" class="avatar">
-                    <div class="bubble">
-                        <div style="font-size:10px; font-weight:bold; margin-bottom:2px; opacity:0.8;">${m.u}</div>
-                        ${content}
-                        ${isMe ? `<i class="fas fa-trash del-icon" onclick="deleteMsg('${child.key}')"></i>` : ''}
+                area.innerHTML += `
+                    <div class="msg-wrapper ${isMe ? 'me' : ''}">
+                        <div class="bubble">
+                            <div style="font-size:10px; font-weight:bold; opacity:0.7;">${m.u}</div>
+                            ${m.type === 'text' ? m.txt : `<img src="${m.media}" style="width:100%; border-radius:10px;">`}
+                            ${isMe ? `<i class="fas fa-trash del-icon" onclick="deleteMsg('${child.key}')"></i>` : ''}
+                        </div>
                     </div>
                 `;
-                area.appendChild(row);
             });
             area.scrollTop = area.scrollHeight;
         });
     }
 
-    window.deleteMsg = (id) => {
-        if (confirm("حذف هذه الرسالة؟")) remove(ref(db, `msgs_v5/${activeChannelId}/${id}`));
-    };
+    window.deleteMsg = (id) => { if (confirm("حذف الرسالة؟")) remove(ref(db, `msgs_v6/${activeChannelId}/${id}`)); };
 
     document.getElementById('send-trigger').onclick = () => {
         const txt = document.getElementById('msg-text').value;
-        if (!txt || !myUser) return;
-        push(ref(db, 'msgs_v5/' + activeChannelId), {
-            uid: myUser.id, u: myUser.name, p: myUser.img, txt, type: 'text', time: serverTimestamp()
-        });
+        if (!txt) return;
+        push(ref(db, 'msgs_v6/' + activeChannelId), { uid: myUser.id, u: myUser.name, txt, type: 'text' });
         document.getElementById('msg-text').value = "";
     };
 
-    document.getElementById('media-upload').onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        const type = file.type.startsWith('image') ? 'img' : 'vid';
-        reader.onload = (ev) => {
-            push(ref(db, 'msgs_v5/' + activeChannelId), {
-                uid: myUser.id, u: myUser.name, p: myUser.img, media: ev.target.result, type, time: serverTimestamp()
-            });
-        };
-        reader.readAsDataURL(file);
-    };
-
-    // --- ثيم الألوان ---
     window.toggleTheme = () => {
         const b = document.body;
         const icon = document.getElementById('theme-icon');
-        if (b.getAttribute('data-theme') === 'light') {
-            b.setAttribute('data-theme', 'dark');
-            icon.className = 'fas fa-sun';
-        } else {
-            b.setAttribute('data-theme', 'light');
-            icon.className = 'fas fa-moon';
-        }
+        const current = b.getAttribute('data-theme');
+        b.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+        icon.className = current === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     };
 
     syncChannels();
