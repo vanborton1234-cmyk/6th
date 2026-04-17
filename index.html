@@ -3,137 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AM ros v5</title>
+    <title>إنجازاتي برو | Enjazati Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
 
         :root {
-            --primary: #00d2ff;
-            --secondary: #9d50bb;
-            --bg: #f0f2f5;
-            --card: #ffffff;
-            --text: #1e293b;
-            --border: rgba(0,0,0,0.08);
-            --shadow: 0 10px 25px rgba(0,0,0,0.05);
+            --primary: #4facfe; --secondary: #00f2fe; --bg: #f8fafc;
+            --card: #ffffff; --text: #1e293b; --border: rgba(0,0,0,0.06);
         }
 
         [data-theme="dark"] {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-            --border: rgba(255,255,255,0.1);
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --border: rgba(255,255,255,0.08);
         }
 
-        * { box-sizing: border-box; transition: 0.3s ease; font-family: 'Tajawal', sans-serif; }
+        * { box-sizing: border-box; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Tajawal', sans-serif; }
         body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); height: 100dvh; overflow: hidden; }
 
-        /* شريط السشنات العلوي (3D) */
-        .top-session-bar {
+        /* منطقة السشنات المطورة */
+        .session-hero {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; padding: 10px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transform: perspective(1000px) rotateX(2deg);
-            z-index: 2000; position: relative;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
-        }
-        .top-session-bar b { font-size: 16px; }
-        .top-session-bar span { font-size: 11px; display: block; opacity: 0.9; }
-
-        /* شاشة الحماية */
-        #gate-overlay {
-            position: fixed; inset: 0; background: var(--bg); z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            margin: 10px; border-radius: 20px; padding: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+            color: white; border: 1px solid rgba(255,255,255,0.2);
+            position: relative; overflow: hidden;
         }
 
-        .app-shell { 
-            display: flex; flex-direction: column; height: calc(100dvh - 65px); 
-            max-width: 550px; margin: 0 auto; background: var(--card); box-shadow: var(--shadow);
+        /* الشخصية المتحركة */
+        .mascot {
+            width: 60px; height: 60px; background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; animation: float 3s ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-10px) rotate(10deg); } }
 
-        header { padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .session-info { flex: 1; margin-right: 15px; }
+        .session-info h3 { margin: 0; font-size: 16px; opacity: 0.9; }
+        .session-info .time-range { font-size: 12px; background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 10px; }
+        .session-info .countdown { font-size: 22px; font-weight: bold; margin-top: 5px; }
 
-        .channels-bar { display: flex; gap: 8px; padding: 10px 15px; overflow-x: auto; border-bottom: 1px solid var(--border); scrollbar-width: none; }
-        .chan-btn { padding: 6px 14px; border-radius: 18px; background: var(--bg); border: 1px solid var(--border); color: var(--text); cursor: pointer; white-space: nowrap; font-size: 13px; }
-        .chan-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        /* الحاوية الرئيسية */
+        .app-shell { display: flex; flex-direction: column; height: calc(100dvh - 120px); max-width: 600px; margin: 0 auto; background: var(--card); border-radius: 25px 25px 0 0; box-shadow: 0 -5px 25px rgba(0,0,0,0.05); }
 
-        .chat-area { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); display: flex; flex-direction: column; gap: 15px; }
+        header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
 
-        /* الرسائل مع الأفاتار */
-        .msg-wrapper { display: flex; gap: 10px; max-width: 90%; align-items: flex-end; }
+        .chat-area { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; background: var(--bg); }
+
+        /* الرسالة مع الوقت */
+        .msg-wrapper { display: flex; gap: 10px; max-width: 90%; align-items: flex-end; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .msg-wrapper.me { align-self: flex-end; flex-direction: row-reverse; }
-        
-        .u-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
-        
-        .bubble { 
-            background: var(--card); padding: 10px 15px; border-radius: 18px; 
-            border: 1px solid var(--border); position: relative; color: var(--text);
-            font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        .u-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .bubble { background: var(--card); padding: 10px 15px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .me .bubble { background: var(--primary); color: white; border: none; }
+        .time-stamp { font-size: 9px; opacity: 0.6; display: block; margin-top: 4px; text-align: left; }
+        .me .time-stamp { color: rgba(255,255,255,0.8); text-align: right; }
+
+        /* مشغل يوتيوب */
+        #youtube-player-container { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; 
+            display: none; flex-direction: column; align-items: center; justify-content: center;
         }
-        .me .bubble { background: var(--primary); color: white; border: none; border-bottom-right-radius: 4px; }
-        .other .bubble { border-bottom-left-radius: 4px; }
+        iframe { width: 90%; height: 50%; border-radius: 15px; box-shadow: 0 0 30px var(--primary); }
 
-        .u-name { font-size: 10px; font-weight: bold; margin-bottom: 3px; display: block; opacity: 0.8; }
-        .del-msg { font-size: 10px; color: #ff4b4b; margin: 5px 5px 0; cursor: pointer; display: inline-block; opacity: 0.7; }
-
-        .input-bar { padding: 12px 15px; display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); }
-        .input-bar input[type="text"] { flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--text); outline: none; }
-
-        .icon-btn { font-size: 20px; color: var(--primary); cursor: pointer; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 5000; }
-        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 85%; text-align: center; }
+        .input-bar { padding: 15px; display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); }
+        .input-bar input { flex: 1; padding: 12px 18px; border-radius: 25px; border: 1px solid var(--border); background: var(--bg); outline: none; }
+        .icon-btn { font-size: 22px; color: var(--primary); cursor: pointer; }
     </style>
 </head>
 <body data-theme="light">
 
-<div class="top-session-bar" id="session-bar">
-    <b id="session-text">فحص الدورة الزمنية...</b>
-    <span id="session-time">--:--</span>
-</div>
-
-<div id="gate-overlay">
-    <h2 style="color: var(--primary);">رمز الدخول</h2>
-    <input type="password" id="gate-pass" placeholder="••••••••" style="padding:15px; border-radius:12px; border:2px solid var(--primary); text-align:center; font-size:20px; width:200px; outline:none;">
+<div class="session-hero" id="session-box">
+    <div class="session-info">
+        <h3 id="s-title">جاري التحميل...</h3>
+        <span class="time-range" id="s-range">--:-- إلى --:--</span>
+        <div class="countdown" id="s-timer">0 دقيقة متبقية</div>
+    </div>
+    <div class="mascot" id="mascot-emoji">☁️</div>
 </div>
 
 <div class="app-shell">
     <header>
-        <div onclick="toggleTheme()" style="cursor:pointer;"><i id="theme-icon" class="fas fa-moon"></i></div>
-        <b style="color: var(--primary);">إنجازاتي</b>
-        <i class="fas fa-plus-circle icon-btn" onclick="openChanModal()"></i>
+        <div class="icon-btn" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-moon"></i></div>
+        <b style="color: var(--primary); font-size: 20px;">إنجازاتي</b>
+        <div style="display:flex; gap:15px;">
+            <i class="fas fa-play-circle icon-btn" onclick="openYoutube()" style="color:#ff0000;"></i>
+            <i class="fas fa-plus-circle icon-btn" onclick="openChanModal()"></i>
+        </div>
     </header>
 
-    <div class="channels-bar" id="chan-list"></div>
+    <div id="chan-list" style="display:flex; gap:8px; padding:10px; overflow-x:auto; border-bottom:1px solid var(--border);"></div>
 
     <main class="chat-area" id="chat-flow"></main>
 
     <div class="input-bar">
-        <i class="fas fa-camera icon-btn" onclick="document.getElementById('file-input').click()"></i>
-        <input type="file" id="file-input" hidden accept="image/*,video/*">
-        <input type="text" id="msg-input" placeholder="اكتب شيئاً...">
+        <i class="fas fa-paperclip icon-btn" onclick="document.getElementById('file-in').click()"></i>
+        <input type="file" id="file-in" hidden accept="image/*,video/*">
+        <input type="text" id="msg-in" placeholder="اكتب إنجازك الآن...">
         <i class="fas fa-paper-plane icon-btn" id="send-btn"></i>
     </div>
 </div>
 
-<div id="profile-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>أهلاً بك!</h3>
-        <p>اختر صورتك واسمك للبدء</p>
-        <img id="p-img-prev" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); object-fit:cover; cursor:pointer;">
-        <input type="file" id="p-img-file" hidden accept="image/*">
-        <input type="text" id="p-name-in" placeholder="اسمك المستعار" style="width:100%; padding:12px; margin:15px 0; border-radius:10px; border:1px solid var(--border); outline:none;">
-        <button onclick="finishProfile()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold;">دخول</button>
-    </div>
+<div id="youtube-player-container">
+    <input type="text" id="yt-url" placeholder="إلصق رابط يوتيوب هنا..." style="width:80%; padding:12px; border-radius:10px; margin-bottom:15px;">
+    <div id="player-frame"></div>
+    <button onclick="closeYoutube()" style="margin-top:20px; background:var(--primary); color:white; border:none; padding:10px 30px; border-radius:10px;">إغلاق المشغل</button>
 </div>
 
-<div id="chan-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>قناة جديدة</h3>
-        <input type="text" id="new-chan-name" placeholder="اسم القناة" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:15px; outline:none;">
-        <button onclick="addChannel()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold;">إنشاء</button>
-        <button onclick="closeChanModal()" style="margin-top:10px; background:none; border:none; color:#888;">إلغاء</button>
-    </div>
+<div id="gate-overlay" style="position:fixed; inset:0; background:var(--bg); z-index:10000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <h2>أدخل رمز العبور</h2>
+    <input type="password" id="gate-pass" placeholder="••••" style="padding:15px; border-radius:15px; border:2px solid var(--primary); text-align:center; font-size:24px;">
 </div>
 
 <script type="module">
@@ -152,99 +133,92 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_final'));
-    const isVerified = localStorage.getItem('gate_ok') === 'true';
+    let myUser = JSON.parse(localStorage.getItem('enjaz_user_v7'));
+    const isVerified = localStorage.getItem('gate_ok_v7') === 'true';
 
+    // حماية الدخول
     if(isVerified) {
         document.getElementById('gate-overlay').style.display = 'none';
-        if(!myUser) document.getElementById('profile-modal').style.display = 'flex';
+        if(!myUser) setupUser();
     }
-
     document.getElementById('gate-pass').oninput = (e) => {
         if(e.target.value === '166277399') {
-            localStorage.setItem('gate_ok', 'true');
-            document.getElementById('gate-overlay').style.display = 'none';
-            if(!myUser) document.getElementById('profile-modal').style.display = 'flex';
+            localStorage.setItem('gate_ok_v7', 'true');
+            location.reload();
         }
     };
 
-    // إعداد الملف الشخصي
-    document.getElementById('p-img-prev').onclick = () => document.getElementById('p-img-file').click();
-    document.getElementById('p-img-file').onchange = (e) => {
-        const r = new FileReader();
-        r.onload = (ev) => document.getElementById('p-img-prev').src = ev.target.result;
-        r.readAsDataURL(e.target.files[0]);
-    };
+    function setupUser() {
+        const name = prompt("ما هو اسمك؟");
+        if(name) {
+            myUser = { id: 'u'+Date.now(), name, img: 'https://cdn-icons-png.flaticon.com/512/4140/4140231.png' };
+            localStorage.setItem('enjaz_user_v7', JSON.stringify(myUser));
+            location.reload();
+        }
+    }
 
-    window.finishProfile = () => {
-        const name = document.getElementById('p-name-in').value;
-        const img = document.getElementById('p-img-prev').src;
-        if(!name) return;
-        myUser = { id: 'u'+Date.now(), name, img };
-        localStorage.setItem('enjaz_user_final', JSON.stringify(myUser));
-        location.reload();
-    };
-
-    // نظام السشنات (2 ساعة عمل / 15 دقيقة استراحة)
-    function runSessions() {
+    // نظام السشنات المطور
+    function updateSessionLogic() {
         const now = new Date();
         const mins = now.getHours() * 60 + now.getMinutes();
-        const cycle = 135; 
-        const pos = mins % cycle;
-        if(pos < 120) {
-            const rem = 120 - pos;
-            document.getElementById('session-text').innerText = "⏳ سشن التركيز والإنجاز";
-            document.getElementById('session-time').innerText = `المتبقي: ${Math.floor(rem/60)}س ${rem%60}د`;
-            document.getElementById('session-bar').style.background = "linear-gradient(135deg, #00d2ff, #9d50bb)";
+        const cycle = 135; // 120 عمل + 15 راحة
+        const cycleIndex = Math.floor(mins / cycle);
+        const startMins = cycleIndex * cycle;
+        const workEnd = startMins + 120;
+        const breakEnd = startMins + 135;
+
+        const format = (m) => `${Math.floor(m/60)}:${(m%60).toString().padStart(2,'0')}`;
+        
+        if(mins < workEnd) {
+            document.getElementById('s-title').innerText = "سشن الدراسة الحالي";
+            document.getElementById('s-range').innerText = `${format(startMins)} - ${format(workEnd)}`;
+            document.getElementById('s-timer').innerText = `${workEnd - mins} دقيقة متبقية`;
+            document.getElementById('mascot-emoji').innerText = "✍️";
+            document.getElementById('session-box').style.filter = "hue-rotate(0deg)";
         } else {
-            const rem = cycle - pos;
-            document.getElementById('session-text').innerText = "☕ وقت استراحة محارب";
-            document.getElementById('session-time').innerText = `العودة للعمل بعد: ${rem} دقيقة`;
-            document.getElementById('session-bar').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
+            document.getElementById('s-title').innerText = "وقت استراحة محارب";
+            document.getElementById('s-range').innerText = `${format(workEnd)} - ${format(breakEnd)}`;
+            document.getElementById('s-timer').innerText = `${breakEnd - mins} دقيقة متبقية`;
+            document.getElementById('mascot-emoji').innerText = "☕";
+            document.getElementById('session-box').style.filter = "hue-rotate(100deg)";
         }
     }
-    setInterval(runSessions, 1000); runSessions();
+    setInterval(updateSessionLogic, 1000);
 
-    // القنوات والرسائل
-    let activeId = 'study_main';
-    function loadChans() {
-        onValue(ref(db, 'chans_final'), (snap) => {
-            const list = document.getElementById('chan-list');
-            list.innerHTML = `<div class="chan-btn ${activeId==='study_main'?'active':''}" onclick="setChan('study_main')">📚 دراستي</div>`;
-            snap.forEach(c => {
-                const data = c.val();
-                list.innerHTML += `<div class="chan-btn ${activeId===c.key?'active':''}" onclick="setChan('${c.key}')"># ${data.name} <i class="fas fa-trash" style="font-size:9px; margin-right:5px;" onclick="delChan('${c.key}')"></i></div>`;
-            });
-        });
-    }
-
-    window.setChan = (id) => { activeId = id; loadChans(); loadMsgs(); };
-    window.openChanModal = () => document.getElementById('chan-modal').style.display = 'flex';
-    window.closeChanModal = () => document.getElementById('chan-modal').style.display = 'none';
-    window.addChannel = () => {
-        const n = document.getElementById('new-chan-name').value;
-        if(!n) return;
-        push(ref(db, 'chans_final'), { name: n });
-        closeChanModal();
+    // مشغل اليوتيوب الذكي
+    window.openYoutube = () => document.getElementById('youtube-player-container').style.display = 'flex';
+    window.closeYoutube = () => {
+        document.getElementById('youtube-player-container').style.display = 'none';
+        document.getElementById('player-frame').innerHTML = "";
     };
-    window.delChan = (id) => { if(confirm("حذف القناة؟")) remove(ref(db, 'chans_final/'+id)); };
+    document.getElementById('yt-url').onchange = (e) => {
+        const val = e.target.value;
+        const vidId = val.split('v=')[1]?.split('&')[0] || val.split('be/')[1];
+        if(vidId) {
+            document.getElementById('player-frame').innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${vidId}?autoplay=1&rel=0" allowfullscreen></iframe>
+                <p style="color:white; margin-top:10px;">نصيحة: يمكنك تغيير السرعة من إعدادات المشغل بالداخل</p>
+            `;
+        }
+    };
 
+    // الشات والرسائل
+    let activeId = 'study_main';
     function loadMsgs() {
-        onValue(ref(db, 'msgs_final/'+activeId), (snap) => {
+        onValue(ref(db, 'msgs_v7/'+activeId), (snap) => {
             const flow = document.getElementById('chat-flow');
             flow.innerHTML = "";
-            snap.forEach(child => {
-                const m = child.val();
-                const isMe = myUser && m.uid === myUser.id;
-                let body = m.type === 'text' ? m.content : (m.type === 'img' ? `<img src="${m.content}" style="width:100%; border-radius:10px; margin-top:5px;">` : `<video src="${m.content}" controls style="width:100%; border-radius:10px;"></video>`);
-                
+            snap.forEach(c => {
+                const m = c.val();
+                const isMe = m.uid === myUser?.id;
+                const time = m.time ? new Date(m.time).toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}) : '';
                 flow.innerHTML += `
                     <div class="msg-wrapper ${isMe?'me':''}">
                         <img src="${m.uimg}" class="u-avatar">
                         <div class="bubble">
-                            <span class="u-name">${m.uname}</span>
-                            ${body}
-                            ${isMe ? `<div class="del-msg" onclick="delMsg('${child.key}')">حذف</div>` : ''}
+                            <b style="font-size:10px; display:block; margin-bottom:3px;">${m.uname}</b>
+                            ${m.type==='text'? m.content : `<img src="${m.content}" style="width:100%; border-radius:10px;">`}
+                            <span class="time-stamp">${time}</span>
                         </div>
                     </div>
                 `;
@@ -253,41 +227,23 @@
         });
     }
 
-    window.delMsg = (id) => { if(confirm("حذف الرسالة؟")) remove(ref(db, `msgs_final/${activeId}/${id}`)); };
-
-    // الإرسال
     document.getElementById('send-btn').onclick = () => {
-        const txt = document.getElementById('msg-input').value;
-        if(!txt || !myUser) return;
-        push(ref(db, 'msgs_final/'+activeId), {
+        const txt = document.getElementById('msg-in').value;
+        if(!txt) return;
+        push(ref(db, 'msgs_v7/'+activeId), {
             uid: myUser.id, uname: myUser.name, uimg: myUser.img,
             content: txt, type: 'text', time: serverTimestamp()
         });
-        document.getElementById('msg-input').value = "";
-    };
-
-    document.getElementById('file-input').onchange = (e) => {
-        const file = e.target.files[0];
-        if(!file || !myUser) return;
-        const reader = new FileReader();
-        const type = file.type.startsWith('image') ? 'img' : 'vid';
-        reader.onload = (ev) => {
-            push(ref(db, 'msgs_final/'+activeId), {
-                uid: myUser.id, uname: myUser.name, uimg: myUser.img,
-                content: ev.target.result, type, time: serverTimestamp()
-            });
-        };
-        reader.readAsDataURL(file);
+        document.getElementById('msg-in').value = "";
     };
 
     window.toggleTheme = () => {
         const b = document.body;
         const current = b.getAttribute('data-theme');
         b.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
-        document.getElementById('theme-icon').className = current === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     };
 
-    loadChans(); loadMsgs();
+    loadMsgs();
 </script>
 </body>
 </html>
