@@ -32,13 +32,15 @@
         /* شريط السشنات العلوي */
         .top-session-bar {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; padding: 10px; text-align: center;
+            color: white; padding: 12px 10px; text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             position: relative; border-bottom: 2px solid rgba(255,255,255,0.2);
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-        .top-session-bar b { font-size: 15px; }
-        .top-session-bar span { font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; }
+        .session-main-info { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .session-main-info b { font-size: 15px; }
+        .session-main-info span { font-size: 13px; font-weight: bold; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; }
+        .session-time-range { font-size: 12px; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 3px 12px; border-radius: 12px; }
         
         /* حركة الإيموجي التحفيزي */
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -51,7 +53,7 @@
         }
 
         .app-shell { 
-            display: flex; flex-direction: column; height: calc(100dvh - 45px); 
+            display: flex; flex-direction: column; height: calc(100dvh - 65px); /* تم التعديل ليناسب حجم شريط السشنات الجديد */
             max-width: 600px; margin: 0 auto; background: var(--card); box-shadow: var(--shadow);
         }
 
@@ -107,9 +109,12 @@
 <body data-theme="light">
 
 <div class="top-session-bar" id="session-bar">
-    <div class="animated-emoji" id="session-emoji">🔥</div>
-    <b id="session-text">فحص الدورة...</b>
-    <span id="session-time">--</span>
+    <div class="session-main-info">
+        <div class="animated-emoji" id="session-emoji">🔥</div>
+        <b id="session-text">فحص الدورة...</b>
+        <span id="session-time">--</span>
+    </div>
+    <div class="session-time-range" id="session-range">من -- إلى --</div>
 </div>
 
 <div id="gate-overlay">
@@ -164,7 +169,6 @@
 </div>
 
 <script type="module">
-    // استيراد الدوال المطلوبة وتحديث update
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -196,7 +200,6 @@
         }
     };
 
-    // إعداد الملف الشخصي
     document.getElementById('p-img-prev').onclick = () => document.getElementById('p-img-file').click();
     document.getElementById('p-img-file').onchange = (e) => {
         const r = new FileReader();
@@ -213,43 +216,65 @@
         location.reload();
     };
 
-    // 1. نظام السشنات المطور (دقائق فقط)
+    // دالة مساعدة لتحويل الوقت إلى نظام 12 ساعة لنستخدمها في السشنات
+    function formatTimeObject(dateObj) {
+        let hours = dateObj.getHours();
+        let minutes = dateObj.getMinutes();
+        const ampm = hours >= 12 ? 'م' : 'ص';
+        hours = hours % 12;
+        hours = hours ? hours : 12; 
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        return `${hours}:${minutes} ${ampm}`;
+    }
+
+    // نظام السشنات المطور (دقائق فقط + الوقت من إلى)
     function runSessions() {
         const now = new Date();
         const mins = now.getHours() * 60 + now.getMinutes();
         const cycle = 135; // 120 دقيقة دراسة + 15 استراحة
         const pos = mins % cycle;
         
+        let startTime = new Date(now);
+        let endTime = new Date(now);
+        
         if(pos < 120) {
+            // نحن في وقت الدراسة
             const rem = 120 - pos;
+            
+            // حساب وقت البداية والنهاية
+            startTime.setMinutes(now.getMinutes() - pos);
+            endTime.setMinutes(now.getMinutes() + rem);
+            
             document.getElementById('session-emoji').innerText = "🚀";
             document.getElementById('session-text').innerText = "هيا هيا أكمل التحدي! وقت الإنجاز";
             document.getElementById('session-time').innerText = `${rem} دقيقة`;
             document.getElementById('session-bar').style.background = "linear-gradient(135deg, #00d2ff, #9d50bb)";
         } else {
+            // نحن في وقت الاستراحة
             const rem = cycle - pos;
+            const breakPassed = pos - 120; // كم دقيقة مرت من الاستراحة
+            
+            // حساب وقت البداية والنهاية
+            startTime.setMinutes(now.getMinutes() - breakPassed);
+            endTime.setMinutes(now.getMinutes() + rem);
+            
             document.getElementById('session-emoji').innerText = "☕";
             document.getElementById('session-text').innerText = "استرح قليلاً لتعود أقوى";
             document.getElementById('session-time').innerText = `${rem} دقيقة`;
             document.getElementById('session-bar').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
         }
+        
+        // طباعة الوقت من وإلى
+        document.getElementById('session-range').innerText = `من ${formatTimeObject(startTime)} إلى ${formatTimeObject(endTime)}`;
     }
     setInterval(runSessions, 1000); runSessions();
 
-    // دالة تحويل الوقت لنظام 12 ساعة
+    // دالة تحويل الوقت لنظام 12 ساعة للرسائل
     function formatTime12h(timestamp) {
         if(!timestamp) return "";
-        const d = new Date(timestamp);
-        let hours = d.getHours();
-        let minutes = d.getMinutes();
-        const ampm = hours >= 12 ? 'م' : 'ص';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // الساعة 0 تصبح 12
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        return `${hours}:${minutes} ${ampm}`;
+        return formatTimeObject(new Date(timestamp));
     }
 
-    // 2. نظام القنوات (الخاصة والعامة)
     let activeId = 'study_main';
     function loadChans() {
         onValue(ref(db, 'chans_final'), (snap) => {
@@ -257,7 +282,6 @@
             list.innerHTML = `<div class="chan-btn ${activeId==='study_main'?'active':''}" onclick="setChan('study_main')">📚 الرئيسية</div>`;
             snap.forEach(c => {
                 const data = c.val();
-                // عرض القناة إذا كانت عامة أو إذا كان المستخدم الحالي هو منشئ القناة الخاصة
                 if(data.type === 'public' || data.owner === myUser?.id) {
                     const icon = data.type === 'private' ? '🔒' : '#';
                     list.innerHTML += `<div class="chan-btn ${activeId===c.key?'active':''}" onclick="setChan('${c.key}')">${icon} ${data.name} <i class="fas fa-trash" style="font-size:9px; margin-right:5px;" onclick="delChan('${c.key}')"></i></div>`;
@@ -286,11 +310,10 @@
     };
     
     window.delChan = (id) => { 
-        event.stopPropagation(); // منع تغيير القناة عند الحذف
+        event.stopPropagation();
         if(confirm("هل أنت متأكد من حذف هذه القناة نهائياً؟")) remove(ref(db, 'chans_final/'+id)); 
     };
 
-    // 3. نظام الرسائل المطور (التعديل، الحذف للجميع، الوقت)
     function loadMsgs() {
         onValue(ref(db, 'msgs_final/'+activeId), (snap) => {
             const flow = document.getElementById('chat-flow');
@@ -299,7 +322,6 @@
                 const m = child.val();
                 const isMe = myUser && m.uid === myUser.id;
                 
-                // عرض الوسائط
                 let body = "";
                 if(m.type === 'text') {
                     body = `<div>${m.content}</div>`;
@@ -309,7 +331,6 @@
                     body = `<video src="${m.content}" controls style="width:100%; border-radius:10px; margin-top:5px;"></video>`;
                 }
                 
-                // إضافة القائمة المنسدلة (الحذف للجميع متاح لأي شخص)
                 const optionsMenu = `
                     <div class="msg-options" onclick="toggleMenu(event, '${child.key}')">
                         <i class="fas fa-ellipsis-v"></i>
@@ -334,12 +355,10 @@
                     </div>
                 `;
             });
-            // التمرير للأسفل تلقائياً
             setTimeout(() => { flow.scrollTop = flow.scrollHeight; }, 100);
         });
     }
 
-    // دوال إدارة الرسائل
     window.toggleMenu = (e, id) => {
         e.stopPropagation();
         closeAllMenus();
@@ -367,7 +386,6 @@
         }
     };
 
-    // الإرسال السريع
     document.getElementById('msg-input').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') document.getElementById('send-btn').click();
     });
@@ -377,12 +395,11 @@
         if(!txt || !myUser) return;
         push(ref(db, 'msgs_final/'+activeId), {
             uid: myUser.id, uname: myUser.name, uimg: myUser.img,
-            content: txt, type: 'text', timestamp: Date.now() // استخدام وقت الجهاز للتحويل السريع لـ 12 ساعة
+            content: txt, type: 'text', timestamp: Date.now()
         });
         document.getElementById('msg-input').value = "";
     };
 
-    // إرسال الصور والفيديوهات
     document.getElementById('file-input').onchange = (e) => {
         const file = e.target.files[0];
         if(!file || !myUser) return;
@@ -397,7 +414,6 @@
         reader.readAsDataURL(file);
     };
 
-    // الوضع الليلي
     window.toggleTheme = () => {
         const b = document.body;
         const current = b.getAttribute('data-theme');
@@ -405,7 +421,6 @@
         document.getElementById('theme-icon').className = current === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     };
 
-    // تهيئة التطبيق
     loadChans(); loadMsgs();
 </script>
 </body>
