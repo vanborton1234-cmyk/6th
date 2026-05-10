@@ -3,244 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> | Beta مجتمع </title>
+    <title>Beta | المنصة الشاملة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
 
         :root {
-            --primary: #00d2ff;
-            --secondary: #9d50bb;
-            --bg: #f0f2f5;
-            --card: #ffffff;
-            --text: #1e293b;
-            --border: rgba(0,0,0,0.08);
-            --shadow: 0 10px 25px rgba(0,0,0,0.05);
+            --bg-body: #e0e5ec;
+            --bg-card: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --shadow-light: #ffffff;
+            --shadow-dark: #a3b1c6;
+            --glass-bg: rgba(255, 255, 255, 0.7);
         }
 
         [data-theme="dark"] {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-            --border: rgba(255,255,255,0.1);
-            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --bg-body: #1a1e29;
+            --bg-card: #272c39;
+            --text-main: #f5f6fa;
+            --text-muted: #a4b0be;
+            --shadow-light: #2c3241;
+            --shadow-dark: #12151d;
+            --glass-bg: rgba(39, 44, 57, 0.8);
         }
 
-        * { box-sizing: border-box; transition: background 0.3s, color 0.3s; font-family: 'Tajawal', sans-serif; }
-        body, html { margin: 0; padding: 0; background: var(--bg); color: var(--text); height: 100dvh; overflow: hidden; }
-
-        /* شريط السشنات العلوي المطور */
-        .top-session-bar {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; padding: 10px; text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 10;
-        }
-        .session-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; }
-        .iraq-clock { background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 12px; font-size: 13px; }
-        .session-details { display: flex; justify-content: space-around; align-items: center; background: rgba(255,255,255,0.15); padding: 8px; border-radius: 10px; font-size: 13px; }
-        .session-controls button {
-            border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px;
-        }
-        .btn-start { background: #38ef7d; color: #000; }
-        .btn-cancel { background: #ff4b4b; color: #fff; }
-
-        /* شاشة الحماية وتكوين الحساب */
-        #gate-overlay, .modal-overlay {
-            position: fixed; inset: 0; background: var(--bg); z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .modal-overlay { background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; z-index: 5000; }
-        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; box-shadow: var(--shadow); }
-
-        /* الهيكل الأساسي */
-        .app-shell { 
-            display: flex; flex-direction: column; height: calc(100dvh - 90px); 
-            max-width: 600px; margin: 0 auto; background: var(--card); box-shadow: var(--shadow);
+        * { box-sizing: border-box; transition: all 0.3s ease; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; }
+        
+        body, html { 
+            background: var(--bg-body); 
+            color: var(--text-main); 
+            height: 100dvh; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
         }
 
-        header { padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        /* حاوية التطبيق */
+        .app-shell {
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-body);
+            position: relative;
+        }
 
-        /* أشرطة التمرير (القنوات والروابط) */
-        .scroll-bar { display: flex; gap: 8px; padding: 10px 15px; overflow-x: auto; border-bottom: 1px solid var(--border); scrollbar-width: none; align-items: center;}
-        .scroll-bar::-webkit-scrollbar { display: none; }
-        .btn-pill { padding: 6px 14px; border-radius: 18px; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; white-space: nowrap; font-size: 13px; text-decoration: none; font-weight: bold; }
-        .btn-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .link-pill { color: white; border: none; }
+        /* الهيدر */
+        header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+        .logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .theme-btn { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
 
-        /* منطقة الدردشة */
-        .chat-area { flex: 1; overflow-y: auto; padding: 15px; background: var(--bg); display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        /* شريط السشنات (3D Style) */
+        .session-panel {
+            margin: 15px;
+            padding: 15px;
+            border-radius: 20px;
+            background: var(--bg-card);
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .session-panel::before {
+            content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #fecfef, #a1c4fd);
+        }
+        .session-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 15px; }
+        .iraq-clock { background: var(--bg-body); padding: 5px 12px; border-radius: 12px; font-size: 13px; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); color: var(--text-main);}
+        .session-stats { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; color: var(--text-muted); }
+        .session-controls { display: flex; gap: 10px; }
+        
+        .btn-3d {
+            flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.15), inset 2px 2px 4px rgba(255,255,255,0.4);
+            font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .btn-start { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; }
+        .btn-start:active { box-shadow: inset 4px 4px 8px rgba(0,0,0,0.2); transform: translateY(2px); }
+        .btn-cancel { background: linear-gradient(135deg, #ff416c, #ff4b2b); color: white; }
+        .btn-cancel:active { box-shadow: inset 4px 4px 8px rgba(0,0,0,0.2); transform: translateY(2px); }
 
-        /* الرسائل */
-        .msg-wrapper { display: flex; gap: 10px; max-width: 95%; align-items: flex-end; }
-        .msg-wrapper.me { align-self: flex-end; flex-direction: row-reverse; }
-        .u-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
-        .bubble { background: var(--card); padding: 10px 15px; border-radius: 18px; border: 1px solid var(--border); color: var(--text); font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); min-width: 150px; position: relative; }
-        .me .bubble { background: var(--primary); color: white; border: none; border-bottom-right-radius: 4px; }
-        .other .bubble { border-bottom-left-radius: 4px; }
-        .msg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; border-bottom: 1px solid rgba(128,128,128,0.2); padding-bottom: 4px; }
-        .u-name { font-size: 11px; font-weight: bold; }
-        .u-phone { font-size: 9px; opacity: 0.7; margin-right: 5px; }
-        .msg-time { font-size: 10px; opacity: 0.7; display: block; text-align: left; margin-top: 5px; }
+        /* منطقة التصفح (الكروت) */
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 5px 15px 25px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+        .content-scroll::-webkit-scrollbar { width: 0px; } /* إخفاء شريط التمرير لجمالية أكثر */
 
-        /* إدخال الرسائل */
-        .input-bar { padding: 12px 15px; display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); background: var(--card); }
-        .input-bar input[type="text"] { flex: 1; padding: 12px 15px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--text); outline: none; font-size: 14px; }
-        .icon-btn { font-size: 20px; color: var(--primary); cursor: pointer; }
+        /* تصميم الكارت الثلاثي الأبعاد */
+        .category-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.4);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+        .category-card:active { transform: scale(0.97) translateY(2px); box-shadow: 0 5px 10px rgba(0,0,0,0.2); }
+        
+        .card-icon {
+            font-size: 28px;
+            background: rgba(255,255,255,0.2);
+            width: 50px; height: 50px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 15px;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.3);
+        }
 
-        .styled-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 10px; outline: none; background: var(--bg); color: var(--text); font-family: 'Tajawal', sans-serif;}
-        .styled-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px;}
+        .card-title { flex: 1; margin-right: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+        /* زر الإضافة العائم */
+        .fab-add {
+            position: absolute;
+            bottom: 25px; left: 25px;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; font-size: 24px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.4);
+            cursor: pointer; border: none; z-index: 1000;
+        }
+        .fab-add:active { transform: scale(0.9); }
+
+        /* النافذة المنبثقة (المودال) */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: none; align-items: center; justify-content: center; z-index: 5000;
+        }
+        .modal-content {
+            background: var(--bg-card); padding: 25px; border-radius: 25px; width: 85%; max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .styled-input { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--bg-body); color: var(--text-main); margin-bottom: 15px; outline: none; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); font-size: 15px; }
+        .styled-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #00c6ff, #0072ff); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3); }
+
+        /* سلة المهملات للأزرار المخصصة */
+        .del-btn { background: rgba(0,0,0,0.3); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body data-theme="light">
 
-<!-- شريط السشنات -->
-<div class="top-session-bar" id="session-bar">
-    <div class="session-header">
-        <span>بومودورو الإنجاز 🧠</span>
-        <span class="iraq-clock" id="iraq-clock">جاري التحميل...</span>
-    </div>
-    <div class="session-details" id="session-details">
-        <span id="s-status">لا يوجد سشن نشط</span>
-        <span id="s-start">البداية: --:--</span>
-        <span id="s-rem">المتبقي: --:--</span>
-    </div>
-    <div class="session-controls">
-        <button class="btn-start" onclick="startSession()">▶ بدء سشن (50د)</button>
-        <button class="btn-cancel" onclick="cancelSession()">✖ إلغاء</button>
-    </div>
-</div>
-
-<div id="gate-overlay">
-    <h2 style="color: var(--primary);"> مجتمع Beta </h2>
-    <p>أدخل رمز الدخول</p>
-    <input type="password" id="gate-pass" placeholder="••••••••" class="styled-input" style="text-align:center; font-size:20px; width:200px;">
-</div>
-
 <div class="app-shell">
+    
     <header>
-        <div onclick="toggleTheme()" style="cursor:pointer;"><i id="theme-icon" class="fas fa-moon"></i></div>
-        <b style="color: var(--primary); font-size: 18px;">AM ros v5</b>
-        <i class="fas fa-plus-circle icon-btn" onclick="openChanModal()"></i>
+        <div class="logo">Beta</div>
+        <button class="theme-btn" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-moon"></i></button>
     </header>
 
-    <!-- شريط القنوات -->
-    <div class="scroll-bar" id="chan-list"></div>
-    
-    <!-- شريط مجتمع Beta والروابط المخصصة -->
-    <div class="scroll-bar" id="links-list" style="background: var(--card); padding-top: 5px;">
-        <span style="font-size: 11px; font-weight: bold; margin-left: 5px; color: gray;">مجتمع Beta:</span>
-        <a href="https://t.me/Beta_s5/1" target="_blank" class="btn-pill link-pill" style="background: #00d2ff;">الرئيسية</a>
-        <a href="https://t.me/Beta_s5/38" target="_blank" class="btn-pill link-pill" style="background: #11998e;">المكتبة الاسلامية</a>
-        <a href="https://t.me/Beta_s5/396" target="_blank" class="btn-pill link-pill" style="background: #9d50bb;">النهضة الشيعية</a>
-        <span id="custom-links-container" style="display: contents;"></span>
-        <button class="btn-pill" onclick="document.getElementById('link-modal').style.display='flex'" style="border-style: dashed;">➕ إضافة</button>
+    <div class="session-panel" id="session-panel">
+        <div class="session-header">
+            <span id="s-title">⏱️ بومودورو الإنجاز</span>
+            <span class="iraq-clock" id="iraq-clock">--:--</span>
+        </div>
+        <div class="session-stats">
+            <span id="s-start">البداية: --:--</span>
+            <span id="s-status" style="color:#0072ff;">جاهز للبدء</span>
+            <span id="s-rem">المتبقي: --:--</span>
+        </div>
+        <div class="session-controls">
+            <button class="btn-3d btn-start" onclick="startSession()">▶ بدء (50د)</button>
+            <button class="btn-3d btn-cancel" onclick="cancelSession()">✖ إلغاء</button>
+        </div>
     </div>
 
-    <main class="chat-area" id="chat-flow"></main>
+    <div class="content-scroll" id="links-container">
+        </div>
 
-    <div class="input-bar">
-        <i class="fas fa-camera icon-btn" onclick="document.getElementById('file-input').click()"></i>
-        <input type="file" id="file-input" hidden accept="image/*,video/*">
-        <input type="text" id="msg-input" placeholder="اكتب رسالتك هنا...">
-        <i class="fas fa-paper-plane icon-btn" id="send-btn"></i>
-    </div>
+    <button class="fab-add" onclick="document.getElementById('link-modal').style.display='flex'">
+        <i class="fas fa-plus"></i>
+    </button>
 </div>
 
-<!-- نافذة التسجيل -->
-<div id="profile-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>تسجيل الدخول</h3>
-        <img id="p-img-prev" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary); object-fit:cover; cursor:pointer; margin-bottom: 10px;">
-        <input type="file" id="p-img-file" hidden accept="image/*">
-        <input type="text" id="p-name-in" placeholder="اسمك" class="styled-input">
-        <input type="text" id="p-phone-in" placeholder="رقمك (اختياري)" class="styled-input">
-        <button class="styled-btn" onclick="finishProfile()">دخول</button>
-    </div>
-</div>
-
-<!-- نافذة إضافة قناة -->
-<div id="chan-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h3>إنشاء قناة جديدة</h3>
-        <input type="text" id="new-chan-name" placeholder="اسم القناة" class="styled-input">
-        <select id="new-chan-type" class="styled-input">
-            <option value="public">🌐 قناة عامة</option>
-            <option value="private">🔒 قناة خاصة</option>
-        </select>
-        <button class="styled-btn" onclick="addChannel()">إنشاء</button>
-        <button onclick="document.getElementById('chan-modal').style.display='none'" style="margin-top:10px; background:none; border:none; color:#888; cursor:pointer;">إلغاء</button>
-    </div>
-</div>
-
-<!-- نافذة إضافة رابط -->
 <div id="link-modal" class="modal-overlay">
     <div class="modal-content">
-        <h3>إضافة زر مخصص</h3>
-        <input type="text" id="new-link-name" placeholder="اسم الزر" class="styled-input">
-        <input type="url" id="new-link-url" placeholder="الرابط (URL)" class="styled-input">
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; justify-content: center;">
-            <label>اختر لون الزر:</label>
-            <input type="color" id="new-link-color" value="#ff9900" style="border:none; width:40px; height:40px; cursor:pointer;">
+        <h3 style="margin-bottom: 20px; color: var(--text-main);">إضافة قسم جديد</h3>
+        <input type="text" id="new-link-name" placeholder="اسم القسم (مثال: البرمجة)" class="styled-input">
+        <input type="url" id="new-link-url" placeholder="رابط التليجرام" class="styled-input">
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 0 10px;">
+            <label style="font-weight: bold; color: var(--text-muted);">لون القسم:</label>
+            <input type="color" id="new-link-color1" value="#ff9a9e" style="border:none; width:45px; height:45px; border-radius:10px; cursor:pointer;">
+            <input type="color" id="new-link-color2" value="#fecfef" style="border:none; width:45px; height:45px; border-radius:10px; cursor:pointer;">
         </div>
-        <button class="styled-btn" onclick="addCustomLink()">تم الحفظ</button>
-        <button onclick="document.getElementById('link-modal').style.display='none'" style="margin-top:10px; background:none; border:none; color:#888; cursor:pointer;">إلغاء</button>
+
+        <button class="styled-btn" onclick="addCustomLink()">حفظ وإضافة</button>
+        <button onclick="document.getElementById('link-modal').style.display='none'" style="width: 100%; padding: 12px; margin-top:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight: bold;">إلغاء</button>
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBLtjHJIMkLE3CE_WZSDpWQTx_cpTcpycM",
-        authDomain: "studyproject-1466b.firebaseapp.com",
-        projectId: "studyproject-1466b",
-        storageBucket: "studyproject-1466b.firebasestorage.app",
-        messagingSenderId: "589724771483",
-        appId: "1:589724771483:web:1c53636da586d2c787923e"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // --- نظام تسجيل الدخول والحماية ---
-    let myUser = JSON.parse(localStorage.getItem('enjaz_user_final_v2'));
-    const isVerified = localStorage.getItem('gate_ok') === 'true';
-
-    if(isVerified) {
-        document.getElementById('gate-overlay').style.display = 'none';
-        if(!myUser) document.getElementById('profile-modal').style.display = 'flex';
+<script>
+    // --- 1. الثيم (الوضع الليلي والنهاري) ---
+    function toggleTheme() {
+        const b = document.body;
+        const current = b.getAttribute('data-theme');
+        b.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+        document.getElementById('theme-icon').className = current === 'light' ? 'fas fa-sun' : 'fas fa-moon';
     }
 
-    document.getElementById('gate-pass').oninput = (e) => {
-        if(e.target.value === '166277399') {
-            localStorage.setItem('gate_ok', 'true');
-            document.getElementById('gate-overlay').style.display = 'none';
-            if(!myUser) document.getElementById('profile-modal').style.display = 'flex';
-        }
-    };
-
-    document.getElementById('p-img-prev').onclick = () => document.getElementById('p-img-file').click();
-    document.getElementById('p-img-file').onchange = (e) => {
-        const r = new FileReader();
-        r.onload = (ev) => document.getElementById('p-img-prev').src = ev.target.result;
-        r.readAsDataURL(e.target.files[0]);
-    };
-
-    window.finishProfile = () => {
-        const name = document.getElementById('p-name-in').value;
-        const phone = document.getElementById('p-phone-in').value || 'بدون رقم';
-        const img = document.getElementById('p-img-prev').src;
-        if(!name) return alert("يرجى كتابة الاسم");
-        myUser = { id: 'u'+Date.now(), name, phone, img };
-        localStorage.setItem('enjaz_user_final_v2', JSON.stringify(myUser));
-        location.reload();
-    };
-
-    // --- ساعة العراق ونظام السشنات ---
+    // --- 2. نظام السشنات وساعة العراق ---
     function updateClock() {
-        const timeOptions = { timeZone: 'Asia/Baghdad', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const timeOptions = { timeZone: 'Asia/Baghdad', hour: '2-digit', minute: '2-digit', hour12: true };
         document.getElementById('iraq-clock').innerText = new Intl.DateTimeFormat('ar-IQ', timeOptions).format(new Date());
     }
     setInterval(updateClock, 1000); updateClock();
@@ -256,47 +244,42 @@
     let sessionTimer;
     window.startSession = () => {
         const now = Date.now();
-        const sessionData = {
-            startTime: now,
-            endTime: now + (50 * 60 * 1000), // 50 دقيقة دراسة
-            type: 'study'
-        };
-        localStorage.setItem('current_session', JSON.stringify(sessionData));
+        const sessionData = { startTime: now, endTime: now + (50 * 60 * 1000), type: 'study' };
+        localStorage.setItem('beta_session', JSON.stringify(sessionData));
         runSessionLogic();
     };
 
     window.cancelSession = () => {
-        if(confirm("متأكد تريد تلغي السشن الحالي وتكسر التركيز؟")) {
-            localStorage.removeItem('current_session');
-            document.getElementById('session-bar').style.background = "linear-gradient(135deg, var(--primary), var(--secondary))";
-            document.getElementById('s-status').innerText = "لا يوجد سشن نشط";
+        if(confirm("متأكد تريد إلغاء السشن؟")) {
+            localStorage.removeItem('beta_session');
+            document.getElementById('s-status').innerText = "جاهز للبدء";
             document.getElementById('s-start').innerText = "البداية: --:--";
             document.getElementById('s-rem').innerText = "المتبقي: --:--";
+            document.getElementById('s-title').innerText = "⏱️ بومودورو الإنجاز";
         }
     };
 
     function runSessionLogic() {
         clearInterval(sessionTimer);
         sessionTimer = setInterval(() => {
-            const dataStr = localStorage.getItem('current_session');
+            const dataStr = localStorage.getItem('beta_session');
             if(!dataStr) return;
             
             let data = JSON.parse(dataStr);
             const now = Date.now();
             const diff = data.endTime - now;
 
-            const startFormatted = formatTimeObject(new Date(data.startTime));
-            document.getElementById('s-start').innerText = `البداية: ${startFormatted}`;
+            document.getElementById('s-start').innerText = `البداية: ${formatTimeObject(new Date(data.startTime))}`;
 
             if(diff <= 0) {
                 if(data.type === 'study') {
-                    alert("بطل كملت 50 دقيقة! هسة خذلك ريست 10 دقايق.");
+                    alert("بطل! كملت 50 دقيقة دراسة، خذلك استراحة 10 دقايق.");
                     data = { startTime: now, endTime: now + (10 * 60 * 1000), type: 'break' };
-                    localStorage.setItem('current_session', JSON.stringify(data));
+                    localStorage.setItem('beta_session', JSON.stringify(data));
                 } else {
-                    alert("انتهى وقت الراحة، اضغط بدء سشن للعودة للدراسة.");
-                    localStorage.removeItem('current_session');
-                    return cancelSession(); // إعادة تصفير الواجهة
+                    alert("انتهت الاستراحة، اضغط بدء للعودة.");
+                    localStorage.removeItem('beta_session');
+                    return cancelSession();
                 }
             }
 
@@ -305,154 +288,101 @@
             document.getElementById('s-rem').innerText = `المتبقي: ${m}:${s < 10 ? '0':''}${s}`;
 
             if(data.type === 'study') {
-                document.getElementById('s-status').innerText = "📝 وقت الإنجاز";
-                document.getElementById('session-bar').style.background = "linear-gradient(135deg, #0f2027, #203a43, #2c5364)";
+                document.getElementById('s-status').innerText = "📝 وقت الدراسة";
+                document.getElementById('s-title').innerText = "🔥 سشن فعال";
             } else {
-                document.getElementById('s-status').innerText = "☕ وقت الراحة";
-                document.getElementById('session-bar').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
+                document.getElementById('s-status').innerText = "☕ استراحة";
+                document.getElementById('s-title').innerText = "💆‍♂️ وقت الراحة";
             }
         }, 1000);
     }
     runSessionLogic();
 
-    // --- نظام الروابط المخصصة ---
-    function renderCustomLinks() {
-        const links = JSON.parse(localStorage.getItem('custom_links')) || [];
-        const container = document.getElementById('custom-links-container');
-        container.innerHTML = '';
-        links.forEach((link, index) => {
-            container.innerHTML += `<a href="${link.url}" target="_blank" class="btn-pill link-pill" style="background: ${link.color}; position:relative;">
-                ${link.name} 
-                <span onclick="event.preventDefault(); deleteLink(${index})" style="margin-right:5px; font-size:10px; cursor:pointer;">❌</span>
-            </a>`;
+    // --- 3. بيانات الأقسام الأساسية وتوليدها ---
+    const baseCategories = [
+        { title: "الصفحة الرئيسية", url: "https://t.me/Beta_s5/1", icon: "fa-home", c1: "#4facfe", c2: "#00f2fe" },
+        { title: "المكتبة الاسلامية", url: "https://t.me/Beta_s5/38", icon: "fa-book-quran", c1: "#11998e", c2: "#38ef7d" },
+        { title: "النهضة الشيعية", url: "https://t.me/Beta_s5/396", icon: "fa-scale-balanced", c1: "#6a11cb", c2: "#2575fc" },
+        { title: "قسم العلوم", url: "https://t.me/Beta_s5/13", icon: "fa-flask", c1: "#ff0844", c2: "#ffb199" },
+        { title: "قسم الاحياء", url: "https://t.me/Beta_s5/16", icon: "fa-dna", c1: "#0ba360", c2: "#3cba92" },
+        { title: "قسم الكيمياء", url: "https://t.me/Beta_s5/15", icon: "fa-vial", c1: "#f83600", c2: "#f9d423" },
+        { title: "قسم علم الارض", url: "https://t.me/Beta_s5/18", icon: "fa-earth-americas", c1: "#b224ef", c2: "#7579ff" },
+        { title: "قسم الفلك", url: "https://t.me/Beta_s5/17", icon: "fa-meteor", c1: "#141e30", c2: "#243b55" },
+        { title: "الثقافة العلمية", url: "https://t.me/Beta_s5/5", icon: "fa-brain", c1: "#ff758c", c2: "#ff7eb3" },
+        { title: "قسم السفر", url: "https://t.me/Beta_s5/9", icon: "fa-plane-departure", c1: "#2193b0", c2: "#6dd5ed" },
+        { title: "الحياة المائية", url: "https://t.me/Beta_s5/14", icon: "fa-water", c1: "#00c6ff", c2: "#0072ff" },
+        { title: "قسم الفيزياء", url: "https://t.me/Beta_s5/19", icon: "fa-atom", c1: "#fc4a1a", c2: "#f7b733" },
+        { title: "قسم الأدوية", url: "https://t.me/Beta_s5/21", icon: "fa-pills", c1: "#ee0979", c2: "#ff6a00" },
+        { title: "قسم الطب", url: "https://t.me/Beta_s5/20", icon: "fa-stethoscope", c1: "#00b09b", c2: "#96c93d" },
+        { title: "العلوم الشيعية والفقه", url: "https://t.me/Beta_s5/22", icon: "fa-book-open", c1: "#8e2de2", c2: "#4a00e0" },
+        { title: "تاريخ الإسلام", url: "https://t.me/Beta_s5/24", icon: "fa-landmark-dome", c1: "#a8c0ff", c2: "#3f2b96" },
+        { title: "تاريخ العراق", url: "https://t.me/Beta_s5/39", icon: "fa-monument", c1: "#d38312", c2: "#a83279" },
+        { title: "نهضة العراق", url: "https://t.me/Beta_s5/40", icon: "fa-arrow-trend-up", c1: "#1d976c", c2: "#93f9b9" },
+        { title: "الفلسفة الإسلامية", url: "https://t.me/Beta_s5/29", icon: "fa-lightbulb", c1: "#5c258d", c2: "#4389a2" },
+        { title: "كتب اسلامية علمية", url: "https://t.me/Beta_s5/25", icon: "fa-book", c1: "#eb3349", c2: "#f45c43" },
+        { title: "بحوث اسلامية", url: "https://t.me/Beta_s5/27", icon: "fa-scroll", c1: "#4b6cb7", c2: "#182848" },
+        { title: "الاقتصاد الإسلامي", url: "https://t.me/Beta_s5/28", icon: "fa-coins", c1: "#f12711", c2: "#f5af19" }
+    ];
+
+    function renderLinks() {
+        const container = document.getElementById('links-container');
+        container.innerHTML = ''; // تفريغ الحاوية
+
+        // 1. رسم الأقسام الأساسية
+        baseCategories.forEach(cat => {
+            container.innerHTML += `
+                <a href="${cat.url}" target="_blank" class="category-card" style="background: linear-gradient(135deg, ${cat.c1}, ${cat.c2});">
+                    <div class="card-icon"><i class="fas ${cat.icon}"></i></div>
+                    <div class="card-title">${cat.title}</div>
+                    <i class="fas fa-chevron-left" style="opacity: 0.7;"></i>
+                </a>
+            `;
+        });
+
+        // 2. رسم الأقسام المضافة من قبل المستخدم
+        const customLinks = JSON.parse(localStorage.getItem('beta_custom_links')) || [];
+        customLinks.forEach((link, index) => {
+            container.innerHTML += `
+                <a href="${link.url}" target="_blank" class="category-card" style="background: linear-gradient(135deg, ${link.c1}, ${link.c2});">
+                    <div class="card-icon"><i class="fas fa-link"></i></div>
+                    <div class="card-title">${link.name}</div>
+                    <button class="del-btn" onclick="event.preventDefault(); deleteCustomLink(${index})">
+                        <i class="fas fa-trash" style="font-size: 12px;"></i>
+                    </button>
+                </a>
+            `;
         });
     }
 
     window.addCustomLink = () => {
         const name = document.getElementById('new-link-name').value;
         const url = document.getElementById('new-link-url').value;
-        const color = document.getElementById('new-link-color').value;
-        if(!name || !url) return alert("يرجى إدخال الاسم والرابط");
-
-        const links = JSON.parse(localStorage.getItem('custom_links')) || [];
-        links.push({name, url, color});
-        localStorage.setItem('custom_links', JSON.stringify(links));
+        const c1 = document.getElementById('new-link-color1').value;
+        const c2 = document.getElementById('new-link-color2').value;
         
-        document.getElementById('link-modal').style.display='none';
+        if(!name || !url) return alert("يرجى كتابة الاسم والرابط");
+
+        const links = JSON.parse(localStorage.getItem('beta_custom_links')) || [];
+        links.push({name, url, c1, c2});
+        localStorage.setItem('beta_custom_links', JSON.stringify(links));
+        
+        document.getElementById('link-modal').style.display = 'none';
         document.getElementById('new-link-name').value = '';
         document.getElementById('new-link-url').value = '';
-        renderCustomLinks();
+        renderLinks(); // تحديث القائمة
     };
 
-    window.deleteLink = (index) => {
-        const links = JSON.parse(localStorage.getItem('custom_links')) || [];
-        links.splice(index, 1);
-        localStorage.setItem('custom_links', JSON.stringify(links));
-        renderCustomLinks();
-    };
-    renderCustomLinks();
-
-    // --- نظام الدردشة المطور ---
-    let activeId = 'study_main';
-    function loadChans() {
-        onValue(ref(db, 'chans_final'), (snap) => {
-            const list = document.getElementById('chan-list');
-            list.innerHTML = `<div class="btn-pill ${activeId==='study_main'?'active':''}" onclick="setChan('study_main')">📚 الرئيسية</div>`;
-            snap.forEach(c => {
-                const data = c.val();
-                if(data.type === 'public' || data.owner === myUser?.id) {
-                    const icon = data.type === 'private' ? '🔒' : '#';
-                    list.innerHTML += `<div class="btn-pill ${activeId===c.key?'active':''}" onclick="setChan('${c.key}')">${icon} ${data.name} <i class="fas fa-trash" style="font-size:9px; margin-right:5px; color:#ff4b4b;" onclick="delChan(event, '${c.key}')"></i></div>`;
-                }
-            });
-        });
-    }
-
-    window.setChan = (id) => { activeId = id; loadChans(); loadMsgs(); };
-    window.openChanModal = () => document.getElementById('chan-modal').style.display = 'flex';
-    
-    window.addChannel = () => {
-        const n = document.getElementById('new-chan-name').value;
-        const type = document.getElementById('new-chan-type').value;
-        if(!n || !myUser) return;
-        push(ref(db, 'chans_final'), { name: n, type: type, owner: myUser.id });
-        document.getElementById('new-chan-name').value = "";
-        document.getElementById('chan-modal').style.display = 'none';
-    };
-    
-    window.delChan = (e, id) => { 
-        e.stopPropagation();
-        if(confirm("حذف القناة نهائياً؟")) remove(ref(db, 'chans_final/'+id)); 
+    window.deleteCustomLink = (index) => {
+        if(confirm("هل تريد حذف هذا القسم المخصص؟")) {
+            const links = JSON.parse(localStorage.getItem('beta_custom_links')) || [];
+            links.splice(index, 1);
+            localStorage.setItem('beta_custom_links', JSON.stringify(links));
+            renderLinks();
+        }
     };
 
-    function loadMsgs() {
-        onValue(ref(db, 'msgs_final/'+activeId), (snap) => {
-            const flow = document.getElementById('chat-flow');
-            flow.innerHTML = "";
-            snap.forEach(child => {
-                const m = child.val();
-                const isMe = myUser && m.uid === myUser.id;
-                
-                let body = m.type === 'text' ? `<div>${m.content}</div>` 
-                         : m.type === 'img' ? `<img src="${m.content}" style="width:100%; border-radius:10px; margin-top:5px;">` 
-                         : `<video src="${m.content}" controls style="width:100%; border-radius:10px; margin-top:5px;"></video>`;
-
-                flow.innerHTML += `
-                    <div class="msg-wrapper ${isMe?'me':'other'}">
-                        <img src="${m.uimg}" class="u-avatar">
-                        <div class="bubble">
-                            <div class="msg-header">
-                                <div>
-                                    <span class="u-name">${m.uname}</span>
-                                    <span class="u-phone">${m.phone || ''}</span>
-                                </div>
-                            </div>
-                            ${body}
-                            <span class="msg-time">${formatTimeObject(new Date(m.timestamp))}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            setTimeout(() => { flow.scrollTop = flow.scrollHeight; }, 50);
-        });
-    }
-
-    document.getElementById('msg-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') document.getElementById('send-btn').click();
-    });
-
-    document.getElementById('send-btn').onclick = () => {
-        const txt = document.getElementById('msg-input').value;
-        if(!txt || !myUser) return;
-        push(ref(db, 'msgs_final/'+activeId), {
-            uid: myUser.id, uname: myUser.name, phone: myUser.phone, uimg: myUser.img,
-            content: txt, type: 'text', timestamp: Date.now()
-        });
-        document.getElementById('msg-input').value = "";
-    };
-
-    document.getElementById('file-input').onchange = (e) => {
-        const file = e.target.files[0];
-        if(!file || !myUser) return;
-        const reader = new FileReader();
-        const type = file.type.startsWith('image') ? 'img' : 'vid';
-        reader.onload = (ev) => {
-            push(ref(db, 'msgs_final/'+activeId), {
-                uid: myUser.id, uname: myUser.name, phone: myUser.phone, uimg: myUser.img,
-                content: ev.target.result, type, timestamp: Date.now()
-            });
-        };
-        reader.readAsDataURL(file);
-    };
-
-    window.toggleTheme = () => {
-        const b = document.body;
-        const current = b.getAttribute('data-theme');
-        b.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
-        document.getElementById('theme-icon').className = current === 'light' ? 'fas fa-sun' : 'fas fa-moon';
-    };
-
-    loadChans(); loadMsgs();
+    // تشغيل رسم الروابط عند فتح الموقع
+    renderLinks();
 </script>
 </body>
 </html>
